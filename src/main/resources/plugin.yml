@@ -1,0 +1,8 @@
+name: MagicAddon
+version: '${version}'
+main: tororo1066.man10mythicmagic.Man10MythicMagic
+api-version: 1.17
+
+depend:
+  - Magic
+  - MythicMobs
