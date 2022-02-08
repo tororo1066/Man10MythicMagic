@@ -3,26 +3,25 @@ package tororo1066.man10mythicmagic
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
-import io.lumine.xikage.mythicmobs.io.MythicConfig
-import io.lumine.xikage.mythicmobs.io.MythicLineConfig
-import io.lumine.xikage.mythicmobs.skills.SkillMechanic
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.magic.actions.BlockWave
 import tororo1066.man10mythicmagic.mythicmobs.skills.ArmorMechanic
 import tororo1066.man10mythicmagic.mythicmobs.skills.SetRotation
-import java.io.File
+import tororo1066.man10mythicmagic.mythicmobs.skills.SummonPlusMechanic
 
 
-class Man10MythicMagic : JavaPlugin() {
+class Man10MythicMagic : JavaPlugin(), Listener {
 
     companion object{
         lateinit var plugin : Man10MythicMagic
     }
 
     override fun onEnable() {
+        server.pluginManager.registerEvents(this,this)
         plugin = this
         registerActions()
     }
@@ -40,17 +39,8 @@ class Man10MythicMagic : JavaPlugin() {
 
     @EventHandler
     fun onMechanicLoad(e : MythicMechanicLoadEvent){
-        when{
-            e.mechanicName.equals("armordamage",true)->{
-                e.register(ArmorMechanic(e.config))
-            }
-            e.mechanicName.equals("setrotationplus",true)->{
-                e.register(SetRotation(e.config))
-            }
-            e.mechanicName.equals("armordamage",true)->{
-                e.register(ArmorMechanic(e.config))
-            }
-        }
-
+        if (e.mechanicName.equals("ARMORDAMAGE",true)) e.register(ArmorMechanic(e.config))
+        if (e.mechanicName.equals("SETROTATIONPLUS",true)) e.register(SetRotation(e.config))
+        if (e.mechanicName.equals("SUMMONPLUS",true)) e.register(SummonPlusMechanic(e.config))
     }
 }
