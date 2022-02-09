@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.util.Vector;
@@ -69,6 +70,7 @@ public class BlockWaveEffect implements Listener {
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendBlockChange(l,l.getBlock().getBlockData()));
                 block.remove();
                 removeEntityBlock(block.getUniqueId());
+                HandlerList.unregisterAll(this);
             },duration);
         }
 
