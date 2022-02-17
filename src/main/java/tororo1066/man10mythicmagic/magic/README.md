@@ -1,5 +1,5 @@
 ### BlockWave
-MythicMobsのblockaveをmagicで出すクラス\
+MythicMobsのblockwaveをmagicで出すクラス\
 **パラメーター**\
 ・material：ブロック\
 ・radius：半径\

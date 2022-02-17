@@ -48,9 +48,8 @@ public class BlockWaveEffect implements Listener {
         this.material = material;
         this.ignoreAir = true;
         this.radiusSq = radius * radius;
-        castAtLocation(location);
         Bukkit.getServer().getPluginManager().registerEvents(this, Man10MythicMagic.plugin);
-
+        castAtLocation(location);
     }
 
     public void castAtLocation(Location target) {

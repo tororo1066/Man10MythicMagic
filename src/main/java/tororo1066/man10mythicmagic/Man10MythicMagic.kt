@@ -43,4 +43,5 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         if (e.mechanicName.equals("SETROTATIONPLUS",true)) e.register(SetRotation(e.config))
         if (e.mechanicName.equals("SUMMONPLUS",true)) e.register(SummonPlusMechanic(e.config))
     }
+
 }
