@@ -3,6 +3,7 @@ package tororo1066.man10mythicmagic.magic.actions
 import com.elmakers.mine.bukkit.action.BaseSpellAction
 import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.SpellResult
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import tororo1066.man10mythicmagic.generator.BlockWaveEffect
