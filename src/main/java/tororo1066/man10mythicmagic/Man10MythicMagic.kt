@@ -8,8 +8,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
-import tororo1066.man10mythicmagic.magic.actions.BlockWave
-import tororo1066.man10mythicmagic.magic.actions.TeleportAndEffect
+import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.ArmorMechanic
 import tororo1066.man10mythicmagic.mythicmobs.skills.SetRotation
 import tororo1066.man10mythicmagic.mythicmobs.skills.SummonPlusMechanic
@@ -37,6 +36,9 @@ class Man10MythicMagic : JavaPlugin(), Listener {
     private fun registerActions(){
         ActionFactory.registerActionClass("BlockWave", BlockWave::class.java)
         ActionFactory.registerActionClass("TeleportAndEffect",TeleportAndEffect::class.java)
+        ActionFactory.registerActionClass("AddEnchantEffect",AddEnchantmentEffect::class.java)
+        ActionFactory.registerActionClass("RemoveEnchantEffect",RemoveEnchantmentEffect::class.java)
+        ActionFactory.registerActionClass("CheckEnchantEffect",CheckEnchantmentEffect::class.java)
     }
 
     @EventHandler
