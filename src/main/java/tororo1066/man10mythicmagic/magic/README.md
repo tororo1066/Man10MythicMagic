@@ -81,9 +81,9 @@ fail：ついていなかった時に実行するaction\
 アイテムを消費してactionを実行する\
 **パラメーター**\
 material：弾の素材\
-name：アイテム名
-cmd：カスタムモデルデータ
-amount：消費量
+name：アイテム名\
+cmd：カスタムモデルデータ\
+amount：消費量\
 actions：消費できた時に実行するaction\
 fail：消費できなかった時に実行するaction\
 **対象**\
