@@ -3,6 +3,9 @@ version: '${version}'
 main: tororo1066.man10mythicmagic.Man10MythicMagic
 api-version: 1.17
 
+commands:
+  mythicmagic:
+
 depend:
   - Magic
   - MythicMobs

@@ -15,3 +15,90 @@ MythicMobsのblockwaveをmagicで出すクラス\
   velocity: 3.0
   duration: 40
 ```
+
+### TeleportAndEffect
+指定した距離分テレポートしてエフェクトを発生させる\
+近くにいたプレイヤーに対してactionを実行できる\
+**パラメーター**\
+・length：進む距離\
+・particles：パーティクル(list可)
+・yoffset：パーティクルのoffset\
+・radius：actionの半径\
+・actions：radiusにいるプレイヤーへのaction\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+- class: TeleportAndEffect
+  length: 10
+  particles:
+    - SWEEP_ATTACK
+  yoffset: 0.8
+  radius: 2
+  actions:
+    - class: Damage
+```
+
+### AddEnchantEffect
+武器にエンチャントを付与する\
+**パラメーター**\
+なし\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: AddEnchantEffect
+```
+
+### RemoveEnchantEffect
+武器のエンチャントを削除する\
+**パラメーター**\
+なし\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: RemoveEnchantEffect
+```
+
+### CheckEnchantEffect
+武器にエンチャントがついているか確認する\
+**パラメーター**\
+actions：ついている時に実行するaction\
+fail：ついていなかった時に実行するaction\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: CheckEnchantEffect
+  actions:
+    - class: RemoveEnchantEffect
+  fail:
+    - class: AddEnchantEffect
+```
+
+### AmmoReload
+アイテムを消費してactionを実行する\
+**パラメーター**\
+material：弾の素材\
+name：アイテム名
+cmd：カスタムモデルデータ
+amount：消費量
+actions：消費できた時に実行するaction\
+fail：消費できなかった時に実行するaction\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: AmmoReload
+  material: DIAMOND
+  name: test
+  cmd: 2
+  amount: 10
+  actions:
+    - class: Command
+      command: say success
+  fail:
+    - class: Command
+      command: say failed
+```

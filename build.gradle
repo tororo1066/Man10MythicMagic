@@ -33,7 +33,7 @@ dependencies {
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
     compileOnly "io.lumine.xikage:MythicMobs:4.11.0"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    implementation 'com.github.tororo1066:TororoPluginAPI:master-SNAPSHOT'
+    compile 'com.github.tororo1066:TororoPluginAPI:498e6f525a'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

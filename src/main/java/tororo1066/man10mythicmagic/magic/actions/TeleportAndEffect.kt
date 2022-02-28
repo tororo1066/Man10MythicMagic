@@ -7,6 +7,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
+import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import java.util.*
 
 class TeleportAndEffect : CompoundAction() {
@@ -60,13 +61,14 @@ class TeleportAndEffect : CompoundAction() {
         parameters?:return
         particles.clear()
         length = parameters.getInt("length",3)
-        try {
+
+        UsefulUtility.sTry({
             parameters.getStringList("particles").forEach {
                 particles.add(Particle.valueOf(it))
             }
-        } catch (e: Exception){
-            e.printStackTrace()
-        }
+        }, {
+            it.printStackTrace()
+        })
         radius = parameters.getDouble("radius",0.0)
         yOffSet = parameters.getDouble("yoffset",0.0)
     }

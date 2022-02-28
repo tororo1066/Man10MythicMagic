@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BlockWaveEffect implements Listener {
+public class BlockWaveEffect {
 
     protected Double velocity;
 
@@ -48,7 +48,6 @@ public class BlockWaveEffect implements Listener {
         this.material = material;
         this.ignoreAir = true;
         this.radiusSq = radius * radius;
-        Bukkit.getServer().getPluginManager().registerEvents(this, Man10MythicMagic.plugin);
         castAtLocation(location);
     }
 
@@ -63,13 +62,12 @@ public class BlockWaveEffect implements Listener {
             block.setHurtEntities(false);
             block.setGravity(true);
             block.setVelocity(new Vector(vh, v, vh));
-            addEntityUUID(block.getUniqueId());
+            Man10MythicMagic.Companion.getFlyingBlocks().add(block.getUniqueId());
             Bukkit.getOnlinePlayers().forEach(player -> player.sendBlockChange(l,Material.AIR.createBlockData()));
             Bukkit.getScheduler().runTaskLater(Man10MythicMagic.plugin, ()->{
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendBlockChange(l,l.getBlock().getBlockData()));
                 block.remove();
-                removeEntityBlock(block.getUniqueId());
-                HandlerList.unregisterAll(this);
+                Man10MythicMagic.Companion.getFlyingBlocks().remove(block.getUniqueId());
             },duration);
         }
 
@@ -95,36 +93,4 @@ public class BlockWaveEffect implements Listener {
         return blocks;
     }
 
-    List<UUID> entityList = new ArrayList<>();
-
-
-
-
-    public void addEntityUUID(UUID id)
-    {
-        this.entityList.add(id);
-    }
-
-    public void removeEntityBlock(UUID id)
-    {
-        this.entityList.remove(id);
-    }
-
-    public boolean containsBlock(UUID id)
-    {
-        return this.entityList.contains(id);
-    }
-
-    @EventHandler
-    public void onEntityChangeBlock(EntityChangeBlockEvent event)
-    {
-        if (event.getEntity() instanceof FallingBlock)
-        {
-            if (this.containsBlock(event.getEntity().getUniqueId()))
-            {
-                event.setCancelled(true);
-                this.removeEntityBlock(event.getEntity().getUniqueId());
-            }
-        }
-    }
 }
