@@ -36,7 +36,7 @@ class TeleportAndEffect : CompoundAction() {
             playerLoc.pitch = 0f
             var loc = (context.location)!!.add(playerLoc.direction.multiply(1))
             loc = Location(loc.world,loc.x,y,loc.z,loc.yaw,loc.pitch)
-            if (loc.block.isEmpty && loc.add(0.0,1.0,0.0).block.isEmpty){
+            if (!loc.block.isBuildable && !loc.add(0.0,1.0,0.0).block.isBuildable){
                 (context.entity?:return SpellResult.FAIL).teleport(loc)
                 particles.forEach {
                     loc.world.spawnParticle(it,loc.set(loc.x,y+yOffSet,loc.z),1)
