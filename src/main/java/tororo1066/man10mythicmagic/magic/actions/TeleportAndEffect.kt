@@ -29,6 +29,17 @@ class TeleportAndEffect : CompoundAction() {
     override fun start(context: CastContext?): SpellResult {
         context?:return SpellResult.FAIL
         context.location?:return SpellResult.FAIL
+        if (context.location!!.block.isBuildable || context.location!!.add(0.0,1.0,0.0).block.isBuildable)return SpellResult.CAST
+        if (radius != 0.0){
+            context.location!!.getNearbyEntitiesByType(Player::class.java, radius).forEach {
+                if (!damagedPlayers.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
+                    context.targetEntity = it
+                    getHandler("actions")!!.cast(context,context.workingParameters)
+                    damagedPlayers.add(it.uniqueId)
+                }
+            }
+        }
+
         val y = context.location!!.y
         for (to in 1..length){
 
