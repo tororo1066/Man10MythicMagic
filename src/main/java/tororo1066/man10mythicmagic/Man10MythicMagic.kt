@@ -1,12 +1,18 @@
 package tororo1066.man10mythicmagic
 
+import com.comphenix.protocol.ProtocolLib
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
+import com.comphenix.protocol.events.PacketContainer
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockDispenseEvent
 import org.bukkit.event.entity.EntityChangeBlockEvent
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
@@ -22,11 +28,13 @@ class Man10MythicMagic : JavaPlugin(), Listener {
     companion object{
         lateinit var plugin : Man10MythicMagic
         val flyingBlocks = ArrayList<UUID>()
+        lateinit var protocolManager: ProtocolManager
     }
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this,this)
         plugin = this
+        protocolManager = ProtocolLibrary.getProtocolManager()
         registerActions()
         MMMCommands()
     }
@@ -45,6 +53,8 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("RemoveEnchantEffect",RemoveEnchantmentEffect::class.java)
         ActionFactory.registerActionClass("CheckEnchantEffect",CheckEnchantmentEffect::class.java)
         ActionFactory.registerActionClass("AmmoReload",AmmoReload::class.java)
+        ActionFactory.registerActionClass("CheckPotionPlus",CheckPotionEffect::class.java)
+        ActionFactory.registerActionClass("ThrowItemPlus",ThrowItem::class.java)
     }
 
     @EventHandler
@@ -61,5 +71,8 @@ class Man10MythicMagic : JavaPlugin(), Listener {
             flyingBlocks.remove(e.entity.uniqueId)
         }
     }
+
+
+
 
 }

@@ -4,10 +4,8 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import org.bukkit.Material
-import tororo1066.tororopluginapi.sCommand.SCommand
-import tororo1066.tororopluginapi.sCommand.SCommandArg
-import tororo1066.tororopluginapi.sCommand.SCommandObject
-import tororo1066.tororopluginapi.sCommand.SCommandOnlyPlayerData
+import org.bukkit.util.Vector
+import tororo1066.tororopluginapi.sCommand.*
 import tororo1066.tororopluginapi.sItem.SItem
 import java.util.function.Consumer
 
@@ -23,5 +21,10 @@ class MMMCommands : SCommand("mythicmagic","","mmm.op") {
 
                     it.sender.sendMessage(Component.text("§a§lここをクリックでコピー").hoverEvent(HoverEvent.showText(Component.text("§b§lここをクリック！"))).clickEvent(ClickEvent.copyToClipboard(SItem(it.sender.inventory.itemInMainHand).toBase64())))
                 }))
+        addCommand(SCommandObject().addArg(SCommandArg().addAllowString("velo")).addArg(SCommandArg().addAllowType(SCommandArgType.DOUBLE).addAlias("x")).addArg(SCommandArg().addAllowType(SCommandArgType.DOUBLE).addAlias("y")).addArg(SCommandArg().addAllowType(SCommandArgType.DOUBLE).addAlias("z")).setExecutor(
+            Consumer<SCommandOnlyPlayerData> {
+                it.sender.velocity = Vector(it.args[1].toDouble(),it.args[2].toDouble(),it.args[3].toDouble())
+            }
+        ))
     }
 }
