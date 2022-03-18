@@ -6,7 +6,11 @@ import com.comphenix.protocol.ProtocolManager
 import com.comphenix.protocol.events.PacketContainer
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
+import io.lumine.xikage.mythicmobs.MythicMobs
+import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
+import io.lumine.xikage.mythicmobs.skills.SkillTrigger
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.ArmorMechanic
+import tororo1066.man10mythicmagic.mythicmobs.skills.CallMagicSpell
 import tororo1066.man10mythicmagic.mythicmobs.skills.SetRotation
 import tororo1066.man10mythicmagic.mythicmobs.skills.SummonPlusMechanic
 import java.util.UUID
@@ -29,22 +34,22 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         lateinit var plugin : Man10MythicMagic
         val flyingBlocks = ArrayList<UUID>()
         lateinit var protocolManager: ProtocolManager
+        lateinit var magicAPI: MagicAPI
+        lateinit var mythicMobs: MythicMobs
     }
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this,this)
         plugin = this
         protocolManager = ProtocolLibrary.getProtocolManager()
+        val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
+        magicAPI = magicPlugin as MagicAPI
         registerActions()
         MMMCommands()
+        mythicMobs = MythicMobs.inst()
     }
 
-    fun getMagicAPI(): MagicAPI? {
-        val magicPlugin: Plugin? = Bukkit.getPluginManager().getPlugin("Magic")
-        return if (magicPlugin == null || magicPlugin !is MagicAPI) {
-            null
-        } else magicPlugin
-    }
+
 
     private fun registerActions(){
         ActionFactory.registerActionClass("BlockWave", BlockWave::class.java)
@@ -55,6 +60,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("AmmoReload",AmmoReload::class.java)
         ActionFactory.registerActionClass("CheckPotionPlus",CheckPotionEffect::class.java)
         ActionFactory.registerActionClass("ThrowItemPlus",ThrowItem::class.java)
+        ActionFactory.registerActionClass("CallMythicSkill",CallMythicSkill::class.java)
     }
 
     @EventHandler
@@ -62,6 +68,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         if (e.mechanicName.equals("ARMORDAMAGE",true)) e.register(ArmorMechanic(e.config))
         if (e.mechanicName.equals("SETROTATIONPLUS",true)) e.register(SetRotation(e.config))
         if (e.mechanicName.equals("SUMMONPLUS",true)) e.register(SummonPlusMechanic(e.config))
+        if (e.mechanicName.equals("CALLSPELL",true)) e.register(CallMagicSpell(e.config))
     }
 
     @EventHandler
