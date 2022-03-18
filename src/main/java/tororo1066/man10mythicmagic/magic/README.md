@@ -87,7 +87,7 @@ amount：消費量\
 actions：消費できた時に実行するaction\
 fail：消費できなかった時に実行するaction\
 **対象**\
-・プレイヤー(手に杖を持っている場合)\
+・プレイヤー\
 **例**
 ```yaml
 - class: AmmoReload
@@ -101,4 +101,47 @@ fail：消費できなかった時に実行するaction\
   fail:
     - class: Command
       command: say failed
+```
+
+### ThrowItemPlus
+アイテムにvelocityを与えて飛ばす\
+**パラメーター**\
+material：出すアイテム\
+cmd：カスタムモデルデータ\
+enchant：アイテムにエンチャントをするかどうか\
+canPick: 拾えるかどうか\
+time: アイテムが消えるまでの時間(tick)\
+yVelocity：yのベクトル\
+multiply：距離の倍率\
+rotate：アイテムが投げられる範囲の角度\
+actions：アイテムを拾ったときに実行するaction(canPickがtrueじゃないといけない)\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+- class: ThrowItemPlus
+  material: DIAMOND
+  cmd: 2
+  enchant: true
+  canPick: true
+  time: 100
+  yVelocity: 0.8
+  multiply: 0.5
+  rotate: 30
+  actions:
+    - class: Command
+      console: true
+      command: tell @t ﾋﾛﾜﾚﾁｬｯﾀ!
+```
+
+### CastMythicSkill
+Casterに対してMythicMobsのSkillを実行する\
+**パラメーター**\
+skill：スキル名\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+- class: CastMythicSkill
+  skill: DemonJump
 ```

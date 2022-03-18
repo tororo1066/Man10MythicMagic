@@ -27,7 +27,7 @@ Skills:
 ### SUMMONPLUS
 実行主の位置から座標を増減させた位置にモブ(MythicMob)を召喚する\
 **パラメーター**\
-・mob：モブの名前\
+・mob, m：モブの名前\
 ・x：増減させるx座標\
 ・y：増減させるy座標\
 ・z：増減させるz座標\
@@ -37,4 +37,16 @@ Skills:
 ```yaml
 Skills:
   - summonplus{x=2;z=2;mob=TestMob}
+```
+
+### CALLSPELL
+Magicのspellを実行する\
+**パラメーター**\
+・spell, s：スペル名\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+Skills:
+  - callspell{s=beam} @self
 ```
