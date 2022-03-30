@@ -1,31 +1,20 @@
 package tororo1066.man10mythicmagic
 
-import com.comphenix.protocol.ProtocolLib
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.ProtocolManager
-import com.comphenix.protocol.events.PacketContainer
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.xikage.mythicmobs.MythicMobs
-import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
-import io.lumine.xikage.mythicmobs.skills.SkillTrigger
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.BlockDispenseEvent
 import org.bukkit.event.entity.EntityChangeBlockEvent
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent
-import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
-import tororo1066.man10mythicmagic.mythicmobs.skills.ArmorMechanic
-import tororo1066.man10mythicmagic.mythicmobs.skills.CallMagicSpell
-import tororo1066.man10mythicmagic.mythicmobs.skills.SetRotation
-import tororo1066.man10mythicmagic.mythicmobs.skills.SummonPlusMechanic
-import java.util.UUID
+import tororo1066.man10mythicmagic.mythicmobs.skills.*
+import java.util.*
 
 
 class Man10MythicMagic : JavaPlugin(), Listener {
@@ -47,6 +36,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         registerActions()
         MMMCommands()
         mythicMobs = MythicMobs.inst()
+        mythicMobs.skillManager.getSkillMechanic("sound").setTargetsCreativePlayers(true)
     }
 
 
@@ -61,6 +51,8 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("CheckPotionPlus",CheckPotionEffect::class.java)
         ActionFactory.registerActionClass("ThrowItemPlus",ThrowItem::class.java)
         ActionFactory.registerActionClass("CallMythicSkill",CallMythicSkill::class.java)
+        ActionFactory.registerActionClass("CheckCMD",CheckCMD::class.java)
+
     }
 
     @EventHandler

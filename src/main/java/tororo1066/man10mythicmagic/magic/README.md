@@ -1,5 +1,6 @@
 ### BlockWave
-MythicMobsのblockwaveをmagicで出すクラス\
+~~MythicMobsのblockwaveをmagicで出すクラス~~\
+非推奨 高確率でブロックが残る\
 **パラメーター**\
 ・material：ブロック\
 ・radius：半径\
@@ -144,4 +145,24 @@ skill：スキル名\
 ```yaml
 - class: CastMythicSkill
   skill: DemonJump
+```
+
+### CheckCMD
+slotにあるアイテムのcmdがあっているか確認する\
+**パラメーター**\
+cmd：カスタムモデルデータ
+slot：スロット(hand,off_hand,head,chest,legs,feet)
+actions：あっている時に実行するaction\
+fail：あっていなかった時に実行するaction\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: CheckCMD
+  cmd: 10
+  slot: hand
+  actions:
+    - class: ...
+  fail:
+    - class: ...
 ```
