@@ -50,3 +50,17 @@ Magicのspellを実行する\
 Skills:
   - callspell{s=beam} @self
 ```
+
+### RADIUSCOMMAND
+指定したエンティティの周りにいるエンティティ(プレイヤー)にコマンドを実行する\
+**パラメーター**\
+・radius, r：範囲(小数も可)\
+・onlyplayer, op：プレイヤーだけ実行する(デフォルトでtrue)\
+・command, c：コマンド <uuid>でuuid、<name>で名前を取れる\
+**対象**\
+・エンティティ\
+**例**\
+```yaml
+Skills:
+  - radiuscommand{r=10;op=false;c="minecraft:effect clear <name>"}
+```

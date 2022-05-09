@@ -1,22 +1,3 @@
-### BlockWave
-~~MythicMobsのblockwaveをmagicで出すクラス~~\
-非推奨 高確率でブロックが残る\
-**パラメーター**\
-・material：ブロック\
-・radius：半径\
-・velocity：勢い\
-・duration：時間(tick)\
-**対象**\
-・実行者の位置\
-**例**
-```yaml
-- class: BlockWave
-  material: DIRT
-  radius: 5
-  velocity: 3.0
-  duration: 40
-```
-
 ### TeleportAndEffect
 指定した距離分テレポートしてエフェクトを発生させる\
 近くにいたプレイヤーに対してactionを実行できる\

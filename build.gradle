@@ -25,7 +25,6 @@ repositories {
         url = 'https://mvn.lumine.io/repository/maven-public/'
     }
     maven { url 'https://jitpack.io' }
-    maven { url "https://repo.dmulloy2.net/repository/public/" }
 
 }
 
@@ -38,7 +37,6 @@ dependencies {
     compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
     compileOnly fileTree(dir: 'libs', include: '*.jar')
     compile 'com.github.tororo1066:TororoPluginAPI:03d75884be'
-    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
