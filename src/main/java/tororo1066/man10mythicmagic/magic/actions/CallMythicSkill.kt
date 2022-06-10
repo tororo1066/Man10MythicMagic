@@ -3,7 +3,7 @@ package tororo1066.man10mythicmagic.magic.actions
 import com.elmakers.mine.bukkit.action.CompoundAction
 import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.SpellResult
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper
+import io.lumine.mythic.bukkit.BukkitAPIHelper
 import org.bukkit.configuration.ConfigurationSection
 
 class CallMythicSkill : CompoundAction() {

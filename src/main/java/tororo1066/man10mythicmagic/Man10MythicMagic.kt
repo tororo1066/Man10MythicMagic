@@ -2,8 +2,8 @@ package tororo1066.man10mythicmagic
 
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
-import io.lumine.xikage.mythicmobs.MythicMobs
-import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
+import io.lumine.mythic.bukkit.MythicBukkit
+import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -18,7 +18,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
     companion object{
         lateinit var plugin : Man10MythicMagic
         lateinit var magicAPI: MagicAPI
-        lateinit var mythicMobs: MythicMobs
+        lateinit var mythicMobs: MythicBukkit
     }
 
     override fun onEnable() {
@@ -27,9 +27,9 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
         magicAPI = magicPlugin as MagicAPI
         registerActions()
+        mythicMobs = MythicBukkit.inst()
+        mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
         MMMCommands()
-        mythicMobs = MythicMobs.inst()
-        mythicMobs.skillManager.getSkillMechanic("sound").setTargetsCreativePlayers(true)
     }
 
 

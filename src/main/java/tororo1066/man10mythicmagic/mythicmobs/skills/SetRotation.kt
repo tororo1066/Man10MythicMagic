@@ -1,29 +1,30 @@
 package tororo1066.man10mythicmagic.mythicmobs.skills
 
-import io.lumine.xikage.mythicmobs.io.MythicLineConfig
-import io.lumine.xikage.mythicmobs.skills.INoTargetSkill
-import io.lumine.xikage.mythicmobs.skills.SkillMechanic
-import io.lumine.xikage.mythicmobs.skills.SkillMetadata
+import io.lumine.mythic.api.config.MythicLineConfig
+import io.lumine.mythic.api.skills.INoTargetSkill
+import io.lumine.mythic.api.skills.SkillMetadata
+import io.lumine.mythic.api.skills.SkillResult
+import io.lumine.mythic.core.skills.SkillMechanic
+import tororo1066.man10mythicmagic.Man10MythicMagic
 
-class SetRotation(config : MythicLineConfig) : SkillMechanic(config.line,config), INoTargetSkill {
+class SetRotation(config : MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), INoTargetSkill {
     private val yaw : Float
     private val pitch : Float
-    override fun cast(p0: SkillMetadata?): Boolean {
-        if (p0 == null)return false
+    override fun cast(p0: SkillMetadata): SkillResult {
         if (yaw == -1000f){
             p0.caster.entity.bukkitEntity.setRotation(p0.caster.entity.bukkitEntity.location.yaw,pitch)
-            return true
+            return SkillResult.SUCCESS
         }
         if (pitch == -1000f){
             p0.caster.entity.bukkitEntity.setRotation(yaw,p0.caster.entity.bukkitEntity.location.pitch)
-            return true
+            return SkillResult.SUCCESS
         }
         p0.caster.entity.bukkitEntity.setRotation(yaw,pitch)
-        return true
+        return SkillResult.SUCCESS
     }
 
     init {
-        this.isAsyncSafe = true
+        this.isAsyncSafe = false
         yaw = config.getFloat(arrayOf("yaw","y"),-1000f)
         pitch = config.getFloat(arrayOf("pitch","p"),-1000f)
     }

@@ -1,32 +1,35 @@
 package tororo1066.man10mythicmagic.mythicmobs.skills
 
-import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
-import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
-import io.lumine.xikage.mythicmobs.io.MythicLineConfig
-import io.lumine.xikage.mythicmobs.skills.ITargetedEntitySkill
-import io.lumine.xikage.mythicmobs.skills.SkillMechanic
-import io.lumine.xikage.mythicmobs.skills.SkillMetadata
+import io.lumine.mythic.api.adapters.AbstractEntity
+import io.lumine.mythic.api.config.MythicLineConfig
+import io.lumine.mythic.api.skills.ITargetedEntitySkill
+import io.lumine.mythic.api.skills.SkillMetadata
+import io.lumine.mythic.api.skills.SkillResult
+import io.lumine.mythic.api.skills.ThreadSafetyLevel
+import io.lumine.mythic.bukkit.BukkitAdapter
+import io.lumine.mythic.core.skills.SkillMechanic
 import org.bukkit.EntityEffect
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.Damageable
+import tororo1066.man10mythicmagic.Man10MythicMagic
 
 
-class ArmorMechanic(config: MythicLineConfig) : SkillMechanic(config.line, config), ITargetedEntitySkill {
+class ArmorMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), ITargetedEntitySkill {
     private val amount: Int
-    override fun castAtEntity(data: SkillMetadata, target: AbstractEntity): Boolean {
+    override fun castAtEntity(data: SkillMetadata, target: AbstractEntity): SkillResult {
         val bukkitTarget = BukkitAdapter.adapt(target)
-        if (bukkitTarget !is Player)return false
+        if (bukkitTarget !is Player)return SkillResult.CONDITION_FAILED
         setDamage(Armor.HELMET,amount,bukkitTarget)
         setDamage(Armor.CHESTPLATE,amount,bukkitTarget)
         setDamage(Armor.LEGGINGS,amount,bukkitTarget)
         setDamage(Armor.BOOTS,amount,bukkitTarget)
-        return true
+        return SkillResult.SUCCESS
     }
 
     init {
+        this.setTargetsCreativePlayers(false)
         this.isAsyncSafe = false
-        setTargetsCreativePlayers(false)
         amount = config.getInteger(arrayOf("amount", "a"), 10)
     }
 
