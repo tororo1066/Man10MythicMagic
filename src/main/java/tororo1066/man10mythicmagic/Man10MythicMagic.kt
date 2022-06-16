@@ -5,12 +5,16 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
+import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
+import tororo1066.tororopluginapi.otherUtils.UsefulUtility
+import java.util.UUID
 
 
 class Man10MythicMagic : JavaPlugin(), Listener {
@@ -19,11 +23,14 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         lateinit var plugin : Man10MythicMagic
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
+        lateinit var util: UsefulUtility
+        val armorStands = ArrayList<UUID>()
     }
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this,this)
         plugin = this
+        util = UsefulUtility(this)
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
         magicAPI = magicPlugin as MagicAPI
         registerActions()
@@ -44,6 +51,8 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("ThrowItemPlus",ThrowItem::class.java)
         ActionFactory.registerActionClass("CallMythicSkill",CallMythicSkill::class.java)
         ActionFactory.registerActionClass("CheckCMD",CheckCMD::class.java)
+        ActionFactory.registerActionClass("ThrowArmorStand",ThrowArmorStand::class.java)
+        ActionFactory.registerActionClass("CircleParticle",CirclePaticle::class.java)
 
     }
 
