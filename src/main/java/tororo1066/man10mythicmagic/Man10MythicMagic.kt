@@ -5,10 +5,8 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
-import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
@@ -52,7 +50,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("CallMythicSkill",CallMythicSkill::class.java)
         ActionFactory.registerActionClass("CheckCMD",CheckCMD::class.java)
         ActionFactory.registerActionClass("ThrowArmorStand",ThrowArmorStand::class.java)
-        ActionFactory.registerActionClass("CircleParticle",CirclePaticle::class.java)
+        ActionFactory.registerActionClass("CircleParticle",CircleParticle::class.java)
 
     }
 

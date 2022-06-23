@@ -12,7 +12,7 @@ import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import kotlin.math.cos
 import kotlin.math.sin
 
-class CirclePaticle : CompoundAction() {
+class CircleParticle : CompoundAction() {
 
     private var points = 10
     private var radius = 3.0
