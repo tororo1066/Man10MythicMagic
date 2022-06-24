@@ -36,7 +36,7 @@ dependencies {
     compileOnly "io.lumine:Mythic-Dist:5.0.4-SNAPSHOT"
     compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.github.tororo1066:TororoPluginAPI:9f0b97c146'
+    compile 'com.github.tororo1066:TororoPluginAPI:65afcb242d'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

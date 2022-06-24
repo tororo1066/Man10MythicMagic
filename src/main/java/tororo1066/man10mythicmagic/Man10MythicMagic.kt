@@ -5,13 +5,16 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
+import org.bukkit.attribute.Attribute
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
+import tororo1066.tororopluginapi.sEvent.SEvent
 import java.util.UUID
 
 
@@ -22,7 +25,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
-        val armorStands = ArrayList<UUID>()
+        val maxHealthModifyPlayers = HashMap<UUID,Double>()
     }
 
     override fun onEnable() {
@@ -35,6 +38,13 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         mythicMobs = MythicBukkit.inst()
         mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
         MMMCommands()
+
+        SEvent(this).register(PlayerDeathEvent::class.java) {
+            if (!maxHealthModifyPlayers.containsKey(it.player.uniqueId))return@register
+            val data = maxHealthModifyPlayers[it.player.uniqueId]!!
+            it.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = data
+            maxHealthModifyPlayers.remove(it.player.uniqueId)
+        }
     }
 
 
@@ -51,7 +61,9 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("CheckCMD",CheckCMD::class.java)
         ActionFactory.registerActionClass("ThrowArmorStand",ThrowArmorStand::class.java)
         ActionFactory.registerActionClass("CircleParticle",CircleParticle::class.java)
-
+        ActionFactory.registerActionClass("CheckDurability",CheckDurability::class.java)
+        ActionFactory.registerActionClass("ChangeWand",ChangeWand::class.java)
+        ActionFactory.registerActionClass("LowHealthDmg",LowHealthDmg::class.java)
     }
 
     @EventHandler
