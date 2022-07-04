@@ -10,11 +10,13 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.plugin.java.JavaPlugin
+import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import tororo1066.tororopluginapi.sEvent.SEvent
+import tororo1066.tororopluginapi.sItem.SItem
 import java.util.UUID
 
 
@@ -25,7 +27,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
-        val maxHealthModifyPlayers = HashMap<UUID,Double>()
+        lateinit var ammoAPI: AmmoAPI
     }
 
     override fun onEnable() {
@@ -34,17 +36,11 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         util = UsefulUtility(this)
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
         magicAPI = magicPlugin as MagicAPI
+        ammoAPI = AmmoAPI()
         registerActions()
         mythicMobs = MythicBukkit.inst()
         mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
         MMMCommands()
-
-        SEvent(this).register(PlayerDeathEvent::class.java) {
-            if (!maxHealthModifyPlayers.containsKey(it.player.uniqueId))return@register
-            val data = maxHealthModifyPlayers[it.player.uniqueId]!!
-            it.player.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.baseValue = data
-            maxHealthModifyPlayers.remove(it.player.uniqueId)
-        }
     }
 
 

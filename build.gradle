@@ -1,17 +1,17 @@
-apply plugin: 'kotlin'
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+}
 
 group = 'tororo1066'
 version = '1.0-SNAPSHOT'
-
-sourceCompatibility = '16'
-targetCompatibility = '16'
 
 repositories {
     mavenCentral()
     mavenLocal()
     maven {
         name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
+        url = 'https://repo.papermc.io/repository/maven-public/'
     }
     maven {
         name = 'sonatype'
@@ -25,35 +25,40 @@ repositories {
         url = 'https://mvn.lumine.io/repository/maven-public/'
     }
     maven { url 'https://jitpack.io' }
-
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
     compileOnly "io.lumine:Mythic-Dist:5.0.4-SNAPSHOT"
     compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.github.tororo1066:TororoPluginAPI:65afcb242d'
+    api 'com.github.tororo1066:TororoPluginAPI:65afcb242d'
 }
 
-import org.apache.tools.ant.filters.ReplaceTokens
+def targetJavaVersion = 16
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
 
 processResources {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [version: version]
-    }
-}
-buildscript {
-    ext.kotlin_version = '1.4.0'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
     }
 }
 compileKotlin {
@@ -61,27 +66,15 @@ compileKotlin {
         jvmTarget = "1.8"
     }
 }
-
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-dependencies {
-    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
 jar {
     from {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        configurations.compile.collect {
+        configurations.runtimeClasspath.collect {
             it.isDirectory() ? it : zipTree(it)
         }
     }
