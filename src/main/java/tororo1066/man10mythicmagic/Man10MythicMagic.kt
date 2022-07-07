@@ -5,19 +5,16 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
-import org.bukkit.attribute.Attribute
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
+import tororo1066.man10mythicmagic.listener.FlyListener
+import tororo1066.man10mythicmagic.listener.EquipArmor
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
-import tororo1066.tororopluginapi.sEvent.SEvent
-import tororo1066.tororopluginapi.sItem.SItem
-import java.util.UUID
 
 
 class Man10MythicMagic : JavaPlugin(), Listener {
@@ -41,6 +38,8 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         mythicMobs = MythicBukkit.inst()
         mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
         MMMCommands()
+        FlyListener()
+        EquipArmor()
     }
 
 
@@ -60,7 +59,12 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("CheckDurability",CheckDurability::class.java)
         ActionFactory.registerActionClass("ChangeWand",ChangeWand::class.java)
         ActionFactory.registerActionClass("LowHealthDmg",LowHealthDmg::class.java)
+        ActionFactory.registerActionClass("SetAllowFly",SetAllowFly::class.java)
+        ActionFactory.registerActionClass("SetIsFlying",SetIsFlying::class.java)
+        ActionFactory.registerActionClass("CheckFood",CheckFood::class.java)
+        ActionFactory.registerActionClass("IsEquipWand",IsEquipWand::class.java)
     }
+
 
     @EventHandler
     fun onMechanicLoad(e : MythicMechanicLoadEvent){
