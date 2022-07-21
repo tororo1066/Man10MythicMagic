@@ -10,8 +10,8 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
-import tororo1066.man10mythicmagic.listener.FlyListener
 import tororo1066.man10mythicmagic.listener.EquipArmor
+import tororo1066.man10mythicmagic.listener.FlyListener
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
@@ -63,6 +63,9 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("SetIsFlying",SetIsFlying::class.java)
         ActionFactory.registerActionClass("CheckFood",CheckFood::class.java)
         ActionFactory.registerActionClass("IsEquipWand",IsEquipWand::class.java)
+        ActionFactory.registerActionClass("IgnitePlus",IgnitePlus::class.java)
+        ActionFactory.registerActionClass("SetCharged",SetCharged::class.java)
+        ActionFactory.registerActionClass("ReHold",ReHold::class.java)
     }
 
 

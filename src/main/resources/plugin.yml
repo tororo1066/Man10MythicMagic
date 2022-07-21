@@ -10,3 +10,4 @@ depend:
   - Magic
   - MythicMobs
   - AmmoPlugin
+  - ArmorEquipEvent

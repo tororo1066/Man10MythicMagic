@@ -66,6 +66,7 @@ material：弾の素材\
 name：アイテム名\
 cmd：カスタムモデルデータ\
 amount：消費量\
+ammoPlugin：AmmoPluginを使うか
 actions：消費できた時に実行するaction\
 fail：消費できなかった時に実行するaction\
 **対象**\
@@ -77,6 +78,7 @@ fail：消費できなかった時に実行するaction\
   name: test
   cmd: 2
   amount: 10
+  ammoPlugin: true
   actions:
     - class: Command
       command: say success
@@ -147,3 +149,4 @@ fail：あっていなかった時に実行するaction\
   fail:
     - class: ...
 ```
+
