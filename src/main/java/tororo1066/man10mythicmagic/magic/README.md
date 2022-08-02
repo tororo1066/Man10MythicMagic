@@ -66,7 +66,7 @@ material：弾の素材\
 name：アイテム名\
 cmd：カスタムモデルデータ\
 amount：消費量\
-ammoPlugin：AmmoPluginを使うか
+ammoPlugin：AmmoPluginを使うか\
 actions：消費できた時に実行するaction\
 fail：消費できなかった時に実行するaction\
 **対象**\
@@ -134,7 +134,7 @@ skill：スキル名\
 slotにあるアイテムのcmdがあっているか確認する\
 **パラメーター**\
 cmd：カスタムモデルデータ
-slot：スロット(hand,off_hand,head,chest,legs,feet)
+slot：スロット(hand,off_hand,head,chest,legs,feet)\
 actions：あっている時に実行するaction\
 fail：あっていなかった時に実行するaction\
 **対象**\
@@ -150,3 +150,100 @@ fail：あっていなかった時に実行するaction\
     - class: ...
 ```
 
+### CheckDurability
+wandの耐久をチェックする\
+**パラメーター**\
+min：最小値\
+max：最大値\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: CheckDurability
+  min: 10
+  max: 200
+  actions:
+    - class: ...
+  fail:
+    - class: ...
+```
+
+### ThrowArmorStand
+アーマースタンドを地面に着地させるまで動かす\
+-ArmorStandProjectileでいいので使わなくていいです-
+
+### ReHold
+attributeを手に持ち直さずに更新する\
+**パラメーター**：なし\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: ReHold
+```
+
+### LowHealthDmg
+casterのHPが少ないほどtargetにダメージを与える\
+計算式 (最大HP-HP)*multiply\
+**パラメーター**\
+multiply：ダメージの倍率\
+**対象**\
+・エンティティ(casterはプレイヤーの必要がある)\
+**例**
+```yaml
+- class: LowHealthDmg
+  multiply: 1.5
+```
+
+### IgnitePlus
+通常のIgniteだと額縁が壊れてしまうので作成\
+**パラメーター**\
+duration：延焼時間(1000で1秒)\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+- class: IgnitePlus
+  duration: 3000
+```
+
+### CircleParticle
+円のパーティクルを出す\
+-正直EffectLibに組み込みたい-\
+**パラメーター**\
+radius：半径\
+count：パーティクルの量\
+points：パーティクルの量(合計)\
+particle：パーティクル\
+color：パーティクルの色(一部にだけ適応できる)\
+offset：パーティクルのオフセット\
+**対象**\
+・ターゲット\
+**例**
+```yaml
+- class: CirclePaticle
+  particle: redstone
+  points: 10
+  count: 2
+  radius: 3
+  color: "#000000"
+  offset: 1,1,1
+```
+
+### IsEquipWand
+wandを装備しているか確認する\
+**パラメーター**\
+slot: 確認するスロット\
+wandName: wandの名前
+**対象**\
+・プレイヤー\
+**例**
+```yaml
+- class: IsEquipWand
+  slot: hand
+  wandName: water_wand
+    actions:
+    - class: ...
+  fail:
+    - class: ...
+```
