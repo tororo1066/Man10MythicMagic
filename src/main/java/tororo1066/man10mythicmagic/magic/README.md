@@ -242,8 +242,24 @@ wandName: wandの名前
 - class: IsEquipWand
   slot: hand
   wandName: water_wand
-    actions:
+  actions:
     - class: ...
   fail:
     - class: ...
+```
+
+### Scope
+csのようなスコープを実現させる\
+**パラメーター**\
+level: 鈍足の重さ(ポーションのレベル)\
+onScope: スコープ時のcmd\
+onUnScope: スコープ解除時のcmd\
+**対象**\
+・プレイヤー(手に杖を持っている場合)\
+**例**
+```yaml
+- class: Scope
+  level: 2
+  onScope: 2
+  onUnScope: 1
 ```
