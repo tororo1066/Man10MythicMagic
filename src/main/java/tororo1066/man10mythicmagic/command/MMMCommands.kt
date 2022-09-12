@@ -3,9 +3,13 @@ package tororo1066.man10mythicmagic.command
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.util.Vector
+import tororo1066.man10mythicmagic.Man10MythicMagic
+import tororo1066.tororopluginapi.SJavaPlugin
+import tororo1066.tororopluginapi.SMySQL
 import tororo1066.tororopluginapi.sCommand.*
 import tororo1066.tororopluginapi.sItem.SItem
 import java.util.function.Consumer
@@ -27,6 +31,16 @@ class MMMCommands : SCommand("mythicmagic","","mmm.op") {
                 if (meta !is Damageable)return@Consumer
                 meta.damage = it.args[1].toInt()
                 item.itemMeta = meta
+            }
+        ))
+
+        addCommand(SCommandObject().addArg(SCommandArg().addAllowString("reload")).setExecutor(
+            Consumer<SCommandData> {
+                Man10MythicMagic.plugin.reloadConfig()
+                SJavaPlugin.mysql = SMySQL(Man10MythicMagic.plugin)
+                Man10MythicMagic.plugin.reload()
+
+                it.sender.sendMessage("§aReloaded")
             }
         ))
     }

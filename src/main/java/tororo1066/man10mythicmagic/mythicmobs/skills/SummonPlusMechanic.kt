@@ -15,9 +15,21 @@ class SummonPlusMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMa
     private val y : Int
     private val z : Int
     private val mob : MythicMob
+    private val syncRotation: Boolean
+    private val forward: Boolean
     override fun cast(p0: SkillMetadata): SkillResult {
-        val loc = p0.caster.entity.location
-        mob.spawn(BukkitAdapter.adapt(Location(BukkitAdapter.adapt(loc.world),loc.x + x,loc.y + y,loc.z + z)),0.0)
+        var loc = p0.caster.entity.location
+        if (forward){
+            loc = loc.add(loc.direction.normalize().multiply(z))
+            loc = loc.add(loc.direction.normalize().rotate(90f).multiply(x))
+            mob.spawn(loc.add(0.0,y.toDouble(),0.0),0.0)
+        } else {
+            if (syncRotation){
+                mob.spawn(BukkitAdapter.adapt(Location(BukkitAdapter.adapt(loc.world),loc.x + x,loc.y + y,loc.z + z,loc.yaw,loc.pitch)),0.0)
+            } else {
+                mob.spawn(BukkitAdapter.adapt(Location(BukkitAdapter.adapt(loc.world),loc.x + x,loc.y + y,loc.z + z)),0.0)
+            }
+        }
         return SkillResult.SUCCESS
     }
 
@@ -27,6 +39,8 @@ class SummonPlusMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMa
         y = config.getInteger("y",0)
         z = config.getInteger("z",0)
         mob = plugin.mobManager.getMythicMob(config.getString(arrayOf("mob","m"))).get()
+        syncRotation = config.getBoolean("sync")
+        forward = config.getBoolean("forward")
     }
 
 }

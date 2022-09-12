@@ -4,6 +4,7 @@ import com.codingforcookies.armorequip.ArmorEquipEvent
 import com.elmakers.mine.bukkit.wand.Wand
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.EventPriority
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
@@ -18,8 +19,7 @@ class EquipArmor {
     }
 
     init {
-        SEvent(Man10MythicMagic.plugin).register(ArmorEquipEvent::class.java) { e ->
-
+        SEvent(Man10MythicMagic.plugin).register(ArmorEquipEvent::class.java,EventPriority.HIGHEST) { e ->
             val isEquip: Boolean? = if (!isAirOrNull(e.oldArmorPiece) && !isAirOrNull(e.newArmorPiece)){
                 null
             } else {
@@ -43,8 +43,7 @@ class EquipArmor {
 
     fun onEquipTask(e: ArmorEquipEvent){
         val p = e.player
-        if (!Man10MythicMagic.magicAPI.isWand(e.newArmorPiece))return
-        val wand = Man10MythicMagic.magicAPI.controller.getWand(e.newArmorPiece)?:return
+        val wand = Man10MythicMagic.magicAPI.controller.getIfWand(e.newArmorPiece)?:return
         if (wand.template?.getBoolean("cancel_on_offhand",false) == true){
             if (e.player.inventory.itemInOffHand == e.newArmorPiece){
                 e.isCancelled = true
@@ -60,8 +59,7 @@ class EquipArmor {
 
     fun onUnEquipTask(e: ArmorEquipEvent){
         val p = e.player
-        if (!Man10MythicMagic.magicAPI.isWand(e.oldArmorPiece))return
-        val wand = Man10MythicMagic.magicAPI.controller.getWand(e.oldArmorPiece)?:return
+        val wand = Man10MythicMagic.magicAPI.controller.getIfWand(e.oldArmorPiece)?:return
         if (wand.template?.getBoolean("unfly_on_unequip",false) == true){
             p.isFlying = false
             p.allowFlight = false

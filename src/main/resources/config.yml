@@ -1,0 +1,14 @@
+mysql:
+  host: localhost
+  port: 3306
+  pass: pass
+  user: root
+  db: mob_logger
+
+logWorlds:
+  - world
+  - event
+
+groups:
+  normal: 3
+  strong: 1

@@ -4,12 +4,9 @@ import com.elmakers.mine.bukkit.action.CompoundAction
 import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.Spell
 import com.elmakers.mine.bukkit.api.spell.SpellResult
-import net.minecraft.network.protocol.game.PacketPlayOutCollect
-import net.minecraft.server.network.PlayerConnection
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent
@@ -17,8 +14,6 @@ import org.bukkit.util.Vector
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import tororo1066.tororopluginapi.sEvent.SEvent
 import tororo1066.tororopluginapi.sItem.SItem
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
@@ -64,12 +59,7 @@ class ThrowItem : CompoundAction(), Listener {
         },time.toLong())
         SEvent(Man10MythicMagic.plugin).register(PlayerAttemptPickupItemEvent::class.java) { e ->
             if (e.item.uniqueId != dropItem.uniqueId) return@register
-            val packet = PacketPlayOutCollect(e.item.entityId,e.player.entityId,1)
-            for (p in Bukkit.getOnlinePlayers()){
-                val connection : PlayerConnection = (p as CraftPlayer).handle.b
-                connection.sendPacket(packet)
-            }
-
+            Man10MythicMagic.sNms.pickUpItemPacket(e.player,e.item)
             e.item.remove()
             e.isCancelled = true
             context.targetEntity = e.player

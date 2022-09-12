@@ -7,17 +7,20 @@ import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.plugin.java.JavaPlugin
 import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.listener.EquipArmor
 import tororo1066.man10mythicmagic.listener.FlyListener
+import tororo1066.man10mythicmagic.listener.ItemDestroyListener
+import tororo1066.man10mythicmagic.listener.MythicMobDeathListener
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
+import tororo1066.nmsutils.SNms
+import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 
 
-class Man10MythicMagic : JavaPlugin(), Listener {
+class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
 
     companion object{
         lateinit var plugin : Man10MythicMagic
@@ -25,23 +28,41 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
         lateinit var ammoAPI: AmmoAPI
+        lateinit var sNms: SNms
+        val logWorlds = ArrayList<String>()
+        val groups = HashMap<String,Int>()
     }
 
-    override fun onEnable() {
+
+    override fun onStart() {
+        saveDefaultConfig()
         server.pluginManager.registerEvents(this,this)
         plugin = this
         util = UsefulUtility(this)
+        reload()
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
         magicAPI = magicPlugin as MagicAPI
         ammoAPI = AmmoAPI()
+        sNms = SNms.newInstance()?:throw UnsupportedOperationException("SNms not supported mc_version ${server.minecraftVersion}.")
         registerActions()
         mythicMobs = MythicBukkit.inst()
         mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
         MMMCommands()
         FlyListener()
         EquipArmor()
+        ItemDestroyListener()
+        MythicMobDeathListener()
     }
 
+    fun reload(){
+        logWorlds.clear()
+        groups.clear()
+        logWorlds.addAll(config.getStringList("logWorlds"))
+        val configGroups = config.getConfigurationSection("groups")
+        configGroups?.getKeys(false)?.forEach {
+            groups[it] = configGroups.getInt(it)
+        }
+    }
 
 
     private fun registerActions(){
@@ -66,6 +87,7 @@ class Man10MythicMagic : JavaPlugin(), Listener {
         ActionFactory.registerActionClass("IgnitePlus",IgnitePlus::class.java)
         ActionFactory.registerActionClass("SetCharged",SetCharged::class.java)
         ActionFactory.registerActionClass("ReHold",ReHold::class.java)
+        ActionFactory.registerActionClass("Scope",Scope::class.java)
     }
 
 
