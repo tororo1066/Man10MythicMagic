@@ -39,8 +39,8 @@ class AmmoReload : CompoundAction() {
             allAmmo.add(content)
         }
         if (allAmmo.isEmpty()){
-            if (useAmmoPlugin){
-                if (Man10MythicMagic.ammoAPI.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
+            if (useAmmoPlugin && Man10MythicMagic.ammoAPI != null){
+                if (Man10MythicMagic.ammoAPI!!.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
                     getHandler("actions")?.cast(context,context.workingParameters)
                     return SpellResult.CAST
                 }
@@ -55,8 +55,8 @@ class AmmoReload : CompoundAction() {
 
 
         if (count < amount){
-            if (useAmmoPlugin){
-                if (Man10MythicMagic.ammoAPI.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
+            if (useAmmoPlugin && Man10MythicMagic.ammoAPI != null){
+                if (Man10MythicMagic.ammoAPI!!.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
                     getHandler("actions")?.cast(context,context.workingParameters)
                     return SpellResult.CAST
                 }

@@ -17,7 +17,6 @@ class Scope: CompoundAction() {
     companion object{
         fun unScopePlayer(p: Player, wand: Wand){
             if (!p.hasMetadata("magic_scope"))return
-            wand.inactiveIcon
             wand.icon = MaterialAndData(SItem(wand.icon.material!!).setCustomModelData(p.getMetadata("magic_scope")[0].asInt()))
             p.removePotionEffect(PotionEffectType.SPEED)
             p.removeMetadata("magic_scope",Man10MythicMagic.plugin)
@@ -33,6 +32,9 @@ class Scope: CompoundAction() {
     override fun perform(context: CastContext): SpellResult {
         val p = (context.targetEntity as? Player)?:return SpellResult.FAIL
         val wand = context.wand?:return SpellResult.FAIL
+        if (context.mage.offhandWand == wand){
+            return SpellResult.CAST
+        }
         if (p.hasMetadata("magic_scope")){
             unScopePlayer(p,wand)
             return SpellResult.CAST

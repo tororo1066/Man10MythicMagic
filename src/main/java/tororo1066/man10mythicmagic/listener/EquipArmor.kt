@@ -1,16 +1,10 @@
 package tororo1066.man10mythicmagic.listener
 
 import com.codingforcookies.armorequip.ArmorEquipEvent
-import com.elmakers.mine.bukkit.wand.Wand
-import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import org.bukkit.event.EventPriority
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import tororo1066.tororopluginapi.sEvent.SEvent
-import java.util.function.BiFunction
 
 class EquipArmor {
 

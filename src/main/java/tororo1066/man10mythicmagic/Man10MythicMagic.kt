@@ -4,9 +4,11 @@ import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
+import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
 import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.listener.EquipArmor
@@ -15,9 +17,11 @@ import tororo1066.man10mythicmagic.listener.ItemDestroyListener
 import tororo1066.man10mythicmagic.listener.MythicMobDeathListener
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
+import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
 import tororo1066.nmsutils.SNms
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
+import tororo1066.tororopluginapi.sEvent.SEvent
 
 
 class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
@@ -27,7 +31,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
-        lateinit var ammoAPI: AmmoAPI
+        var ammoAPI: AmmoAPI? = null
         lateinit var sNms: SNms
         val logWorlds = ArrayList<String>()
         val groups = HashMap<String,Int>()
@@ -41,17 +45,29 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         util = UsefulUtility(this)
         reload()
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
-        magicAPI = magicPlugin as MagicAPI
-        ammoAPI = AmmoAPI()
-        sNms = SNms.newInstance()?:throw UnsupportedOperationException("SNms not supported mc_version ${server.minecraftVersion}.")
-        registerActions()
-        mythicMobs = MythicBukkit.inst()
-        mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
+        if (magicPlugin != null){
+            magicAPI = magicPlugin as MagicAPI
+            registerActions()
+            FlyListener()
+            ItemDestroyListener()
+        }
+        if (server.pluginManager.isPluginEnabled("AmmoPlugin")){
+            ammoAPI = AmmoAPI()
+        }
+        sNms = SNms.newInstance()
+        UsefulUtility.sTry({
+            mythicMobs = MythicBukkit.inst()
+            mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
+            MythicMobDeathListener()
+                           },{})
+
         MMMCommands()
-        FlyListener()
-        EquipArmor()
-        ItemDestroyListener()
-        MythicMobDeathListener()
+
+        if (server.pluginManager.isPluginEnabled("ArmorEquipEvent")){
+            EquipArmor()
+        }
+
+
     }
 
     fun reload(){
@@ -88,6 +104,9 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         ActionFactory.registerActionClass("SetCharged",SetCharged::class.java)
         ActionFactory.registerActionClass("ReHold",ReHold::class.java)
         ActionFactory.registerActionClass("Scope",Scope::class.java)
+        ActionFactory.registerActionClass("Recoil",Recoil::class.java)
+        ActionFactory.registerActionClass("IgnoreDamage",IgnoreDamage::class.java)
+        ActionFactory.registerActionClass("ScopingAction",ScopingAction::class.java)
     }
 
 
@@ -98,6 +117,11 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         if (e.mechanicName.equals("SUMMONPLUS",true)) e.register(SummonPlusMechanic(e.config))
         if (e.mechanicName.equals("CALLSPELL",true)) e.register(CallMagicSpell(e.config))
         if (e.mechanicName.equals("RADIUSCOMMAND",true)) e.register(RadiusCommandExecute(e.config))
+    }
+
+    @EventHandler
+    fun onTargetLoad(e: MythicTargeterLoadEvent){
+        if (e.targeterName.equals("LOCOFFSET",true)) e.register(LocPlusTarget(e.config))
     }
 
 

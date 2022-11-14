@@ -8,7 +8,6 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven {
         name = 'papermc-repo'
         url = 'https://repo.papermc.io/repository/maven-public/'
@@ -33,7 +32,8 @@ dependencies {
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
     compileOnly "io.lumine:Mythic-Dist:5.0.4-SNAPSHOT"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    api 'com.github.tororo1066:TororoPluginAPI:fa0352a7bc'
+    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:5bce7586ef'
+    compileOnly 'com.github.tororo1066.TororoPluginAPI:base:5bce7586ef'
 }
 
 def targetJavaVersion = 16

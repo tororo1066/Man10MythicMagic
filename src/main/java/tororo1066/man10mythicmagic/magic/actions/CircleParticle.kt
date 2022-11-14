@@ -39,7 +39,7 @@ class CircleParticle : CompoundAction() {
         this.points = parameters.getInt("points",10)
         this.radius = parameters.getDouble("radius",3.0)
         this.count = parameters.getInt("count",1)
-        this.particle = UsefulUtility.sTry({Particle.valueOf(parameters.getString("particle", "REDSTONE")!!.toUpperCase())},{Particle.REDSTONE})
+        this.particle = UsefulUtility.sTry({Particle.valueOf(parameters.getString("particle", "REDSTONE")!!.uppercase())},{Particle.REDSTONE})
         this.color = ConfigurationUtils.getColor(parameters,"color", Color.RED)
         this.offset = ConfigurationUtils.getVector(parameters,"offset")?:Vector(0.0,0.0,0.0)
     }

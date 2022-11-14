@@ -2,11 +2,11 @@ package tororo1066.man10mythicmagic.listener
 
 import com.elmakers.mine.bukkit.api.event.PreCastEvent
 import tororo1066.man10mythicmagic.Man10MythicMagic
-import tororo1066.tororopluginapi.annotation.SEvent
+import tororo1066.tororopluginapi.annotation.SEventHandler
 
 class WandActivateListener {
 
-    @SEvent
+    @SEventHandler
     fun event(e: PreCastEvent){
         val group = e.mage.activeWand?.template?.getString("group")?:return
         if (!Man10MythicMagic.groups.containsKey(group))return

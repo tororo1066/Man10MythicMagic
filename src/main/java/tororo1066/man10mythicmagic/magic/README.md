@@ -234,7 +234,7 @@ offset：パーティクルのオフセット\
 wandを装備しているか確認する\
 **パラメーター**\
 slot: 確認するスロット\
-wandName: wandの名前
+wandName: wandの名前\
 **対象**\
 ・プレイヤー\
 **例**
@@ -242,8 +242,73 @@ wandName: wandの名前
 - class: IsEquipWand
   slot: hand
   wandName: water_wand
-    actions:
+  actions:
     - class: ...
   fail:
     - class: ...
+```
+
+### Scope
+wandのcmd(CustomModelData)を切り替えて覗かせる\
+**パラメーター**\
+level: ズームの強さ 1~10ぐらいが適切？\
+onScope: スコープしたときに変えるcmd\
+onUnScope: スコープを解除したときに変えるcmd\
+**対象**\
+・プレイヤー\
+**例**
+```yaml
+- class: Scope
+  level: 3
+  onScope: 1
+  onUnScope: 2
+```
+
+### ScopingAction
+プレイヤーにScope状態に応じたActionを実行させる\
+**パラメーター**\
+actions: Scopeしていたときに実行するaction\
+fail: Scopeしていないときに実行するaction\
+**対象**\
+・プレイヤー\
+**例**
+```yaml
+- class: ScopingAction
+  actions:
+    - class: ...
+  fail:
+    - class: ...
+```
+
+### Recoil
+プレイヤーにcspのような視点のブレを実装させる\
+**パラメーター**\
+全て-180~180までで指定する\
+yaw.min: 横軸の揺れの最低値を指定する\
+yaw.max: 横軸の揺れの最大値を指定する\
+pitch.min: 縦軸の揺れの最低値を指定する\
+pitch.max: 縦軸の揺れの最大値を指定する\
+**対象**\
+・プレイヤー\
+**例**
+```yaml
+- class: Recoil
+  yaw:
+    min: -10.0
+    max: 10.0
+  pitch:
+    min: 5.0
+    max: 5.0
+```
+
+### IgnoreDamage
+防具完全貫通のダメージを与える\
+**パラメーター**\
+damage: ダメージ\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+- class: IgnoreDamage
+  damage: 15
 ```

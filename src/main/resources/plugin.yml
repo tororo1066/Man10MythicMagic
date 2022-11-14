@@ -6,8 +6,11 @@ api-version: 1.17
 commands:
   mythicmagic:
 
-depend:
-  - Magic
-  - MythicMobs
+softdepend:
   - AmmoPlugin
   - ArmorEquipEvent
+  - Magic
+  - MythicMobs
+
+depend:
+  - NMSUtils
