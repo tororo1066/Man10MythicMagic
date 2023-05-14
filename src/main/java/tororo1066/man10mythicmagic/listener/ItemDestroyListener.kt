@@ -8,8 +8,7 @@ import tororo1066.tororopluginapi.sEvent.SEventInterface
 class ItemDestroyListener: SEventInterface<PlayerItemBreakEvent>(Man10MythicMagic.plugin,PlayerItemBreakEvent::class.java) {
 
     override fun executeEvent(e: PlayerItemBreakEvent) {
-        if (!Man10MythicMagic.magicAPI.isWand(e.brokenItem))return
-        val wand = Man10MythicMagic.magicAPI.getWand(e.brokenItem)
+        val wand = Man10MythicMagic.magicAPI.controller.getIfWand(e.brokenItem)?:return
         val str = wand.template?.getString("replace_on_break")
         if (str != null){
             val getWand = Man10MythicMagic.magicAPI.createWand(str)?:return

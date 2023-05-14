@@ -13,7 +13,11 @@ class RecallBackFuture: CompoundAction() {
     override fun perform(context: CastContext): SpellResult {
         val player = context.targetEntity as? Player?:return SpellResult.FAIL
         val task = PlayerLocationTrackTask.players[player.uniqueId]?:return SpellResult.FAIL
-        val loc = task.getReverseTrack().getOrNull(recallTime-1)?:return SpellResult.CAST
+        var loc = task.getReverseTrack().getOrNull(recallTime-1)
+        if (loc == null){
+            loc = task.getReverseTrack().lastOrNull()
+        }
+        loc?:return SpellResult.CAST
 
         player.teleport(loc)
 

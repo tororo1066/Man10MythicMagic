@@ -14,6 +14,7 @@ import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
+import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
 import tororo1066.nmsutils.SNms
@@ -28,6 +29,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
+        lateinit var mobDeathLoggerTable: MobDeathLoggerTable
         var ammoAPI: AmmoAPI? = null
         lateinit var sNms: SNms
         val logWorlds = ArrayList<String>()
@@ -58,6 +60,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")){
             mythicMobs = MythicBukkit.inst()
             mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
+            mobDeathLoggerTable = MobDeathLoggerTable()
             MythicMobDeathListener()
         }
 

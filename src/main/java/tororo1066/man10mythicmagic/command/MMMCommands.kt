@@ -2,7 +2,7 @@ package tororo1066.man10mythicmagic.command
 
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import tororo1066.tororopluginapi.SJavaPlugin
-import tororo1066.tororopluginapi.SMySQL
+import tororo1066.tororopluginapi.mysql.SMySQL
 import tororo1066.tororopluginapi.sCommand.SCommand
 import tororo1066.tororopluginapi.sCommand.SCommandArg
 import tororo1066.tororopluginapi.sCommand.SCommandObject

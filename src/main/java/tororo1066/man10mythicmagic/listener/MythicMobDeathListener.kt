@@ -6,8 +6,6 @@ import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import tororo1066.man10mythicmagic.Man10MythicMagic
-import tororo1066.tororopluginapi.SJavaPlugin
-import tororo1066.tororopluginapi.SMySQL
 import tororo1066.tororopluginapi.SStr
 import tororo1066.tororopluginapi.sEvent.SEventInterface
 
@@ -39,9 +37,7 @@ class MythicMobDeathListener: SEventInterface<MythicMobDeathEvent>(Man10MythicMa
         hashMap["deadLoc"] = toLocString(e.entity.location)
         hashMap["deathTime"] = "now()"
 
-        val insertQuery = SMySQL.insertQuery("mob_logger",hashMap)
-
-        if (!SJavaPlugin.mysql.asyncExecute(insertQuery)){
+        if (!Man10MythicMagic.mobDeathLoggerTable.insert(hashMap)){
             plugin.logger.warning("Failed save mythicMob data to mysql.")
         }
 
