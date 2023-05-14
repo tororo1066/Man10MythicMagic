@@ -32,11 +32,11 @@ dependencies {
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
     compileOnly "io.lumine:Mythic-Dist:5.0.4-SNAPSHOT"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:5bce7586ef'
-    compileOnly 'com.github.tororo1066.TororoPluginAPI:base:5bce7586ef'
+    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:d1f2a160d8'
+    compileOnly 'com.github.tororo1066.TororoPluginAPI:base:d1f2a160d8'
 }
 
-def targetJavaVersion = 16
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
