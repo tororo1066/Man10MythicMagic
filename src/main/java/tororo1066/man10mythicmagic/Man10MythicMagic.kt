@@ -2,26 +2,23 @@ package tororo1066.man10mythicmagic
 
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
+import io.lumine.mythic.api.skills.ISkillMechanic
+import io.lumine.mythic.api.skills.targeters.ISkillTargeter
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.PlayerDeathEvent
 import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
-import tororo1066.man10mythicmagic.listener.EquipArmor
-import tororo1066.man10mythicmagic.listener.FlyListener
-import tororo1066.man10mythicmagic.listener.ItemDestroyListener
-import tororo1066.man10mythicmagic.listener.MythicMobDeathListener
+import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
 import tororo1066.nmsutils.SNms
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
-import tororo1066.tororopluginapi.sEvent.SEvent
 
 
 class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
@@ -50,23 +47,21 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             registerActions()
             FlyListener()
             ItemDestroyListener()
+            DamageListener()
+            PlayerLocationTrackListener()
+            CancelChargeListener()
         }
         if (server.pluginManager.isPluginEnabled("AmmoPlugin")){
             ammoAPI = AmmoAPI()
         }
         sNms = SNms.newInstance()
-        UsefulUtility.sTry({
+        if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")){
             mythicMobs = MythicBukkit.inst()
             mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
             MythicMobDeathListener()
-                           },{})
-
-        MMMCommands()
-
-        if (server.pluginManager.isPluginEnabled("ArmorEquipEvent")){
-            EquipArmor()
         }
 
+        MMMCommands()
 
     }
 
@@ -80,48 +75,75 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         }
     }
 
+    fun registerMagic(vararg pair: Pair<String,Class<*>>){
+        pair.forEach {
+            ActionFactory.registerActionClass(it.first,it.second)
+        }
+    }
 
     private fun registerActions(){
-        ActionFactory.registerActionClass("TeleportAndEffect",TeleportAndEffect::class.java)
-        ActionFactory.registerActionClass("AddEnchantEffect",AddEnchantmentEffect::class.java)
-        ActionFactory.registerActionClass("RemoveEnchantEffect",RemoveEnchantmentEffect::class.java)
-        ActionFactory.registerActionClass("CheckEnchantEffect",CheckEnchantmentEffect::class.java)
-        ActionFactory.registerActionClass("AmmoReload",AmmoReload::class.java)
-        ActionFactory.registerActionClass("CheckPotionPlus",CheckPotionEffect::class.java)
-        ActionFactory.registerActionClass("ThrowItemPlus",ThrowItem::class.java)
-        ActionFactory.registerActionClass("CallMythicSkill",CallMythicSkill::class.java)
-        ActionFactory.registerActionClass("CheckCMD",CheckCMD::class.java)
-        ActionFactory.registerActionClass("ThrowArmorStand",ThrowArmorStand::class.java)
-        ActionFactory.registerActionClass("CircleParticle",CircleParticle::class.java)
-        ActionFactory.registerActionClass("CheckDurability",CheckDurability::class.java)
-        ActionFactory.registerActionClass("ChangeWand",ChangeWand::class.java)
-        ActionFactory.registerActionClass("LowHealthDmg",LowHealthDmg::class.java)
-        ActionFactory.registerActionClass("SetAllowFly",SetAllowFly::class.java)
-        ActionFactory.registerActionClass("SetIsFlying",SetIsFlying::class.java)
-        ActionFactory.registerActionClass("CheckFood",CheckFood::class.java)
-        ActionFactory.registerActionClass("IsEquipWand",IsEquipWand::class.java)
-        ActionFactory.registerActionClass("IgnitePlus",IgnitePlus::class.java)
-        ActionFactory.registerActionClass("SetCharged",SetCharged::class.java)
-        ActionFactory.registerActionClass("ReHold",ReHold::class.java)
-        ActionFactory.registerActionClass("Scope",Scope::class.java)
-        ActionFactory.registerActionClass("Recoil",Recoil::class.java)
-        ActionFactory.registerActionClass("IgnoreDamage",IgnoreDamage::class.java)
-        ActionFactory.registerActionClass("ScopingAction",ScopingAction::class.java)
+        registerMagic(
+            "TeleportAndEffect" to TeleportAndEffect::class.java,
+            "AddEnchantEffect" to AddEnchantmentEffect::class.java,
+            "RemoveEnchantEffect" to RemoveEnchantmentEffect::class.java,
+            "CheckEnchantEffect" to CheckEnchantmentEffect::class.java,
+            "AmmoReload" to AmmoReload::class.java,
+            "CheckPotionPlus" to CheckPotionEffect::class.java,
+            "ThrowItemPlus" to ThrowItem::class.java,
+            "CallMythicSkill" to CallMythicSkill::class.java,
+            "CheckCMD" to CheckCMD::class.java,
+            "ThrowArmorStand" to ThrowArmorStand::class.java,
+            "CircleParticle" to CircleParticle::class.java,
+            "CheckDurability" to CheckDurability::class.java,
+            "ChangeWand" to ChangeWand::class.java,
+            "LowHealthDmg" to LowHealthDmg::class.java,
+            "SetAllowFly" to SetAllowFly::class.java,
+            "SetIsFlying" to SetIsFlying::class.java,
+            "CheckFood" to CheckFood::class.java,
+            "IsEquipWand" to IsEquipWand::class.java,
+            "IgnitePlus" to IgnitePlus::class.java,
+            "SetCharged" to SetCharged::class.java,
+            "ReHold" to ReHold::class.java,
+            "Scope" to Scope::class.java,
+            "Recoil" to Recoil::class.java,
+            "IgnoreDamage" to IgnoreDamage::class.java,
+            "ScopingAction" to ScopingAction::class.java,
+            "IsOnGround" to IsOnGround::class.java,
+            "RecallBackFuture" to RecallBackFuture::class.java
+        )
+
     }
 
 
+    fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, ISkillMechanic>){
+        pair.forEach {
+            if (mechanicName.equals(it.first,true)) register(it.second)
+        }
+    }
+
     @EventHandler
     fun onMechanicLoad(e : MythicMechanicLoadEvent){
-        if (e.mechanicName.equals("ARMORDAMAGE",true)) e.register(ArmorMechanic(e.config))
-        if (e.mechanicName.equals("SETROTATIONPLUS",true)) e.register(SetRotation(e.config))
-        if (e.mechanicName.equals("SUMMONPLUS",true)) e.register(SummonPlusMechanic(e.config))
-        if (e.mechanicName.equals("CALLSPELL",true)) e.register(CallMagicSpell(e.config))
-        if (e.mechanicName.equals("RADIUSCOMMAND",true)) e.register(RadiusCommandExecute(e.config))
+        e.registerMechanic(
+            "ARMORDAMAGE" to ArmorMechanic(e.config),
+            "SETROTATIONPLUS" to SetRotation(e.config),
+            "SUMMONPLUS" to SummonPlusMechanic(e.config),
+            "CALLSPELL" to CallMagicSpell(e.config),
+            "RADIUSCOMMAND" to RadiusCommandExecute(e.config),
+            "SELFTELEPORT" to SelfTeleport(e.config)
+        )
+    }
+
+    fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, ISkillTargeter>){
+        pair.forEach {
+            if (targeterName.equals(it.first,true)) register(it.second)
+        }
     }
 
     @EventHandler
     fun onTargetLoad(e: MythicTargeterLoadEvent){
-        if (e.targeterName.equals("LOCOFFSET",true)) e.register(LocPlusTarget(e.config))
+        e.registerTarget(
+            "LOCOFFSET" to LocPlusTarget(e.config)
+        )
     }
 
 

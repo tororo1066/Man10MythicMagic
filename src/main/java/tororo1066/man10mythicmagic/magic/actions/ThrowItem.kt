@@ -54,10 +54,7 @@ class ThrowItem : CompoundAction(), Listener {
         }
 
         dropItem.velocity = Vector(newX,direction.y+(Random.nextDouble()* yVelocity),newZ).multiply(multiply)
-        Bukkit.getScheduler().runTaskLater(Man10MythicMagic.plugin, Runnable {
-            dropItem.remove()
-        },time.toLong())
-        SEvent(Man10MythicMagic.plugin).register(PlayerAttemptPickupItemEvent::class.java) { e ->
+        val event = SEvent(Man10MythicMagic.plugin).register(PlayerAttemptPickupItemEvent::class.java) { e ->
             if (e.item.uniqueId != dropItem.uniqueId) return@register
             Man10MythicMagic.sNms.pickUpItemPacket(e.player,e.item)
             e.item.remove()
@@ -65,6 +62,11 @@ class ThrowItem : CompoundAction(), Listener {
             context.targetEntity = e.player
             getHandler("actions")?.cast(context,context.workingParameters)
         }
+        Bukkit.getScheduler().runTaskLater(Man10MythicMagic.plugin, Runnable {
+            dropItem.remove()
+            event.unregister()
+        },time.toLong())
+
         return SpellResult.CAST
     }
 

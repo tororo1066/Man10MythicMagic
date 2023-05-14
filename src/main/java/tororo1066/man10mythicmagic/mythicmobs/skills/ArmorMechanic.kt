@@ -5,12 +5,13 @@ import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.ITargetedEntitySkill
 import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
-import io.lumine.mythic.api.skills.ThreadSafetyLevel
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.skills.SkillMechanic
 import org.bukkit.EntityEffect
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import tororo1066.man10mythicmagic.Man10MythicMagic
 
@@ -40,7 +41,9 @@ class ArmorMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.m
             Armor.LEGGINGS -> player.inventory.leggings?:return
             Armor.BOOTS -> player.inventory.boots?:return
         }
+        if (!armorCheck(item))return
         val meta = item.itemMeta as Damageable
+        if (meta.isUnbreakable)return
         meta.damage += damage
         item.itemMeta = meta
         if ((item.itemMeta as Damageable).damage >= item.type.maxDurability){
@@ -53,6 +56,22 @@ class ArmorMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.m
             player.playSound(player.location, Sound.ENTITY_ITEM_BREAK,1f,1f)
             player.playEffect(EntityEffect.BREAK_EQUIPMENT_HELMET)
         }
+    }
+
+    fun armorCheck(item: ItemStack): Boolean {
+        val type = item.type
+        return (type == Material.LEATHER_HELMET || type == Material.LEATHER_CHESTPLATE ||
+                type == Material.LEATHER_LEGGINGS || type == Material.LEATHER_BOOTS ||
+                type == Material.CHAINMAIL_HELMET || type == Material.CHAINMAIL_CHESTPLATE ||
+                type == Material.CHAINMAIL_LEGGINGS || type == Material.CHAINMAIL_BOOTS ||
+                type == Material.IRON_HELMET || type == Material.IRON_CHESTPLATE ||
+                type == Material.IRON_LEGGINGS || type == Material.IRON_BOOTS ||
+                type == Material.DIAMOND_HELMET || type == Material.DIAMOND_CHESTPLATE ||
+                type == Material.DIAMOND_LEGGINGS || type == Material.DIAMOND_BOOTS ||
+                type == Material.GOLDEN_HELMET || type == Material.GOLDEN_CHESTPLATE ||
+                type == Material.GOLDEN_LEGGINGS || type == Material.GOLDEN_BOOTS ||
+                type == Material.NETHERITE_HELMET || type == Material.NETHERITE_CHESTPLATE ||
+                type == Material.NETHERITE_LEGGINGS || type == Material.NETHERITE_BOOTS)
     }
 
     enum class Armor{
