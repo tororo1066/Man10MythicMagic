@@ -10,7 +10,6 @@ import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import tororo1066.ammoplugin.AmmoAPI
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
@@ -30,8 +29,6 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         lateinit var mythicMobs: MythicBukkit
         lateinit var util: UsefulUtility
         lateinit var mobDeathLoggerTable: MobDeathLoggerTable
-        var ammoAPI: AmmoAPI? = null
-        lateinit var sNms: SNms
         val logWorlds = ArrayList<String>()
         val groups = HashMap<String,Int>()
     }
@@ -52,14 +49,10 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             DamageListener()
             PlayerLocationTrackListener()
             CancelChargeListener()
+            WandActivateListener()
         }
-        if (server.pluginManager.isPluginEnabled("AmmoPlugin")){
-            ammoAPI = AmmoAPI()
-        }
-        sNms = SNms.newInstance()
-        if (Bukkit.getPluginManager().isPluginEnabled("MythicMobs")){
+        if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null){
             mythicMobs = MythicBukkit.inst()
-            mythicMobs.skillManager.getMechanic("sound").setTargetsCreativePlayers(true)
             mobDeathLoggerTable = MobDeathLoggerTable()
             MythicMobDeathListener()
         }
@@ -78,7 +71,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         }
     }
 
-    fun registerMagic(vararg pair: Pair<String,Class<*>>){
+    private fun registerMagic(vararg pair: Pair<String,Class<*>>){
         pair.forEach {
             ActionFactory.registerActionClass(it.first,it.second)
         }
@@ -112,13 +105,14 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "IgnoreDamage" to IgnoreDamage::class.java,
             "ScopingAction" to ScopingAction::class.java,
             "IsOnGround" to IsOnGround::class.java,
-            "RecallBackFuture" to RecallBackFuture::class.java
+            "RecallBackFuture" to RecallBackFuture::class.java,
+            "ArmorStandEquip" to ArmorStandEquip::class.java
         )
 
     }
 
 
-    fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, ISkillMechanic>){
+    private fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, ISkillMechanic>){
         pair.forEach {
             if (mechanicName.equals(it.first,true)) register(it.second)
         }
@@ -136,7 +130,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         )
     }
 
-    fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, ISkillTargeter>){
+    private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, ISkillTargeter>){
         pair.forEach {
             if (targeterName.equals(it.first,true)) register(it.second)
         }

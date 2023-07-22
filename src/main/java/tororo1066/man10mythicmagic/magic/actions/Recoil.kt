@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import tororo1066.nmsutils.SPlayer
 import kotlin.random.Random
 
 class Recoil: CompoundAction() {
@@ -18,7 +19,7 @@ class Recoil: CompoundAction() {
     override fun perform(context: CastContext): SpellResult {
         val target = context.targetEntity?:return SpellResult.FAIL
         if (target !is Player)return SpellResult.FAIL
-        Man10MythicMagic.sNms.moveRotation(target, Random.nextDouble(minYaw, maxYaw).toFloat(), Random.nextDouble(minPitch, maxPitch).toFloat())
+        SPlayer.getSPlayer(target).moveRotation(Random.nextDouble(minYaw, maxYaw).toFloat(), Random.nextDouble(minPitch, maxPitch).toFloat())
         return SpellResult.CAST
     }
 

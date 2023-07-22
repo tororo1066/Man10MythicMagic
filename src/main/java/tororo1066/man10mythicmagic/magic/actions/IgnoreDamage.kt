@@ -8,7 +8,7 @@ import org.bukkit.entity.LivingEntity
 
 class IgnoreDamage: CompoundAction() {
 
-    var damage: Int = 0
+    private var damage: Int = 0
 
     override fun perform(context: CastContext): SpellResult {
         val entity = context.targetEntity?:return SpellResult.FAIL

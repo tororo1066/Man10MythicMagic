@@ -12,6 +12,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent
 import org.bukkit.util.Vector
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import tororo1066.nmsutils.SPlayer
 import tororo1066.tororopluginapi.sEvent.SEvent
 import tororo1066.tororopluginapi.sItem.SItem
 import kotlin.math.cos
@@ -56,7 +57,7 @@ class ThrowItem : CompoundAction(), Listener {
         dropItem.velocity = Vector(newX,direction.y+(Random.nextDouble()* yVelocity),newZ).multiply(multiply)
         val event = SEvent(Man10MythicMagic.plugin).register(PlayerAttemptPickupItemEvent::class.java) { e ->
             if (e.item.uniqueId != dropItem.uniqueId) return@register
-            Man10MythicMagic.sNms.pickUpItemPacket(e.player,e.item)
+            SPlayer.getSPlayer(e.player).pickUpPlayer(e.item)
             e.item.remove()
             e.isCancelled = true
             context.targetEntity = e.player

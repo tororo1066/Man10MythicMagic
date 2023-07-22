@@ -29,7 +29,7 @@ class WandActivateListener {
         SEvent(Man10MythicMagic.plugin).register(WandActivatedEvent::class.java){ e ->
             val template = e.wand.template?:return@register
             val onHold = template.getString("on_hold")?:return@register
-            e.wand.performAction(WandAction.valueOf(onHold))
+            e.wand.performAction(WandAction.valueOf(onHold.uppercase()))
         }
     }
 }

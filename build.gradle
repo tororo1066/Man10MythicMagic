@@ -30,11 +30,10 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
-    compileOnly "io.lumine:Mythic-Dist:5.0.4-SNAPSHOT"
+    compileOnly "io.lumine:Mythic-Dist:5.2.1-SNAPSHOT"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    api files("libs/TororoPluginAPI-1.0-SNAPSHOT.jar")
-//    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:1fc70a853f'
-    compileOnly 'com.github.tororo1066.TororoPluginAPI:base:1fc70a853f'
+    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:dc60f6ccb6'
+    compileOnly 'com.github.tororo1066.TororoPluginAPI:base:dc60f6ccb6'
 }
 
 def targetJavaVersion = 17

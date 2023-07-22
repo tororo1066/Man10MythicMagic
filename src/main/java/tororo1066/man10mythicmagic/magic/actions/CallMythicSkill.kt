@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection
 
 class CallMythicSkill : CompoundAction() {
 
-    var skill = ""
+    private var skill = ""
 
     override fun prepare(context: CastContext, parameters: ConfigurationSection) {
         skill = parameters.getString("skill","")!!

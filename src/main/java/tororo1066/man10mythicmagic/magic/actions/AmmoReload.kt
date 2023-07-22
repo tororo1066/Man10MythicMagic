@@ -12,11 +12,10 @@ import tororo1066.man10mythicmagic.Man10MythicMagic
 
 class AmmoReload : CompoundAction() {
 
-    var ammoName = ""
-    lateinit var material : Material
-    var customModelData = 0
-    var amount = 1
-    var useAmmoPlugin = false
+    private var ammoName = ""
+    private lateinit var material : Material
+    private var customModelData = 0
+    private var amount = 1
 
     override fun addHandlers(spell: Spell?, parameters: ConfigurationSection?) {
         addHandler(spell,"fail")
@@ -39,12 +38,6 @@ class AmmoReload : CompoundAction() {
             allAmmo.add(content)
         }
         if (allAmmo.isEmpty()){
-            if (useAmmoPlugin && Man10MythicMagic.ammoAPI != null){
-                if (Man10MythicMagic.ammoAPI!!.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
-                    getHandler("actions")?.cast(context,context.workingParameters)
-                    return SpellResult.CAST
-                }
-            }
             getHandler("fail")?.cast(context,context.workingParameters)
             return SpellResult.CAST
         }
@@ -55,12 +48,6 @@ class AmmoReload : CompoundAction() {
 
 
         if (count < amount){
-            if (useAmmoPlugin && Man10MythicMagic.ammoAPI != null){
-                if (Man10MythicMagic.ammoAPI!!.removeAmmo(p,material,if (ammoName == "") "_" else ammoName,customModelData,amount)){
-                    getHandler("actions")?.cast(context,context.workingParameters)
-                    return SpellResult.CAST
-                }
-            }
             getHandler("fail")?.cast(context,context.workingParameters)
             return SpellResult.CAST
         }
@@ -96,6 +83,5 @@ class AmmoReload : CompoundAction() {
         customModelData = parameters.getInt("cmd",0)
         amount = parameters.getInt("amount",1)
         ammoName = parameters.getString("name","")!!
-        useAmmoPlugin = parameters.getBoolean("ammoPlugin",false)
     }
 }
