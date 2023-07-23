@@ -30,6 +30,9 @@ class PlayerLocationTrackTask(private val uuid: UUID): BukkitRunnable() {
             players.remove(uuid)
             return
         }
+        if (track.lastOrNull()?.world != p.world){
+            track.clear()
+        }
         track.add(p.location)
         if (track.size > trackLimit){
             track.removeFirstOrNull()

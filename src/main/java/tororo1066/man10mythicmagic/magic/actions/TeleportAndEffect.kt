@@ -50,17 +50,16 @@ class TeleportAndEffect : CompoundAction() {
             return SpellResult.NO_ACTION
         }
 
-
-
         var loc = (context.location)!!.add(playerLoc.direction.multiply(1))
         loc = Location(loc.world,loc.x,y,loc.z,loc.yaw,loc.pitch)
+        if (loc.block.isBuildable || loc.addY(1.0).block.isBuildable)return SpellResult.CAST
         p.teleport(loc)
         particles.forEach {
             loc.world.spawnParticle(it,loc.set(loc.x,y+yOffSet,loc.z),1)
         }
 
         if (radius == 0.0)return SpellResult.CAST
-        loc.getNearbyEntitiesByType(Player::class.java, radius).forEach {
+        loc.getNearbyLivingEntities(radius).forEach {
             if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
                 context.targetEntity = it
                 getHandler("actions")!!.cast(context,context.workingParameters)
@@ -75,7 +74,7 @@ class TeleportAndEffect : CompoundAction() {
         context.location?:return SpellResult.FAIL
         if (context.location!!.block.isBuildable || context.location!!.add(0.0,1.0,0.0).block.isBuildable)return SpellResult.CAST
         if (radius != 0.0){
-            context.location!!.getNearbyEntitiesByType(Player::class.java, radius).forEach {
+            context.location!!.getNearbyLivingEntities(radius).forEach {
                 if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
                     context.targetEntity = it
                     getHandler("actions")!!.cast(context,context.workingParameters)
