@@ -2,6 +2,9 @@ package tororo1066.man10mythicmagic
 
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
+import com.elmakers.mine.bukkit.effect.EffectLibManager
+import com.elmakers.mine.bukkit.slikey.effectlib.EffectLib
+import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.ISkillMechanic
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter
 import io.lumine.mythic.bukkit.MythicBukkit
@@ -16,9 +19,10 @@ import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
-import tororo1066.nmsutils.SNms
+import tororo1066.man10mythicmagic.noused.NoUsed
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
+import java.io.File
 
 
 class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
@@ -27,6 +31,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         lateinit var plugin : Man10MythicMagic
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
+        var effectLib: EffectLibManager? = null
         lateinit var util: UsefulUtility
         lateinit var mobDeathLoggerTable: MobDeathLoggerTable
         val logWorlds = ArrayList<String>()
@@ -43,6 +48,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
         if (magicPlugin != null){
             magicAPI = magicPlugin as MagicAPI
+            effectLib = EffectLibManager(this)
             registerActions()
             FlyListener()
             ItemDestroyListener()
@@ -59,6 +65,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
 
         MMMCommands()
 
+        NoUsed.register()
     }
 
     fun reload(){
@@ -106,40 +113,44 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "ScopingAction" to ScopingAction::class.java,
             "IsOnGround" to IsOnGround::class.java,
             "RecallBackFuture" to RecallBackFuture::class.java,
-            "ArmorStandEquip" to ArmorStandEquip::class.java
+            "ArmorStandEquip" to ArmorStandEquip::class.java,
         )
 
     }
 
 
-    private fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, ISkillMechanic>){
+    private fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, Class<out ISkillMechanic>>){
         pair.forEach {
-            if (mechanicName.equals(it.first,true)) register(it.second)
+            if (mechanicName.equals(it.first,true))
+                register(it.second.getConstructor(MythicLineConfig::class.java, File::class.java)
+                    .newInstance(config, container.file))
         }
     }
 
     @EventHandler
     fun onMechanicLoad(e : MythicMechanicLoadEvent){
         e.registerMechanic(
-            "ARMORDAMAGE" to ArmorMechanic(e.config),
-            "SETROTATIONPLUS" to SetRotation(e.config),
-            "SUMMONPLUS" to SummonPlusMechanic(e.config),
-            "CALLSPELL" to CallMagicSpell(e.config),
-            "RADIUSCOMMAND" to RadiusCommandExecute(e.config),
-            "SELFTELEPORT" to SelfTeleport(e.config)
+            "ARMORDAMAGE" to ArmorMechanic::class.java,
+            "SETROTATIONPLUS" to SetRotation::class.java,
+            "SUMMONPLUS" to SummonPlusMechanic::class.java,
+            "CALLSPELL" to CallMagicSpell::class.java,
+            "RADIUSCOMMAND" to RadiusCommandExecute::class.java,
+            "SELFTELEPORT" to SelfTeleport::class.java
         )
     }
 
-    private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, ISkillTargeter>){
+    private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, Class<out ISkillTargeter>>){
         pair.forEach {
-            if (targeterName.equals(it.first,true)) register(it.second)
+            if (targeterName.equals(it.first,true))
+                register(it.second.getConstructor(MythicLineConfig::class.java)
+                    .newInstance(config))
         }
     }
 
     @EventHandler
     fun onTargetLoad(e: MythicTargeterLoadEvent){
         e.registerTarget(
-            "LOCOFFSET" to LocPlusTarget(e.config)
+            "LOCOFFSET" to LocPlusTarget::class.java
         )
     }
 

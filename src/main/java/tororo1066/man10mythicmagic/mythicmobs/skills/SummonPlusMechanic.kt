@@ -9,8 +9,9 @@ import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.skills.SkillMechanic
 import org.bukkit.Location
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import java.io.File
 
-class SummonPlusMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), INoTargetSkill {
+class SummonPlusMechanic(config: MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), INoTargetSkill {
     private val x : Int
     private val y : Int
     private val z : Int

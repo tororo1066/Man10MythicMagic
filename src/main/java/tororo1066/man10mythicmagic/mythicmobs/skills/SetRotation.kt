@@ -6,8 +6,9 @@ import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.core.skills.SkillMechanic
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import java.io.File
 
-class SetRotation(config : MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), INoTargetSkill {
+class SetRotation(config : MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), INoTargetSkill {
     private val yaw : Float
     private val pitch : Float
     override fun cast(p0: SkillMetadata): SkillResult {

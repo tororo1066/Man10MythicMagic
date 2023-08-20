@@ -14,9 +14,10 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import java.io.File
 
 
-class ArmorMechanic(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), ITargetedEntitySkill {
+class ArmorMechanic(config: MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
     private val amount: Int
     override fun castAtEntity(data: SkillMetadata, target: AbstractEntity): SkillResult {
         val bukkitTarget = BukkitAdapter.adapt(target)

@@ -9,9 +9,10 @@ import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.skills.SkillMechanic
 import org.bukkit.util.Vector
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import java.io.File
 import kotlin.math.max
 
-class SelfTeleport(config: MythicLineConfig): SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), ITargetedEntitySkill {
+class SelfTeleport(config: MythicLineConfig, file: File): SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
 
     private var vector: Vector
     private var pitchReset: Boolean

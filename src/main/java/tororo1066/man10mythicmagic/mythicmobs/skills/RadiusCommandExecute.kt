@@ -8,8 +8,9 @@ import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.core.skills.SkillMechanic
 import org.bukkit.Bukkit
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import java.io.File
 
-class RadiusCommandExecute(config: MythicLineConfig) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,config.line,config), ITargetedEntitySkill {
+class RadiusCommandExecute(config: MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
 
     var onlyPlayer = true
     var radius = 3.0
