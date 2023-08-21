@@ -8,6 +8,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
+import tororo1066.tororopluginapi.SDebug
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import tororo1066.tororopluginapi.utils.addY
 import tororo1066.tororopluginapi.utils.setPitchL
@@ -29,6 +30,7 @@ class TeleportAndEffect : CompoundAction() {
 
 
     override fun reset(context: CastContext?) {
+        SDebug.broadcastDebug(2, "reset")
         super.reset(context)
         nowLength = 0
         y = .0
@@ -37,6 +39,7 @@ class TeleportAndEffect : CompoundAction() {
 
     override fun next(context: CastContext): Boolean {
         nowLength++
+        SDebug.broadcastDebug(2, "damagedEntities:$damagedEntities")
         return nowLength <= length
     }
 
@@ -61,8 +64,10 @@ class TeleportAndEffect : CompoundAction() {
         if (radius == 0.0)return SpellResult.CAST
         loc.getNearbyLivingEntities(radius).forEach {
             if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
-                context.targetEntity = it
-                getHandler("actions")!!.cast(context,context.workingParameters)
+                val clone = com.elmakers.mine.bukkit.action.CastContext(context)
+                clone.targetEntity = it
+                SDebug.broadcastDebug(1, "casting:${it.uniqueId}")
+                getHandler("actions")!!.cast(clone,clone.workingParameters)
                 damagedEntities.add(it.uniqueId)
             }
         }
@@ -76,8 +81,9 @@ class TeleportAndEffect : CompoundAction() {
         if (radius != 0.0){
             context.location!!.getNearbyLivingEntities(radius).forEach {
                 if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
-                    context.targetEntity = it
-                    getHandler("actions")!!.cast(context,context.workingParameters)
+                    val clone = com.elmakers.mine.bukkit.action.CastContext(context)
+                    clone.targetEntity = it
+                    getHandler("actions")!!.cast(clone,clone.workingParameters)
                     damagedEntities.add(it.uniqueId)
                 }
             }

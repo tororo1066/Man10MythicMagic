@@ -1,6 +1,7 @@
 package tororo1066.man10mythicmagic.command
 
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import tororo1066.tororopluginapi.SDebug
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.mysql.SMySQL
 import tororo1066.tororopluginapi.sCommand.SCommand
@@ -17,5 +18,7 @@ class MMMCommands : SCommand("mythicmagic","","mmm.op") {
 
             it.sender.sendMessage("§aReloaded")
         })
+
+        registerDebugCommand("mmm.op")
     }
 }

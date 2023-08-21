@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.SpellResult
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.LivingEntity
+import tororo1066.man10mythicmagic.Man10MythicMagic
 
 class IgnitePlus: CompoundAction() {
 
@@ -13,6 +14,9 @@ class IgnitePlus: CompoundAction() {
     override fun start(context: CastContext): SpellResult {
         val entity = context.targetEntity?:return SpellResult.FAIL
         if (entity !is LivingEntity)return SpellResult.FAIL
+        if (!Man10MythicMagic.magicAPI.controller.isPVPAllowed(context.mage.player,context.targetLocation)){
+            return SpellResult.CAST
+        }
         entity.fireTicks = duration/50
         return SpellResult.CAST
     }
