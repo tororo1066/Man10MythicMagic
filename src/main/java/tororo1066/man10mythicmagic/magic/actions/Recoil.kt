@@ -17,9 +17,9 @@ class Recoil: CompoundAction() {
     var maxPitch = 0.0
 
     override fun perform(context: CastContext): SpellResult {
-        val target = context.targetEntity?:return SpellResult.FAIL
-        if (target !is Player)return SpellResult.FAIL
-        SPlayer.getSPlayer(target).moveRotation(Random.nextDouble(minYaw, maxYaw).toFloat(), Random.nextDouble(minPitch, maxPitch).toFloat())
+        val target = context.targetEntity?:return SpellResult.NO_TARGET
+        if (target !is Player)return SpellResult.NO_TARGET
+        SPlayer.getSPlayer(target).moveRotation(-Random.nextDouble(minYaw, maxYaw).toFloat(), -Random.nextDouble(minPitch, maxPitch).toFloat())
         return SpellResult.CAST
     }
 

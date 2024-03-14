@@ -11,8 +11,8 @@ class LowHealthDmg: CompoundAction() {
     var multiply = 1.0
 
     override fun perform(context: CastContext): SpellResult {
-        val entity = context.targetEntity?:return SpellResult.FAIL
-        if (entity !is LivingEntity)return SpellResult.FAIL
+        val entity = context.targetEntity?:return SpellResult.NO_TARGET
+        if (entity !is LivingEntity)return SpellResult.NO_TARGET
         val damage = (context.mage.maxHealth - context.mage.health) * multiply
         entity.damage(damage,context.mage.entity)
         return SpellResult.CAST

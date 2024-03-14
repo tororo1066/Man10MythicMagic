@@ -67,7 +67,7 @@ class ThrowArmorStand : CompoundAction() {
     }
 
     override fun prepare(context: CastContext, parameters: ConfigurationSection) {
-        this.type = Material.getMaterial(parameters.getString("type","STONE")!!.toUpperCase())!!
+        this.type = Material.getMaterial(parameters.getString("type","STONE")!!.uppercase())!!
         this.cmd = parameters.getInt("cmd")
         val locSplit = (parameters.getString("tpLoc")?:"0,0,0").split(",")
         if (locSplit.size != 3)throw NullPointerException("tpLoc must <x>,<y>,<z>")

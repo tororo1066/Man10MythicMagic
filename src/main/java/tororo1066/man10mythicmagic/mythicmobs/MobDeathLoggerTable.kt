@@ -1,22 +1,22 @@
 package tororo1066.man10mythicmagic.mythicmobs
 
 import tororo1066.tororopluginapi.SJavaPlugin
+import tororo1066.tororopluginapi.database.SDBVariable
 import tororo1066.tororopluginapi.mysql.ultimate.USQLTable
-import tororo1066.tororopluginapi.mysql.ultimate.USQLVariable
 
 class MobDeathLoggerTable: USQLTable("mob_logger", SJavaPlugin.mysql) {
 
     companion object{
-        val id = USQLVariable(USQLVariable.Int,autoIncrement = true,index = USQLVariable.Index.PRIMARY)
-        val mobName = USQLVariable(USQLVariable.Text)
-        val mobIncludeName = USQLVariable(USQLVariable.Text)
-        val killPlayer = USQLVariable(USQLVariable.VarChar,16)
-        val killPlayerUUID = USQLVariable(USQLVariable.VarChar,36)
-        val drops = USQLVariable(USQLVariable.Text)
-        val world = USQLVariable(USQLVariable.Text)
-        val spawner = USQLVariable(USQLVariable.Text, nullable = true)
-        val spawnLoc = USQLVariable(USQLVariable.Text)
-        val deadLoc = USQLVariable(USQLVariable.Text)
-        val deathTime = USQLVariable(USQLVariable.DateTime)
+        val id = SDBVariable(SDBVariable.Int,autoIncrement = true,index = SDBVariable.Index.PRIMARY)
+        val mobName = SDBVariable(SDBVariable.Text)
+        val mobIncludeName = SDBVariable(SDBVariable.Text)
+        val killPlayer = SDBVariable(SDBVariable.VarChar,16)
+        val killPlayerUUID = SDBVariable(SDBVariable.VarChar,36)
+        val drops = SDBVariable(SDBVariable.Text)
+        val world = SDBVariable(SDBVariable.Text)
+        val spawner = SDBVariable(SDBVariable.Text, nullable = true)
+        val spawnLoc = SDBVariable(SDBVariable.Text)
+        val deadLoc = SDBVariable(SDBVariable.Text)
+        val deathTime = SDBVariable(SDBVariable.DateTime)
     }
 }

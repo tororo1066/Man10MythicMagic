@@ -19,7 +19,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
 
-class ThrowItem : CompoundAction(), Listener {
+class ThrowItem : CompoundAction() {
 
     lateinit var material: Material
     private var customModelData = 0
@@ -75,7 +75,6 @@ class ThrowItem : CompoundAction(), Listener {
     override fun prepare(context: CastContext?, parameters: ConfigurationSection?) {
         context?:return
         parameters?:return
-        Bukkit.getPluginManager().registerEvents(this,Man10MythicMagic.plugin)
         material = Material.getMaterial(parameters.getString("material","STONE")!!) ?: Material.STONE
         customModelData = parameters.getInt("cmd",0)
         canPick = parameters.getBoolean("canPick",false)

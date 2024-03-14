@@ -14,7 +14,7 @@ class IsEquipWand: CheckAction() {
     override fun isAllowed(context: CastContext): Boolean {
         val p = context.targetEntity?:return false
         if (p !is Player)return false
-        return (Man10MythicMagic.magicAPI.getWand(p.inventory.getItem(slot)?:return false)?:return false).templateKey == wandName
+        return (Man10MythicMagic.magicAPI.controller.getIfWand(p.inventory.getItem(slot))?:return false).templateKey == wandName
     }
 
     override fun prepare(context: CastContext, parameters: ConfigurationSection) {

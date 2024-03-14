@@ -1,22 +1,30 @@
 ### TeleportAndEffect
 指定した距離分テレポートしてエフェクトを発生させる\
 近くにいたプレイヤーに対してactionを実行できる\
-**パラメーター**\
-・length：進む距離\
-・particles：パーティクル(list可)
-・yoffset：パーティクルのoffset\
-・radius：actionの半径\
-・actions：radiusにいるプレイヤーへのaction\
-**対象**\
-・エンティティ\
+**パラメーター**
+- length：進む距離
+- step: 1マスごとに行うaction
+- particles：パーティクル(list可) 非推奨
+- yoffset：パーティクルのoffset 非推奨
+- radius：actionの半径
+- actions：radiusにいるプレイヤーへのaction
+- relative: 勢いがロックされないようにするか
+
+**対象**
+- エンティティ
+
 **例**
 ```yaml
 - class: TeleportAndEffect
   length: 10
+  step:
+    - class: PlayEffects
+      effects: test
   particles:
     - SWEEP_ATTACK
   yoffset: 0.8
   radius: 2
+  relative: true
   actions:
     - class: Damage
 ```
@@ -25,8 +33,9 @@
 武器にエンチャントを付与する\
 **パラメーター**\
 なし\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: AddEnchantEffect
@@ -34,10 +43,12 @@
 
 ### RemoveEnchantEffect
 武器のエンチャントを削除する\
-**パラメーター**\
-なし\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**パラメーター**
+- なし
+
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: RemoveEnchantEffect
@@ -45,11 +56,13 @@
 
 ### CheckEnchantEffect
 武器にエンチャントがついているか確認する\
-**パラメーター**\
-actions：ついている時に実行するaction\
-fail：ついていなかった時に実行するaction\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**パラメーター**
+- actions：ついている時に実行するaction
+- fail：ついていなかった時に実行するaction
+
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: CheckEnchantEffect
@@ -61,16 +74,17 @@ fail：ついていなかった時に実行するaction\
 
 ### AmmoReload
 アイテムを消費してactionを実行する\
-**パラメーター**\
-material：弾の素材\
-name：アイテム名\
-cmd：カスタムモデルデータ\
-amount：消費量\
-ammoPlugin：AmmoPluginを使うか\
-actions：消費できた時に実行するaction\
-fail：消費できなかった時に実行するaction\
-**対象**\
-・プレイヤー\
+**パラメーター**
+- material：弾の素材
+- name：アイテム名
+- cmd：カスタムモデルデータ
+- amount：消費量
+- actions：消費できた時に実行するaction
+- fail：消費できなかった時に実行するaction
+
+**対象**
+- プレイヤー
+
 **例**
 ```yaml
 - class: AmmoReload
@@ -78,7 +92,6 @@ fail：消費できなかった時に実行するaction\
   name: test
   cmd: 2
   amount: 10
-  ammoPlugin: true
   actions:
     - class: Command
       command: say success
@@ -89,18 +102,20 @@ fail：消費できなかった時に実行するaction\
 
 ### ThrowItemPlus
 アイテムにvelocityを与えて飛ばす\
-**パラメーター**\
-material：出すアイテム\
-cmd：カスタムモデルデータ\
-enchant：アイテムにエンチャントをするかどうか\
-canPick: 拾えるかどうか\
-time: アイテムが消えるまでの時間(tick)\
-yVelocity：yのベクトル\
-multiply：距離の倍率\
-rotate：アイテムが投げられる範囲の角度\
-actions：アイテムを拾ったときに実行するaction(canPickがtrueじゃないといけない)\
-**対象**\
-・エンティティ\
+**パラメーター**
+- material：出すアイテム
+- cmd：カスタムモデルデータ
+- enchant：アイテムにエンチャントをするかどうか
+- canPick: 拾えるかどうか
+- time: アイテムが消えるまでの時間(tick)
+- yVelocity：yのベクトル
+- multiply：距離の倍率
+- rotate：アイテムが投げられる範囲の角度
+- actions：アイテムを拾ったときに実行するaction(canPickがtrueじゃないといけない)
+
+**対象**
+- エンティティ
+
 **例**
 ```yaml
 - class: ThrowItemPlus
@@ -120,10 +135,12 @@ actions：アイテムを拾ったときに実行するaction(canPickがtrueじ�
 
 ### CastMythicSkill
 Casterに対してMythicMobsのSkillを実行する\
-**パラメーター**\
-skill：スキル名\
-**対象**\
-・エンティティ\
+**パラメーター**
+- skill：スキル名
+
+**対象**
+- エンティティ
+
 **例**
 ```yaml
 - class: CastMythicSkill
@@ -132,13 +149,15 @@ skill：スキル名\
 
 ### CheckCMD
 slotにあるアイテムのcmdがあっているか確認する\
-**パラメーター**\
-cmd：カスタムモデルデータ
-slot：スロット(hand,off_hand,head,chest,legs,feet)\
-actions：あっている時に実行するaction\
-fail：あっていなかった時に実行するaction\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**パラメーター**
+- cmd：カスタムモデルデータ
+- slot：スロット(hand,off_hand,head,chest,legs,feet)
+- actions：あっている時に実行するaction
+- fail：あっていなかった時に実行するaction
+
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: CheckCMD
@@ -152,11 +171,13 @@ fail：あっていなかった時に実行するaction\
 
 ### CheckDurability
 wandの耐久をチェックする\
-**パラメーター**\
-min：最小値\
-max：最大値\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**パラメーター**
+- min：最小値
+- max：最大値
+
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: CheckDurability
@@ -168,22 +189,26 @@ max：最大値\
     - class: ...
 ```
 
-### ThrowArmorStand
+### ~~ThrowArmorStand~~ -Deprecated-
 アーマースタンドを地面に着地させるまで動かす\
 -ArmorStandProjectileでいいので使わなくていいです-
 
 ### ReHold
 attributeを手に持ち直さずに更新する\
-**パラメーター**：なし\
-**対象**\
-・プレイヤー(手に杖を持っている場合)\
+**パラメーター**
+- なし
+
+**対象**
+- プレイヤー(手に杖を持っている場合)
+
 **例**
 ```yaml
 - class: ReHold
 ```
 
-### LowHealthDmg
+### ~~LowHealthDmg~~ -Deprecated-
 casterのHPが少ないほどtargetにダメージを与える\
+($maxHealth-$health)*<数字>で代用できるので非推奨\
 計算式 (最大HP-HP)*multiply\
 **パラメーター**\
 multiply：ダメージの倍率\
@@ -197,19 +222,21 @@ multiply：ダメージの倍率\
 
 ### IgnitePlus
 通常のIgniteだと額縁が壊れてしまうので作成\
-**パラメーター**\
-duration：延焼時間(1000で1秒)\
-**対象**\
-・エンティティ\
+**パラメーター**
+- duration：延焼時間(1000で1秒)
+
+**対象**
+- エンティティ
+
 **例**
 ```yaml
 - class: IgnitePlus
   duration: 3000
 ```
 
-### CircleParticle
+### ~~CircleParticle~~ -Deprecated-
 円のパーティクルを出す\
--正直EffectLibに組み込みたい-\
+EffectLibのWarpで代用できるので非推奨\
 **パラメーター**\
 radius：半径\
 count：パーティクルの量\
@@ -230,8 +257,9 @@ offset：パーティクルのオフセット\
   offset: 1,1,1
 ```
 
-### IsEquipWand
+### ~~IsEquipWand~~ -Deprecated-
 wandを装備しているか確認する\
+CheckRequirementsで代用できるので非推奨\
 **パラメーター**\
 slot: 確認するスロット\
 wandName: wandの名前\
@@ -250,12 +278,14 @@ wandName: wandの名前\
 
 ### Scope
 wandのcmd(CustomModelData)を切り替えて覗かせる\
-**パラメーター**\
-level: ズームの強さ 1~10ぐらいが適切？\
-onScope: スコープしたときに変えるcmd\
-onUnScope: スコープを解除したときに変えるcmd\
-**対象**\
-・プレイヤー\
+**パラメーター**
+- level: ズームの強さ 1~10ぐらいが適切？
+- onScope: スコープしたときに変えるcmd
+- onUnScope: スコープを解除したときに変えるcmd
+
+**対象**
+- プレイヤー
+
 **例**
 ```yaml
 - class: Scope
@@ -266,11 +296,13 @@ onUnScope: スコープを解除したときに変えるcmd\
 
 ### ScopingAction
 プレイヤーにScope状態に応じたActionを実行させる\
-**パラメーター**\
-actions: Scopeしていたときに実行するaction\
-fail: Scopeしていないときに実行するaction\
-**対象**\
-・プレイヤー\
+**パラメーター**
+- actions: Scopeしていたときに実行するaction
+- fail: Scopeしていないときに実行するaction
+
+**対象**
+- プレイヤー
+
 **例**
 ```yaml
 - class: ScopingAction
@@ -282,14 +314,16 @@ fail: Scopeしていないときに実行するaction\
 
 ### Recoil
 プレイヤーにcspのような視点のブレを実装させる\
-**パラメーター**\
-全て-180~180までで指定する\
-yaw.min: 横軸の揺れの最低値を指定する\
-yaw.max: 横軸の揺れの最大値を指定する\
-pitch.min: 縦軸の揺れの最低値を指定する\
-pitch.max: 縦軸の揺れの最大値を指定する\
-**対象**\
-・プレイヤー\
+**パラメーター**
+全て-180~180までで指定する
+- yaw.min: 横軸の揺れの最低値を指定する
+- yaw.max: 横軸の揺れの最大値を指定する
+- pitch.min: 縦軸の揺れの最低値を指定する
+- pitch.max: 縦軸の揺れの最大値を指定する
+
+**対象**
+- プレイヤー
+
 **例**
 ```yaml
 - class: Recoil
@@ -303,12 +337,118 @@ pitch.max: 縦軸の揺れの最大値を指定する\
 
 ### IgnoreDamage
 防具完全貫通のダメージを与える\
-**パラメーター**\
-damage: ダメージ\
-**対象**\
-・エンティティ\
+**パラメーター**
+- damage: ダメージ
+
+**対象**
+- エンティティ
+
 **例**
 ```yaml
 - class: IgnoreDamage
   damage: 15
+```
+
+### IsOnGround
+エンティティが地面にいるか確認する\
+**パラメーター**
+- actions: 地面にいる時に実行するaction
+- fail: 地面にいない時に実行するaction
+
+**対象**
+- エンティティ
+
+**例**
+```yaml
+- class: IsOnGround
+  actions:
+    - class: ...
+  fail:
+    - class: ...
+```
+
+### RecallBackFuture
+プレイヤーを過去にいた場所に戻す\
+15秒まで遡れる\
+**パラメーター**
+- time: 遡る時間(tick)
+- relative: 勢いがロックされないようにするか
+
+**対象**
+- プレイヤー
+
+**例**
+```yaml
+- class: RecallBackFuture
+  time: 200
+  relative: true
+```
+
+### ArmorStandEquip -Deprecated?-
+アーマースタンドに装備させる\
+**パラメーター**
+- slot: 装備するスロット
+- item: 装備するアイテム
+
+**対象**
+- アーマースタンド
+
+**例**
+```yaml
+- class: ArmorStandEquip
+  slot: head
+  item: iron_sword{CustomModelData:1}
+```
+
+### CheckPvPAllowed
+PvPが許可されているか確認する\
+EntityProjectileなど保護を無視するactionを実行するときに使う\
+**パラメーター**
+- actions: 許可されている時に実行するaction
+- fail: 許可されていない時に実行するaction
+
+**対象**
+- プレイヤー
+
+**例**
+```yaml
+- class: CheckPvPAllowed
+  actions:
+    - class: ...
+  fail:
+    - class: ...
+```
+
+### FakeItem
+偽物のアイテムをプレイヤーに装備させる\
+**パラメーター**
+- slot: 装備するスロット
+- item: 装備するアイテム
+
+**対象**
+- プレイヤー
+
+**例**
+```yaml
+- class: FakeItem
+  slot: hand
+  item: iron_sword{CustomModelData:1}
+```
+
+### BackStab
+CasterがTargetの背後にいるか確認する\
+**パラメーター**
+- actions: 背後にいる時に実行するaction
+- fail: 背後にいない時に実行するaction
+
+**対象**
+- エンティティ
+
+**例**
+```yaml
+- class: BackStab
+  actions:
+    - class: ...
+  fail:
+    - class: ...
 ```

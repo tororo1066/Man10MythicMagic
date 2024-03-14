@@ -9,7 +9,6 @@ import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.skills.SkillMechanic
-import org.bukkit.Location
 import org.bukkit.configuration.file.YamlConfiguration
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import java.io.File

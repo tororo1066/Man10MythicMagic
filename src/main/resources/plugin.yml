@@ -10,6 +10,5 @@ softdepend:
   - ArmorEquipEvent
   - Magic
   - MythicMobs
-
 depend:
   - NMSUtils

@@ -14,7 +14,7 @@ class CheckCMD : CheckAction() {
     override fun isAllowed(p0: CastContext): Boolean {
         val target = p0.targetEntity?:return false
         if (target !is Player)return false
-        val item = target.inventory.getItem(slot)?:return false
+        val item = target.inventory.getItem(slot)
         return item.itemMeta.customModelData == cmd
     }
 

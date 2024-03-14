@@ -3,7 +3,6 @@ package tororo1066.man10mythicmagic
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import com.elmakers.mine.bukkit.effect.EffectLibManager
-import com.elmakers.mine.bukkit.slikey.effectlib.EffectLib
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.ISkillMechanic
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter
@@ -16,6 +15,7 @@ import org.bukkit.event.Listener
 import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
+import tororo1066.man10mythicmagic.magic.trigger.UltimateTrigger
 import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
@@ -56,6 +56,13 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             PlayerLocationTrackListener()
             CancelChargeListener()
             WandActivateListener()
+            ScopeListener()
+            PreCastListener()
+            UltimateTrigger
+
+            if (Bukkit.getPluginManager().getPlugin("PlayerAnimator") != null){
+                registerMagic("PlayerAnim" to PlayerAnimation::class.java)
+            }
         }
         if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null){
             mythicMobs = MythicBukkit.inst()
@@ -86,35 +93,38 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
 
     private fun registerActions(){
         registerMagic(
-                "TeleportAndEffect" to TeleportAndEffect::class.java,
-                "AddEnchantEffect" to AddEnchantmentEffect::class.java,
-                "RemoveEnchantEffect" to RemoveEnchantmentEffect::class.java,
-                "CheckEnchantEffect" to CheckEnchantmentEffect::class.java,
-                "AmmoReload" to AmmoReload::class.java,
-                "CheckPotionPlus" to CheckPotionEffect::class.java,
-                "ThrowItemPlus" to ThrowItem::class.java,
-                "CallMythicSkill" to CallMythicSkill::class.java,
-                "CheckCMD" to CheckCMD::class.java,
-                "ThrowArmorStand" to ThrowArmorStand::class.java,
-                "CircleParticle" to CircleParticle::class.java,
-                "CheckDurability" to CheckDurability::class.java,
-                "ChangeWand" to ChangeWand::class.java,
-                "LowHealthDmg" to LowHealthDmg::class.java,
-                "SetAllowFly" to SetAllowFly::class.java,
-                "SetIsFlying" to SetIsFlying::class.java,
-                "CheckFood" to CheckFood::class.java,
-                "IsEquipWand" to IsEquipWand::class.java,
-                "IgnitePlus" to IgnitePlus::class.java,
-                "SetCharged" to SetCharged::class.java,
-                "ReHold" to ReHold::class.java,
-                "Scope" to Scope::class.java,
-                "Recoil" to Recoil::class.java,
-                "IgnoreDamage" to IgnoreDamage::class.java,
-                "ScopingAction" to ScopingAction::class.java,
-                "IsOnGround" to IsOnGround::class.java,
-                "RecallBackFuture" to RecallBackFuture::class.java,
-                "ArmorStandEquip" to ArmorStandEquip::class.java,
-                "CheckAllowedPvP" to CheckAllowedPvP::class.java,
+            "TeleportAndEffect" to TeleportAndEffect::class.java,
+            "AddEnchantEffect" to AddEnchantmentEffect::class.java,
+            "RemoveEnchantEffect" to RemoveEnchantmentEffect::class.java,
+            "CheckEnchantEffect" to CheckEnchantmentEffect::class.java,
+            "AmmoReload" to AmmoReload::class.java,
+            "CheckPotionPlus" to CheckPotionEffect::class.java,
+            "ThrowItemPlus" to ThrowItem::class.java,
+            "CallMythicSkill" to CallMythicSkill::class.java,
+            "CheckCMD" to CheckCMD::class.java,
+            "ThrowArmorStand" to ThrowArmorStand::class.java,
+            "CircleParticle" to CircleParticle::class.java,
+            "CheckDurability" to CheckDurability::class.java,
+            "ChangeWand" to ChangeWand::class.java,
+            "LowHealthDmg" to LowHealthDmg::class.java,
+            "SetAllowFly" to SetAllowFly::class.java,
+            "SetIsFlying" to SetIsFlying::class.java,
+            "CheckFood" to CheckFood::class.java,
+            "IsEquipWand" to IsEquipWand::class.java,
+            "IgnitePlus" to IgnitePlus::class.java,
+            "SetCharged" to SetCharged::class.java,
+            "ReHold" to ReHold::class.java,
+            "Scope" to Scope::class.java,
+            "Recoil" to Recoil::class.java,
+            "IgnoreDamage" to IgnoreDamage::class.java,
+            "ScopingAction" to ScopingAction::class.java,
+            "IsOnGround" to IsOnGround::class.java,
+            "RecallBackFuture" to RecallBackFuture::class.java,
+            "ArmorStandEquip" to ArmorStandEquip::class.java,
+            "CheckPvPAllowed" to CheckPvPAllowed::class.java,
+            "FakeItem" to FakeItem::class.java,
+            "ModifyWandLore" to ModifyWandLore::class.java,
+            "BackStab" to BackStab::class.java,
         )
 
     }

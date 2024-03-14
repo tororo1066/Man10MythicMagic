@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.event.PreCastEvent
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent
 import com.elmakers.mine.bukkit.api.wand.WandAction
 import tororo1066.man10mythicmagic.Man10MythicMagic
-import tororo1066.tororopluginapi.annotation.SEventHandler
 import tororo1066.tororopluginapi.sEvent.SEvent
 
 class WandActivateListener {

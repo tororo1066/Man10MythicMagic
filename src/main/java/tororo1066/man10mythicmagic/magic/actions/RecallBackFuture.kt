@@ -3,12 +3,14 @@ package tororo1066.man10mythicmagic.magic.actions
 import com.elmakers.mine.bukkit.action.CompoundAction
 import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.SpellResult
+import io.papermc.paper.entity.TeleportFlag
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import tororo1066.man10mythicmagic.tasks.PlayerLocationTrackTask
 
 class RecallBackFuture: CompoundAction() {
     private var recallTime = 100
+    private var relative = false
 
     override fun perform(context: CastContext): SpellResult {
         val player = context.targetEntity as? Player?:return SpellResult.FAIL
@@ -19,12 +21,24 @@ class RecallBackFuture: CompoundAction() {
         }
         loc?:return SpellResult.CAST
 
-        player.teleport(loc)
+        if (relative) {
+            player.teleport(
+                loc,
+                TeleportFlag.Relative.X,
+                TeleportFlag.Relative.Y,
+                TeleportFlag.Relative.Z,
+                TeleportFlag.Relative.YAW,
+                TeleportFlag.Relative.PITCH
+            )
+        } else {
+            player.teleport(loc)
+        }
 
         return SpellResult.CAST
     }
 
     override fun prepare(context: CastContext, parameters: ConfigurationSection) {
         recallTime = parameters.getInt("time", 100)
+        relative = parameters.getBoolean("relative", false)
     }
 }
