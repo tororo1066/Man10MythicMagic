@@ -5,6 +5,9 @@ on:
     branches: [ master ]
     tags:
     - v*
+env:
+  GITHUB_USERNAME: ${{secrets.USERNAME}}
+  GITHUB_TOKEN: ${{secrets.TOKEN}}
 
 jobs:
   build:
