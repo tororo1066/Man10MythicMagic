@@ -25,21 +25,6 @@ class MMMCommands : SCommand("mythicmagic","","mmm.op") {
             it.sender.sendMessage("§aReloaded")
         })
 
-        addCommand(command().addArg(SCommandArg("test")).setPlayerExecutor {
-            val wand = Man10MythicMagic.magicAPI.controller.getIfWand(it.sender.inventory.itemInMainHand)?:return@setPlayerExecutor
-            Bukkit.broadcastMessage(wand.name)
-            wand.spells.forEach {
-                Bukkit.broadcastMessage(it)
-                wand.getBaseSpell(it)?.triggers?.forEach { trigger ->
-                    Bukkit.broadcastMessage(trigger.trigger)
-                }
-                val spell = wand.getSpell(it)?:return@forEach
-                spell.triggers?.forEach { trigger ->
-                    Bukkit.broadcastMessage(trigger.trigger)
-                }
-            }
-        })
-
         registerDebugCommand("mmm.op")
     }
 }

@@ -33,6 +33,28 @@ class PreCastListener {
                                         })
                                     }
                                 }
+
+                                if (triggerConfiguration.getBoolean("get_target", false)) {
+                                    if (triggerConfiguration.getString("trigger") !in listOf("damage_dealt","kill")) {
+                                        return@register
+                                    }
+
+                                    if (spell.workingParameters.isSet("entity")) {
+                                        return@register
+                                    }
+
+                                    val target = UltimateTrigger.lastDamageEntities[e.mage.entity.uniqueId]
+                                    if (target != null) {
+                                        e.spell.cast(ConfigurationUtils.newConfigurationSection().also {
+                                            it.set("entity", target.uniqueId.toString())
+                                        })
+                                    }
+                                    e.mage.isQuiet = true
+                                    e.isCancelled = true
+                                    Bukkit.getScheduler().runTask(Man10MythicMagic.plugin, Runnable {
+                                        e.mage.isQuiet = false
+                                    })
+                                }
                             }
                         }
                     }
