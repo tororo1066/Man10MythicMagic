@@ -1,5 +1,6 @@
 package tororo1066.man10mythicmagic.magic.actions
 
+import com.elmakers.mine.bukkit.action.CheckAction
 import com.elmakers.mine.bukkit.action.CompoundAction
 import com.elmakers.mine.bukkit.api.action.CastContext
 import com.elmakers.mine.bukkit.api.spell.Spell
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import tororo1066.man10mythicmagic.Man10MythicMagic
 
-class AmmoReload : CompoundAction() {
+class AmmoReload : CheckAction() {
 
     private var ammoName = ""
     private lateinit var material : Material
@@ -22,10 +23,9 @@ class AmmoReload : CompoundAction() {
         addHandler(spell,"actions")
     }
 
-
-    override fun perform(context: CastContext?): SpellResult {
-        context?:return SpellResult.FAIL
-        if (context.entity !is Player)return SpellResult.FAIL
+    override fun isAllowed(context: CastContext?): Boolean {
+        context?:return false
+        if (context.entity !is Player)return false
         val p = context.entity as Player
         val allAmmo = ArrayList<ItemStack>()
         for (content in p.inventory.contents){
@@ -38,8 +38,7 @@ class AmmoReload : CompoundAction() {
             allAmmo.add(content)
         }
         if (allAmmo.isEmpty()){
-            getHandler("fail")?.cast(context,context.workingParameters)
-            return SpellResult.CAST
+            return false
         }
         var count = 0
         allAmmo.forEach {
@@ -48,8 +47,7 @@ class AmmoReload : CompoundAction() {
 
 
         if (count < amount){
-            getHandler("fail")?.cast(context,context.workingParameters)
-            return SpellResult.CAST
+            return false
         }
 
         var summingAmount = amount
@@ -70,9 +68,7 @@ class AmmoReload : CompoundAction() {
             }
         }
 
-
-        getHandler("actions")?.cast(context,context.workingParameters)
-        return SpellResult.CAST
+        return true
     }
 
     override fun prepare(context: CastContext?, parameters: ConfigurationSection?) {

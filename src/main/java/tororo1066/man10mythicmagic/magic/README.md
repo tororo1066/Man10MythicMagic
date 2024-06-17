@@ -452,3 +452,21 @@ CasterがTargetの背後にいるか確認する\
   fail:
     - class: ...
 ```
+
+### ModifyPropertiesPlus
+ModifyPropertiesの拡張版\
+値にAttributeやVariableが使えるようになる\
+**パラメーター**
+省略
+
+**対象**
+省略
+
+**例**
+```yaml
+- class: ModifyPropertiesPlus
+  modify_target: wand
+  modify:
+    - property: name
+      value: "@test_attribute@ wand
+```
