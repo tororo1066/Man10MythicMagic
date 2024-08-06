@@ -126,6 +126,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "ModifyWandLore" to ModifyWandLore::class.java,
             "BackStab" to BackStab::class.java,
             "ModifyPropertiesPlus" to ModifyPropertiesPlus::class.java,
+            "UniqueVariable" to UniqueVariable::class.java,
         )
 
     }

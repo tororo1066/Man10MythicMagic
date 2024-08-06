@@ -10,7 +10,7 @@ import org.bukkit.Bukkit
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import java.io.File
 
-class SetRotation(config : MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), INoTargetSkill {
+class SetRotation(config : MythicLineConfig, file: File?) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), INoTargetSkill {
     private val yaw : PlaceholderFloat
     private val pitch : PlaceholderFloat
     override fun cast(p0: SkillMetadata): SkillResult {

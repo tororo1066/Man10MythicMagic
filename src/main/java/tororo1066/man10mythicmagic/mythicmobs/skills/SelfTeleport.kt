@@ -13,7 +13,7 @@ import tororo1066.man10mythicmagic.Man10MythicMagic
 import java.io.File
 import kotlin.math.max
 
-class SelfTeleport(config: MythicLineConfig, file: File): SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
+class SelfTeleport(config: MythicLineConfig, file: File?): SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
 
     private var x: PlaceholderDouble
     private var y: PlaceholderDouble

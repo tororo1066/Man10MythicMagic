@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import java.io.File
 
-class CallMagicSpell(config : MythicLineConfig, file: File) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
+class CallMagicSpell(config : MythicLineConfig, file: File?) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
     private val spell : String
 
     override fun castAtEntity(data: SkillMetadata, target: AbstractEntity): SkillResult {

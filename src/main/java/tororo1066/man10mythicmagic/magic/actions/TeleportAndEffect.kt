@@ -25,6 +25,7 @@ class TeleportAndEffect : CompoundAction() {
     private val particles = ArrayList<Particle>()
     private var yOffSet = 0.0
     private var radius = 0.0
+    private var yRadius = 0.0
     private var relative = false
 
     private var nowLength = 0
@@ -113,7 +114,7 @@ class TeleportAndEffect : CompoundAction() {
         startActions("step")
 
         if (radius == 0.0)return SpellResult.CAST
-        loc.getNearbyLivingEntities(radius).forEach {
+        loc.getNearbyLivingEntities(radius, yRadius, radius).forEach {
             if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
                 createActionContext(context,context.entity,context.location,it,it.location)
                 startActions()
@@ -129,7 +130,7 @@ class TeleportAndEffect : CompoundAction() {
         y = context.location!!.y
         if (context.location!!.block.isBuildable || context.location!!.add(0.0,1.0,0.0).block.isBuildable)return SpellResult.NO_ACTION
         if (radius != 0.0){
-            context.location!!.getNearbyLivingEntities(radius).forEach {
+            context.location!!.getNearbyLivingEntities(radius, yRadius, radius).forEach {
                 if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
                     createActionContext(context,context.entity,context.location,it,it.location)
                     startActions()
@@ -155,6 +156,7 @@ class TeleportAndEffect : CompoundAction() {
             it.printStackTrace()
         })
         radius = parameters.getDouble("radius",0.0)
+        yRadius = parameters.getDouble("y_radius",0.0)
         yOffSet = parameters.getDouble("yoffset",0.0)
         relative = parameters.getBoolean("relative",false)
     }

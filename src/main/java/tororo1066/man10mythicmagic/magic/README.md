@@ -456,10 +456,10 @@ CasterがTargetの背後にいるか確認する\
 ### ModifyPropertiesPlus
 ModifyPropertiesの拡張版\
 値にAttributeやVariableが使えるようになる\
-**パラメーター**
+**パラメーター**\
 省略
 
-**対象**
+**対象**\
 省略
 
 **例**
@@ -469,4 +469,30 @@ ModifyPropertiesの拡張版\
   modify:
     - property: name
       value: "@test_attribute@ wand
+```
+
+### UniqueVariable
+Targetに対して一意な変数を設定する\
+**パラメーター**\
+- type: (store: 変数を代入する, restore: 変数を取得する, clear: 変数を削除する)
+- variable: 変数名
+- value: 変数に代入する値(storeの時のみ)
+- restore_name: 取得した変数の代入先(restoreの時のみ)
+
+**対象**\
+- エンティティ
+
+**例**
+```yaml
+- class: UniqueVariable
+  type: restore
+  variable: test
+  restore_name: test
+- class: ModifyVariable
+  variable: test
+  value: $test + 10
+- class: UniqueVariable
+  type: store
+  variable: test
+  value: $test
 ```
