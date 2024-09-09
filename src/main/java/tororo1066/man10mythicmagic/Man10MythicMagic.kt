@@ -59,6 +59,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             ScopeListener()
             PreCastListener()
             UltimateTrigger
+//            CustomPotionManager.load()
 
             if (Bukkit.getPluginManager().getPlugin("PlayerAnimator") != null){
                 registerMagic("PlayerAnim" to PlayerAnimation::class.java)
@@ -127,6 +128,9 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "BackStab" to BackStab::class.java,
             "ModifyPropertiesPlus" to ModifyPropertiesPlus::class.java,
             "UniqueVariable" to UniqueVariable::class.java,
+            "CustomPotionEffect" to CustomPotionEffect::class.java,
+            "CheckCustomPotionEffect" to CheckCustomPotionEffect::class.java,
+            "RestoreCustomPotionEffectInfo" to RestoreCustomPotionEffectInfo::class.java,
         )
 
     }

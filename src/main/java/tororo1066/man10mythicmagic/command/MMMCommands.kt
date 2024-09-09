@@ -1,10 +1,8 @@
 package tororo1066.man10mythicmagic.command
 
-import com.ticxo.playeranimator.api.PlayerAnimator
 import org.bukkit.Bukkit
 import tororo1066.man10mythicmagic.Man10MythicMagic
-import tororo1066.man10mythicmagic.magic.actions.PlayerAnimation
-import tororo1066.tororopluginapi.SDebug
+import tororo1066.man10mythicmagic.magic.effect.CustomPotionManager
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.mysql.SMySQL
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
@@ -18,11 +16,22 @@ class MMMCommands : SCommand("mythicmagic","","mmm.op") {
         addCommand(SCommandObject().addArg(SCommandArg().addAllowString("reload")).setNormalExecutor {
             Man10MythicMagic.plugin.reloadConfig()
             SJavaPlugin.mysql = SMySQL(Man10MythicMagic.plugin)
-            UsefulUtility.sTry({PlayerAnimator.api.animationManager.clearRegistry()
-                PlayerAnimator.api.animationManager.importPacks()}, {})
+            if (Bukkit.getPluginManager().getPlugin("PlayerAnimator") != null){
+                UsefulUtility.sTry({
+                    ReloadPlayerAnimator.run()
+                }, {})
+            }
             Man10MythicMagic.plugin.reload()
-
+            if (Bukkit.getPluginManager().getPlugin("Magic") != null){
+                CustomPotionManager.load()
+            }
             it.sender.sendMessage("§aReloaded")
+        })
+
+        addCommand(SCommandObject().addArg(SCommandArg("test")).setPlayerExecutor {
+            it.sender.sendMessage(
+                CustomPotionManager.customPotionEffectInstances.toString()
+            )
         })
 
         registerDebugCommand("mmm.op")
