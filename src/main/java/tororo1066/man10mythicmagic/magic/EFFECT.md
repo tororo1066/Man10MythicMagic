@@ -90,7 +90,7 @@ effects:
 
 ## RestoreCustomPotionEffectInfo
 カスタムした効果の情報を変数に代入します\
-$<効果名>_duration, $<効果名>_amplifierで取得できます\
+`$<効果名>_duration`, `$<効果名>_amplifier`で取得できます\
 **パラメーター**
 - effect: 取得する効果
 - private: 付与者を指定するか
