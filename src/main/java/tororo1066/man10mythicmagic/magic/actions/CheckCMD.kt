@@ -15,6 +15,7 @@ class CheckCMD : CheckAction() {
         val target = p0.targetEntity?:return false
         if (target !is Player)return false
         val item = target.inventory.getItem(slot)
+        if (!item.hasItemMeta() || !item.itemMeta.hasCustomModelData())return false
         return item.itemMeta.customModelData == cmd
     }
 
