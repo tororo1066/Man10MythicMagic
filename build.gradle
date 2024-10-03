@@ -24,6 +24,7 @@ repositories {
         name = 'Lumine Releases'
         url = 'https://mvn.lumine.io/repository/maven-public/'
     }
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
     maven { url 'https://jitpack.io' }
     maven {
         url = uri('https://maven.pkg.github.com/tororo1066/TororoPluginAPI')
@@ -42,6 +43,7 @@ dependencies {
     compileOnly fileTree(dir: 'libs', include: '*.jar')
     api 'tororo1066:tororopluginapi:5fd6bdf'
     compileOnly 'tororo1066:base:5fd6bdf'
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.1.0'
 }
 
 def targetJavaVersion = 17

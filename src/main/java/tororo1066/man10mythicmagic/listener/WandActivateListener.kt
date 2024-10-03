@@ -2,11 +2,14 @@ package tororo1066.man10mythicmagic.listener
 
 import com.elmakers.mine.bukkit.api.event.PreCastEvent
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent
+import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent
 import com.elmakers.mine.bukkit.api.wand.Wand
 import com.elmakers.mine.bukkit.api.wand.WandAction
 import com.elmakers.mine.bukkit.spell.BaseSpell
 import tororo1066.man10mythicmagic.Man10MythicMagic
+import tororo1066.man10mythicmagic.packet.IDualWeapon
+import tororo1066.man10mythicmagic.packet.VersionHandler
 import tororo1066.man10mythicmagic.utils.getAllWandSpells
 import tororo1066.man10mythicmagic.utils.getAllWands
 import tororo1066.man10mythicmagic.utils.getHotbarWands
@@ -22,6 +25,25 @@ class WandActivateListener {
     }
 
     init {
+
+        SEvent(Man10MythicMagic.plugin).register<WandActivatedEvent> { e ->
+            if (Man10MythicMagic.protocolManager == null)return@register
+            val template = e.wand.template?:return@register
+            if (template.getBoolean("dual_weapon")) {
+                val player = e.mage.player?:return@register
+                if (!player.inventory.itemInOffHand.type.isAir) return@register
+                VersionHandler.getInstance(IDualWeapon::class.java).sendPacket(player, e.wand.item?:return@register)
+            }
+        }
+
+        SEvent(Man10MythicMagic.plugin).register<WandDeactivatedEvent> { e ->
+            if (Man10MythicMagic.protocolManager == null)return@register
+            val template = e.wand.template?:return@register
+            if (template.getBoolean("dual_weapon")) {
+                VersionHandler.getInstance(IDualWeapon::class.java).sendResetPacket(e.mage.player?:return@register)
+            }
+        }
+
         SEvent(Man10MythicMagic.plugin).register<WandActivatedEvent> { e ->
             e.mage.player?.sendDebug(6, "WandActivatedEvent")
 

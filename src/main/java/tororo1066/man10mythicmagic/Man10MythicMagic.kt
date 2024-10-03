@@ -1,5 +1,7 @@
 package tororo1066.man10mythicmagic
 
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import com.elmakers.mine.bukkit.effect.EffectLibManager
@@ -20,6 +22,8 @@ import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
 import tororo1066.man10mythicmagic.noused.NoUsed
+import tororo1066.man10mythicmagic.packet.IDualWeapon
+import tororo1066.man10mythicmagic.packet.VersionHandler
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import java.io.File
@@ -36,6 +40,8 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         lateinit var mobDeathLoggerTable: MobDeathLoggerTable
         val logWorlds = ArrayList<String>()
         val groups = HashMap<String,Int>()
+
+        var protocolManager: ProtocolManager? = null
     }
 
 
@@ -63,6 +69,10 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
 
             if (Bukkit.getPluginManager().getPlugin("PlayerAnimator") != null){
                 registerMagic("PlayerAnim" to PlayerAnimation::class.java)
+            }
+            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null){
+                VersionHandler.getInstance(IDualWeapon::class.java).listenPacket()
+                protocolManager = ProtocolLibrary.getProtocolManager()
             }
         }
         if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null){
