@@ -1,7 +1,7 @@
 name: Man10MythicMagic
 version: '${version}'
 main: tororo1066.man10mythicmagic.Man10MythicMagic
-api-version: 1.17
+api-version: 1.19
 
 commands:
   mythicmagic:

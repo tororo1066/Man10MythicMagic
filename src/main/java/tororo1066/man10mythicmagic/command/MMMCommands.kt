@@ -10,7 +10,10 @@ import tororo1066.tororopluginapi.sCommand.SCommand
 import tororo1066.tororopluginapi.sCommand.SCommandArg
 import tororo1066.tororopluginapi.sCommand.SCommandObject
 
-class MMMCommands : SCommand("mythicmagic","","mmm.op") {
+class MMMCommands : SCommand(
+    "mythicmagic",
+    perm = "mmm.op"
+) {
 
     init {
         addCommand(SCommandObject().addArg(SCommandArg().addAllowString("reload")).setNormalExecutor {

@@ -46,7 +46,7 @@ class ThrowItem : CompoundAction() {
         val newZ = direction.x * sin(theta) + direction.z * cos(theta)
         val item = SItem(material).setCustomModelData(customModelData).setDisplayName(Random.nextDouble(10000000.0).toString())
         if (enchant) item.setEnchantment(Enchantment.LUCK,1)
-        val dropItem = loc.world.dropItem(loc,item)
+        val dropItem = loc.world.dropItem(loc,item.build())
         dropItem.setCanMobPickup(false)
         if (canPick){
             dropItem.pickupDelay = 20

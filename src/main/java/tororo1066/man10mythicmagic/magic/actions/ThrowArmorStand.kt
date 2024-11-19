@@ -39,7 +39,7 @@ class ThrowArmorStand : CompoundAction() {
             it.isInvisible = true
             it.isInvulnerable = true
             it.noDamageTicks = 0
-            it.setItem(EquipmentSlot.HAND,SItem(type).setCustomModelData(cmd))
+            it.setItem(EquipmentSlot.HAND,SItem(type).setCustomModelData(cmd).build())
             it.rightArmPose = rotation
 
             es.execute {

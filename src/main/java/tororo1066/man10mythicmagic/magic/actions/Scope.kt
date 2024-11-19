@@ -17,7 +17,7 @@ class Scope: CompoundAction() {
     companion object{
         fun unScopePlayer(p: Player, wand: Wand){
             if (!p.hasMetadata("magic_scope"))return
-            wand.icon = MaterialAndData(SItem(wand.icon.material!!).setCustomModelData(p.getMetadata("magic_scope")[0].asInt()))
+            wand.icon = MaterialAndData(SItem(wand.icon.material!!).setCustomModelData(p.getMetadata("magic_scope")[0].asInt()).build())
             p.removePotionEffect(PotionEffectType.SPEED)
             p.removeMetadata("magic_scope",Man10MythicMagic.plugin)
             wand.saveState()
@@ -39,7 +39,7 @@ class Scope: CompoundAction() {
             unScopePlayer(p,wand)
             return SpellResult.CAST
         }
-        wand.icon = MaterialAndData(SItem(wand.icon.material!!).setCustomModelData(scopeCmd))
+        wand.icon = MaterialAndData(SItem(wand.icon.material!!).setCustomModelData(scopeCmd).build())
         wand.saveState()
         p.setMetadata("magic_scope",FixedMetadataValue(Man10MythicMagic.plugin,unScopeCmd))
         p.removePotionEffect(PotionEffectType.SPEED)

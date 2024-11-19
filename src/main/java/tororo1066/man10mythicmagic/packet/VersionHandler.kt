@@ -5,7 +5,7 @@ import java.util.IdentityHashMap
 
 object VersionHandler {
 
-    val version = Bukkit.getServer().javaClass.`package`.name.split(".")[3]
+    val version = Bukkit.getServer().bukkitVersion.split("-")[0].replace(".", "_")
 
     val cache = IdentityHashMap<Class<*>, Any>()
 
