@@ -22,6 +22,7 @@ class CustomPotionEffect: BrushSpell() {
     var tickInterval: Int = 1
     var playerSpecific: Boolean = false
     var castRemoveOnOverride: Boolean = false
+    var removeOnDeath: Boolean = false
 
     private val actions: MutableMap<String, ActionHandler> = HashMap()
     private var undoable = false
@@ -152,6 +153,7 @@ class CustomPotionEffect: BrushSpell() {
         this.tickInterval = template.getInt("tick_interval", 1)
         this.playerSpecific = template.getBoolean("player_specific", false)
         this.castRemoveOnOverride = template.getBoolean("cast_remove_on_override", false)
+        this.removeOnDeath = template.getBoolean("remove_on_death", true)
         var actionsNode = template.getConfigurationSection("actions")
         if (actionsNode != null) {
             val parameters = template.getConfigurationSection("parameters")

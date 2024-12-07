@@ -7,6 +7,7 @@
   tick_interval: 1 # 何tickごとにtickActionを実行するか デフォルトは1
   player_specific: false # 付与者ごとに効果を持たせるか デフォルトはfalse
   cast_remove_on_override: false # 上位の効果を付与されたときにremoveActionを実行するか デフォルトはfalse
+  remove_on_death: true # 死亡時に効果を削除するか デフォルトはtrue
   actions:
     add: # 効果を付与するときに実行するaction
       - class: ...
