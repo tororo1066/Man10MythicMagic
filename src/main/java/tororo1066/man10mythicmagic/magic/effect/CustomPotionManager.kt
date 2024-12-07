@@ -65,6 +65,7 @@ object CustomPotionManager: Listener {
 
         Bukkit.getScheduler().runTaskTimer(SJavaPlugin.plugin, Runnable {
             queues.forEach { it() }
+            queues.clear()
             customPotionEffectInstances.forEach { (_, effects) ->
                 effects.forEach second@ { (_, instances) ->
                     val max = instances.maxByOrNull { it.amplifier } ?: return@second
