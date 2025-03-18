@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.spell.BrushSpell
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils
 import com.elmakers.mine.bukkit.utility.Target
 import com.elmakers.mine.bukkit.utility.Targeting
+import org.apache.commons.lang3.reflect.FieldUtils
 import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import java.util.Locale
@@ -85,7 +86,8 @@ class CustomPotionEffect: BrushSpell() {
         if (grantor != null) {
             val player = Bukkit.getPlayer(UUID.fromString(grantor))
             if (player != null) {
-                val targeting = javaClass.getField("targeting")
+                val targeting = FieldUtils.getField(this.javaClass, "targeting")
+//                val targeting = javaClass.getField("targeting")
                 targeting.isAccessible = true
                 val target = targeting.get(this) as Targeting
                 return target.overrideTarget(context, Target(eyeLocation, player))

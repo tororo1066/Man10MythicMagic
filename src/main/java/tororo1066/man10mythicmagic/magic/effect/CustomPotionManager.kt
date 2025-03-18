@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.entity.EntityDeathEvent
 import tororo1066.man10mythicmagic.Man10MythicMagic
 import tororo1066.tororopluginapi.SJavaPlugin
 import java.io.File
@@ -20,6 +20,7 @@ object CustomPotionManager: Listener {
 
     fun load() {
         customPotionEffects.clear()
+        customPotionEffectInstances.clear()
         val folder = File(SJavaPlugin.plugin.dataFolder, "effects")
         if (!folder.exists()) folder.mkdirs()
         val files = folder.listFiles() ?: return
@@ -96,7 +97,7 @@ object CustomPotionManager: Listener {
     }
 
     @EventHandler
-    fun onDeath(e: PlayerDeathEvent) {
+    fun onDeath(e: EntityDeathEvent) {
         queues.add {
             customPotionEffectInstances[e.entity.uniqueId]?.forEach { (_, instances) ->
                 instances.removeAll {
