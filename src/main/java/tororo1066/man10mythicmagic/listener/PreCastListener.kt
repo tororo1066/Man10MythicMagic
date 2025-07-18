@@ -12,8 +12,13 @@ import tororo1066.man10mythicmagic.utils.getHotbarWands
 import tororo1066.tororopluginapi.SDebug.Companion.sendDebug
 import tororo1066.tororopluginapi.sEvent.SEvent
 import java.util.UUID
+import kotlin.math.max
 
 class PreCastListener {
+
+    companion object {
+        val disabledPlayers = HashMap<UUID, Long>() // UUID, remaining time
+    }
 
     val messageCooldown = HashMap<UUID, Long>()
 
@@ -39,11 +44,28 @@ class PreCastListener {
 
     init {
 
+        Bukkit.getScheduler().runTaskTimer(Man10MythicMagic.plugin, Runnable {
+            disabledPlayers.forEach { (uuid, time) ->
+                disabledPlayers[uuid] = max(0, time - 1)
+            }
+            disabledPlayers.entries.removeIf { it.value <= 0 }
+        }, 0, 1)
+
+        SEvent(Man10MythicMagic.plugin).register<PreCastEvent> { e ->
+            val player = e.mage.player?:return@register
+            if (disabledPlayers.containsKey(player.uniqueId)) {
+                e.isCancelled = true
+                return@register
+            }
+        }
+
         //武器制限
         SEvent(Man10MythicMagic.plugin).register<PreCastEvent> { e ->
             val player = e.mage.player?:return@register
             if (!config().getBoolean("weapon_disabler.enabled"))return@register
-            val section = config().getConfigurationSection("weapon_disabler.${player.world.name}")?:return@register
+            val section = config().getConfigurationSection("weapon_disabler.${player.world.name}").let {
+                it ?: config().getConfigurationSection("weapon_disabler.default") ?: return@register
+            }
             val disabledSpells = getDisabledSpells(section)
             val disabledWands = getDisabledWands(section)
 

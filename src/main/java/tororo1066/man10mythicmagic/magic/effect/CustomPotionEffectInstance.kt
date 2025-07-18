@@ -26,7 +26,7 @@ class CustomPotionEffectInstance(
         val effects = instances.computeIfAbsent(effect.name) { ArrayList() }
         if (effects.isNotEmpty()) {
             effects.forEach {
-                //amplifierが同じかつ、durationが長い場合は追加しない
+                //amplifierが同じ以上かつ、durationが長い場合は追加しない
                 if (it.amplifier >= amplifier
                     && it.duration - it.currentTick > duration - currentTick
                     && it.instanceId != instanceId

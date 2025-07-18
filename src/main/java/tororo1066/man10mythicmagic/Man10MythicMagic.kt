@@ -42,17 +42,23 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         val groups = HashMap<String,Int>()
 
         var protocolManager: ProtocolManager? = null
+
+        var foundMagic = false
+        var foundMythic = false
     }
 
 
     override fun onStart() {
         saveDefaultConfig()
-        server.pluginManager.registerEvents(this,this)
         plugin = this
         util = UsefulUtility(this)
         reload()
         val magicPlugin = Bukkit.getPluginManager().getPlugin("Magic")
-        if (magicPlugin != null){
+        val mythicPlugin = Bukkit.getPluginManager().getPlugin("MythicMobs")
+        if (magicPlugin != null) foundMagic = true
+        if (mythicPlugin != null) foundMythic = true
+
+        if (foundMagic){
             magicAPI = magicPlugin as MagicAPI
             effectLib = EffectLibManager(this)
             registerActions()
@@ -64,6 +70,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             WandActivateListener()
             ScopeListener()
             PreCastListener()
+            PlayerDeathListener()
             UltimateTrigger
 //            CustomPotionManager.load()
 
@@ -75,10 +82,12 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
                 protocolManager = ProtocolLibrary.getProtocolManager()
             }
         }
-        if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null){
+        if (foundMythic){
+            server.pluginManager.registerEvents(this,this)
             mythicMobs = MythicBukkit.inst()
             mobDeathLoggerTable = MobDeathLoggerTable()
             MythicMobDeathListener()
+            MythicMobDamageListener()
         }
 
         MMMCommands()
@@ -141,8 +150,8 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "CustomPotionEffect" to CustomPotionEffect::class.java,
             "CheckCustomPotionEffect" to CheckCustomPotionEffect::class.java,
             "RestoreCustomPotionEffectInfo" to RestoreCustomPotionEffectInfo::class.java,
+            "DamagePlus" to DamagePlus::class.java,
         )
-
     }
 
 
@@ -160,10 +169,16 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "ARMORDAMAGE" to ArmorMechanic::class.java,
             "SETROTATIONPLUS" to SetRotation::class.java,
             "SUMMONPLUS" to SummonPlusMechanic::class.java,
-            "CALLSPELL" to CallMagicSpell::class.java,
             "RADIUSCOMMAND" to RadiusCommandExecute::class.java,
             "SELFTELEPORT" to SelfTeleport::class.java
         )
+        if (foundMagic) {
+            e.registerMechanic(
+                "EFFECTLIB" to EffectLibMechanic::class.java,
+                "CALLSPELL" to CallMagicSpell::class.java,
+                "DISABLEMAGICSPELLS" to DisableMagicSpells::class.java,
+            )
+        }
     }
 
     private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, Class<out ISkillTargeter>>){
