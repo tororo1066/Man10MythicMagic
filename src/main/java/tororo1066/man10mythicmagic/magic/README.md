@@ -473,13 +473,13 @@ ModifyPropertiesの拡張版\
 
 ### UniqueVariable
 Targetに対して一意な変数を設定する\
-**パラメーター**\
+**パラメーター**
 - type: (store: 変数を代入する, restore: 変数を取得する, clear: 変数を削除する)
 - variable: 変数名
 - value: 変数に代入する値(storeの時のみ)
 - restore_name: 取得した変数の代入先(restoreの時のみ)
 
-**対象**\
+**対象**
 - エンティティ
 
 **例**
@@ -495,4 +495,21 @@ Targetに対して一意な変数を設定する\
   type: store
   variable: test
   value: $test
+```
+
+### DamagePlus
+通常のDamageに機能を追加したもの\
+**パラメータ**
+- kill_message: このダメージでプレイヤーをキルするとその死亡メッセージになる\
+  <caster.name>で使用者の名前、<target.name>でダメージを与えたプレイヤーの名前\
+  文字列でもリストでも使用可能 リストの場合ランダムになる
+
+**対象**
+- エンティティ
+
+**例**
+```yaml
+- class: DamagePlus
+  damage: 3
+  kill_message: <target.name>は<caster.name>の剣の錆になった...
 ```
