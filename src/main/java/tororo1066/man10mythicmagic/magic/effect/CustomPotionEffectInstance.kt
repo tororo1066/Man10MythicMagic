@@ -28,7 +28,7 @@ class CustomPotionEffectInstance(
             effects.forEach {
                 //amplifierが同じ以上かつ、durationが長い場合は追加しない
                 if (it.amplifier >= amplifier
-                    && it.duration - it.currentTick > duration - currentTick
+                    && it.duration - it.currentTick >= duration - currentTick
                     && it.instanceId != instanceId
                     && ((it.player == null && player == null) || it.player == player)) {
                     return
@@ -36,7 +36,7 @@ class CustomPotionEffectInstance(
 
                 //amplifierがそれより小さく、durationが短い場合は削除
                 if (it.amplifier < amplifier
-                    && it.duration - it.currentTick < duration - currentTick
+                    && it.duration - it.currentTick <= duration - currentTick
                     && it.instanceId != instanceId
                     && ((it.player == null && player == null) || it.player == player)) {
                     it.shouldRemove = true
@@ -84,7 +84,7 @@ class CustomPotionEffectInstance(
         return YamlConfiguration().apply {
             set("handler", handler)
             set("amplifier", amplifier)
-            set("duration", duration)
+            set("duration", duration - currentTick)
             set("grantor", player)
         }
     }

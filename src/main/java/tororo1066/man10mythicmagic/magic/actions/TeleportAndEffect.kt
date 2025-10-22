@@ -27,10 +27,12 @@ class TeleportAndEffect : CompoundAction() {
     private var radius = 0.0
     private var yRadius = 0.0
     private var relative = false
+    private var hitCount = 0
 
     private var nowLength = 0
     private var y = .0
     private var end = false
+    private var currentHitCount = 0
 
 
     private val damagedEntities = ArrayList<UUID>()
@@ -115,7 +117,8 @@ class TeleportAndEffect : CompoundAction() {
 
         if (radius == 0.0)return SpellResult.CAST
         loc.getNearbyLivingEntities(radius, yRadius, radius).forEach {
-            if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId){
+            if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId && currentHitCount < hitCount) {
+                currentHitCount++
                 createActionContext(context,context.entity,context.location,it,it.location)
                 startActions()
                 damagedEntities.add(it.uniqueId)
@@ -159,5 +162,6 @@ class TeleportAndEffect : CompoundAction() {
         yRadius = parameters.getDouble("y_radius",0.0)
         yOffSet = parameters.getDouble("yoffset",0.0)
         relative = parameters.getBoolean("relative",false)
+        hitCount = parameters.getInt("hit_count",1)
     }
 }

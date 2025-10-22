@@ -83,9 +83,12 @@ object CustomPotionManager: Listener {
             }
             customPotionEffectInstances.forEach { (_, effects) ->
                 effects.forEach { (_, instances) ->
+
                     instances.removeAll {
                         if (it.shouldRemove) {
-                            it.remove(delete = false)
+                            if (instances.size == 1) {
+                                it.remove(delete = false)
+                            }
                             true
                         } else {
                             false
@@ -102,7 +105,9 @@ object CustomPotionManager: Listener {
             customPotionEffectInstances[e.entity.uniqueId]?.forEach { (_, instances) ->
                 instances.removeAll {
                     if (it.effect.removeOnDeath) {
-                        it.remove(delete = false)
+                        if (it.effect.castRemoveOnDeath) {
+                            it.remove(delete = false)
+                        }
                         true
                     } else {
                         false

@@ -23,7 +23,8 @@ class CustomPotionEffect: BrushSpell() {
     var tickInterval: Int = 1
     var playerSpecific: Boolean = false
     var castRemoveOnOverride: Boolean = false
-    var removeOnDeath: Boolean = false
+    var removeOnDeath: Boolean = true
+    var castRemoveOnDeath: Boolean = false
 
     private val actions: MutableMap<String, ActionHandler> = HashMap()
     private var undoable = false
@@ -156,6 +157,7 @@ class CustomPotionEffect: BrushSpell() {
         this.playerSpecific = template.getBoolean("player_specific", false)
         this.castRemoveOnOverride = template.getBoolean("cast_remove_on_override", false)
         this.removeOnDeath = template.getBoolean("remove_on_death", true)
+        this.castRemoveOnDeath = template.getBoolean("cast_remove_on_death", false)
         var actionsNode = template.getConfigurationSection("actions")
         if (actionsNode != null) {
             val parameters = template.getConfigurationSection("parameters")
@@ -165,7 +167,7 @@ class CustomPotionEffect: BrushSpell() {
                 val templateKey = templateKeys.next()
                 if (templateKey.endsWith("_parameters")) {
                     val overrides = ConfigurationUtils.cloneConfiguration(template.getConfigurationSection(templateKey))
-                    val configKey = templateKey.substring(0, templateKey.length - 11)
+                    val configKey = templateKey.dropLast(11)
                     handlerParameters[configKey] = overrides
                 }
             }
@@ -293,14 +295,5 @@ class CustomPotionEffect: BrushSpell() {
                 return startCast(SpellResult.REACTIVATE, this.getCurrentCast().workingParameters).isSuccess
             }
         }
-    }
-
-    fun getHandlers(): Collection<String?> {
-        return actions.keys
-    }
-
-    fun setCurrentHandler(handlerKey: String?, context: com.elmakers.mine.bukkit.action.CastContext) {
-        this.currentHandler = actions[handlerKey]
-        context.rootHandler = currentHandler
     }
 }

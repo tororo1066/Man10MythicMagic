@@ -118,6 +118,11 @@ class DamagePlus: BaseSpellAction() {
                             FixedMetadataValue(Man10MythicMagic.plugin, killMessage)
                         )
                     }
+
+                    targetEntity.setMetadata(
+                        "killedBy",
+                        FixedMetadataValue(Man10MythicMagic.plugin, mage.name)
+                    )
                 }
 
                 if (this.knockbackResistance != null && livingTarget != null) {
@@ -238,6 +243,7 @@ class DamagePlus: BaseSpellAction() {
                 }
                 if (this.killMessage != null) {
                     entity.removeMetadata("killMessage", Man10MythicMagic.plugin)
+                    entity.removeMetadata("killedBy", Man10MythicMagic.plugin)
                 }
             }
 

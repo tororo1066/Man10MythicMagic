@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager
 import com.elmakers.mine.bukkit.action.ActionFactory
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import com.elmakers.mine.bukkit.effect.EffectLibManager
+import com.elmakers.mine.bukkit.magic.Mage
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.ISkillMechanic
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter
@@ -81,6 +82,8 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
                 VersionHandler.getInstance(IDualWeapon::class.java).listenPacket()
                 protocolManager = ProtocolLibrary.getProtocolManager()
             }
+
+            Mage.ACTION_BAR_QUEUE_INTERVAL = 0
         }
         if (foundMythic){
             server.pluginManager.registerEvents(this,this)
@@ -93,6 +96,9 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         MMMCommands()
 
         NoUsed.register()
+    }
+
+    override fun onEnd() {
     }
 
     fun reload(){
@@ -120,7 +126,6 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "AmmoReload" to AmmoReload::class.java,
             "CheckPotionPlus" to CheckPotionEffect::class.java,
             "ThrowItemPlus" to ThrowItem::class.java,
-            "CallMythicSkill" to CallMythicSkill::class.java,
             "CheckCMD" to CheckCMD::class.java,
             "ThrowArmorStand" to ThrowArmorStand::class.java,
             "CircleParticle" to CircleParticle::class.java,
@@ -152,6 +157,11 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "RestoreCustomPotionEffectInfo" to RestoreCustomPotionEffectInfo::class.java,
             "DamagePlus" to DamagePlus::class.java,
         )
+        if (foundMythic) {
+            registerMagic(
+                "CallMythicSkill" to CallMythicSkill::class.java
+            )
+        }
     }
 
 
