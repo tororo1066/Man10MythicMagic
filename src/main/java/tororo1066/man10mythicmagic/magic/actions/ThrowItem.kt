@@ -45,7 +45,7 @@ class ThrowItem : CompoundAction() {
         val newX = direction.x * cos(theta) - direction.z * sin(theta)
         val newZ = direction.x * sin(theta) + direction.z * cos(theta)
         val item = SItem(material).setCustomModelData(customModelData).setDisplayName(Random.nextDouble(10000000.0).toString())
-        if (enchant) item.setEnchantment(Enchantment.LUCK,1)
+        if (enchant) item.setEnchantment(Enchantment.LUCK_OF_THE_SEA,1)
         val dropItem = loc.world.dropItem(loc,item.build())
         dropItem.setCanMobPickup(false)
         if (canPick){

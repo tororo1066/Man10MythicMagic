@@ -126,7 +126,7 @@ class DamagePlus: BaseSpellAction() {
                 }
 
                 if (this.knockbackResistance != null && livingTarget != null) {
-                    val knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
+                    val knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE)
                     previousKnockbackResistance = knockBackAttribute!!.baseValue
                     knockBackAttribute.baseValue = this.knockbackResistance!!
                 }
@@ -235,7 +235,7 @@ class DamagePlus: BaseSpellAction() {
                 }
             } finally {
                 if (this.knockbackResistance != null && livingTarget != null) {
-                    val knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
+                    val knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE)
                     knockBackAttribute!!.baseValue = previousKnockbackResistance
                 }
                 if (this.element != null) {

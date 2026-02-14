@@ -17,7 +17,7 @@ class PlayerAnimation: CompoundAction() {
 
     override fun start(context: CastContext): SpellResult {
         val p = context.mage.player?:return SpellResult.FAIL
-        SPlayer.getSPlayer(p).invisibleItems(EquipmentSlot.values().toList(), true)
+        SPlayer.getSPlayer(p).invisibleItems(EquipmentSlot.entries, true)
         p.isInvisible = true
         val model = PlayerModel(p)
         model.playAnimation(animName)
@@ -25,7 +25,7 @@ class PlayerAnimation: CompoundAction() {
             model.despawn()
             PlayerAnimator.api.modelManager.unregisterModel(model)
             p.isInvisible = false
-            SPlayer.getSPlayer(p).invisibleItems(EquipmentSlot.values().toList(), false)
+            SPlayer.getSPlayer(p).invisibleItems(EquipmentSlot.entries, false)
         }, (model.animationProperty.animation.length*20).toLong())
         return SpellResult.CAST
     }

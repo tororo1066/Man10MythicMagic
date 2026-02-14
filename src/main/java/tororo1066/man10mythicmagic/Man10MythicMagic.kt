@@ -79,8 +79,8 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
                 registerMagic("PlayerAnim" to PlayerAnimation::class.java)
             }
             if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null){
-                VersionHandler.getInstance(IDualWeapon::class.java).listenPacket()
                 protocolManager = ProtocolLibrary.getProtocolManager()
+                VersionHandler.getInstance(IDualWeapon::class.java).listenPacket()
             }
 
             Mage.ACTION_BAR_QUEUE_INTERVAL = 0

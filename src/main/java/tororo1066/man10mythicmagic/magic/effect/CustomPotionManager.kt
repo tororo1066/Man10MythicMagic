@@ -11,11 +11,13 @@ import tororo1066.man10mythicmagic.Man10MythicMagic
 import tororo1066.tororopluginapi.SJavaPlugin
 import java.io.File
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 object CustomPotionManager: Listener {
 
     val customPotionEffects = HashMap<String, CustomPotionEffect>()
-    val customPotionEffectInstances = HashMap<UUID, HashMap<String, ArrayList<CustomPotionEffectInstance>>>()
+    val customPotionEffectInstances = ConcurrentHashMap<UUID, ConcurrentHashMap<String, CopyOnWriteArrayList<CustomPotionEffectInstance>>>()
     val queues = ArrayDeque<() -> Unit>()
 
     fun load() {
@@ -51,7 +53,7 @@ object CustomPotionManager: Listener {
         queues.add {
             customPotionEffectInstances[entity.uniqueId]?.get(effect)?.removeAll {
                 if (it.player == player) {
-                    it.remove(delete = false)
+                    it.remove()
                     true
                 } else {
                     false
@@ -65,8 +67,12 @@ object CustomPotionManager: Listener {
         load()
 
         Bukkit.getScheduler().runTaskTimer(SJavaPlugin.plugin, Runnable {
-            queues.forEach { it() }
-            queues.clear()
+//            queues.forEach { it() }
+//            queues.clear()
+            while (queues.isNotEmpty()) {
+                val run = queues.removeFirst()
+                run()
+            }
             customPotionEffectInstances.forEach { (_, effects) ->
                 effects.forEach second@ { (_, instances) ->
                     val max = instances.maxByOrNull { it.amplifier } ?: return@second
@@ -87,7 +93,7 @@ object CustomPotionManager: Listener {
                     instances.removeAll {
                         if (it.shouldRemove) {
                             if (instances.size == 1) {
-                                it.remove(delete = false)
+                                it.remove()
                             }
                             true
                         } else {
@@ -106,7 +112,7 @@ object CustomPotionManager: Listener {
                 instances.removeAll {
                     if (it.effect.removeOnDeath) {
                         if (it.effect.castRemoveOnDeath) {
-                            it.remove(delete = false)
+                            it.remove()
                         }
                         true
                     } else {

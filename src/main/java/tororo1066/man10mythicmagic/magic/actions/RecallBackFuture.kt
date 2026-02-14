@@ -24,11 +24,10 @@ class RecallBackFuture: CompoundAction() {
         if (relative) {
             player.teleport(
                 loc,
-                TeleportFlag.Relative.X,
-                TeleportFlag.Relative.Y,
-                TeleportFlag.Relative.Z,
-                TeleportFlag.Relative.YAW,
-                TeleportFlag.Relative.PITCH
+                TeleportFlag.Relative.VELOCITY_X,
+                TeleportFlag.Relative.VELOCITY_Y,
+                TeleportFlag.Relative.VELOCITY_Z,
+                TeleportFlag.Relative.VELOCITY_ROTATION
             )
         } else {
             player.teleport(loc)

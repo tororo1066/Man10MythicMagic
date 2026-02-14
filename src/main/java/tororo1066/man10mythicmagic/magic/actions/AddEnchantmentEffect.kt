@@ -10,7 +10,7 @@ class AddEnchantmentEffect : CompoundAction() {
 
     override fun start(context: CastContext?): SpellResult {
         context?:return SpellResult.FAIL
-        (context.wand?:return SpellResult.FAIL).addEnchantments(mutableMapOf(Pair(Enchantment.LUCK,1)))
+        (context.wand?:return SpellResult.FAIL).addEnchantments(mutableMapOf(Pair(Enchantment.LUCK_OF_THE_SEA,1)))
         return SpellResult.CAST
     }
 

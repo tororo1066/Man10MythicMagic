@@ -57,11 +57,10 @@ class TeleportAndEffect : CompoundAction() {
         if (relative) {
             context.entity?.teleport(
                 teleportLocation.setPitchL(context.location!!.pitch),
-                TeleportFlag.Relative.X,
-                TeleportFlag.Relative.Y,
-                TeleportFlag.Relative.Z,
-                TeleportFlag.Relative.YAW,
-                TeleportFlag.Relative.PITCH
+                TeleportFlag.Relative.VELOCITY_X,
+                TeleportFlag.Relative.VELOCITY_Y,
+                TeleportFlag.Relative.VELOCITY_Z,
+                TeleportFlag.Relative.VELOCITY_ROTATION
             )
         } else {
             context.entity?.teleport(teleportLocation.setPitchL(context.location!!.pitch))

@@ -4,6 +4,8 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Entity
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 class CustomPotionEffectInstance(
     val entity: Entity,
@@ -22,8 +24,8 @@ class CustomPotionEffectInstance(
 //    }
 
     fun add() {
-        val instances = CustomPotionManager.customPotionEffectInstances.computeIfAbsent(entity.uniqueId) { HashMap() }
-        val effects = instances.computeIfAbsent(effect.name) { ArrayList() }
+        val instances = CustomPotionManager.customPotionEffectInstances.computeIfAbsent(entity.uniqueId) { ConcurrentHashMap() }
+        val effects = instances.computeIfAbsent(effect.name) { CopyOnWriteArrayList() }
         if (effects.isNotEmpty()) {
             effects.forEach {
                 //amplifierが同じ以上かつ、durationが長い場合は追加しない
@@ -46,7 +48,6 @@ class CustomPotionEffectInstance(
         effects.removeAll {
             if (it.shouldRemove) {
                 it.remove(
-                    delete = false,
                     handler = it.effect.castRemoveOnOverride
                 )
                 true
@@ -71,12 +72,9 @@ class CustomPotionEffectInstance(
         }
     }
 
-    fun remove(delete: Boolean = true, handler: Boolean = true) {
+    fun remove(handler: Boolean = true) {
         if (handler) {
             effect.cast(handlerParameters("remove"))
-        }
-        if (delete) {
-            CustomPotionManager.customPotionEffectInstances[entity.uniqueId]?.get(effect.name)?.remove(this)
         }
     }
 
