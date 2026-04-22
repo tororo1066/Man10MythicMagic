@@ -513,3 +513,21 @@ Targetに対して一意な変数を設定する\
   damage: 3
   kill_message: <target.name>は<caster.name>の剣の錆になった...
 ```
+
+### SendGlow
+Targetに発光のパケットを送る
+**パラメーター**
+- glow: 発光させるかどうか
+- color: 発光の色
+- only_caster: casterにだけ発光を見せるかどうか
+
+**対象**
+- エンティティ
+
+**例**
+```yaml
+- class: SendGlow
+  glow: true
+  color: red
+  only_caster: true
+```
