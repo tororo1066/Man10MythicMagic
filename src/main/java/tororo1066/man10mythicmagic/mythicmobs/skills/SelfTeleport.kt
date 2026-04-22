@@ -37,7 +37,7 @@ class SelfTeleport(config: MythicLineConfig, file: File?): SkillMechanic(Man10My
                 var loc = target.location
                 if (this.pitchReset)loc.pitch = 0f
                 loc = loc.add(loc.direction.normalize().multiply(vector.z / max))
-                loc = loc.add(loc.direction.normalize().rotate(90.0F).multiply(vector.x / max))
+                loc = loc.add(loc.direction.normalize().rotate(90.0).multiply(vector.x / max))
                 loc.add(0.0, vector.y / max, 0.0)
                 if (BukkitAdapter.adapt(loc).block.isBuildable)return SkillResult.SUCCESS
                 target.teleport(loc)

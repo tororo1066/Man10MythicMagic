@@ -22,7 +22,7 @@ class SummonPlusMechanic(config: MythicLineConfig, file: File?) : SkillMechanic(
         var loc = p0.caster.entity.location
         if (forward){
             loc = loc.add(loc.direction.normalize().multiply(z))
-            loc = loc.add(loc.direction.normalize().rotate(90f).multiply(x))
+            loc = loc.add(loc.direction.normalize().rotate(90.0).multiply(x))
             mob.spawn(loc.add(0.0,y.toDouble(),0.0),0.0)
         } else {
             if (syncRotation){

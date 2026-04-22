@@ -156,6 +156,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "CheckCustomPotionEffect" to CheckCustomPotionEffect::class.java,
             "RestoreCustomPotionEffectInfo" to RestoreCustomPotionEffectInfo::class.java,
             "DamagePlus" to DamagePlus::class.java,
+            "SendGlow" to SendGlow::class.java,
         )
         if (foundMythic) {
             registerMagic(

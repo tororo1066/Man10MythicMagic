@@ -18,7 +18,7 @@ class LocPlusTarget(config: MythicLineConfig): SkillTargeter(Man10MythicMagic.my
             var loc = meta.caster.location.clone()
             loc.pitch = 0f
             loc = loc.add(loc.direction.normalize().multiply(it.z))
-            loc = loc.add(loc.direction.normalize().rotate(90f).multiply(it.x))
+            loc = loc.add(loc.direction.normalize().rotate(90.0).multiply(it.x))
             loc = loc.add(0.0,it.y,0.0)
             list.add(loc)
         }

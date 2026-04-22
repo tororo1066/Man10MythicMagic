@@ -22,6 +22,8 @@ class MythicMobDamageListener {
 
             val damageMetadata = DamageMetadata(
                 Man10MythicMagic.mythicMobs.skillManager.getCaster(BukkitAdapter.adapt(e.damager)),
+                null,
+                null,
                 e.damage,
                 mapOf(),
                 mapOf(),

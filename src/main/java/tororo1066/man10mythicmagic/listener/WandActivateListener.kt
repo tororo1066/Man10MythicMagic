@@ -71,7 +71,7 @@ class WandActivateListener {
             if (!afterEnabled && !beforeEnabled)return@register
 
             val afterWeaponSwitchTime =
-                if (afterEnabled) max(beforeTemplate!!.getLong(
+                if (afterEnabled) max(beforeTemplate.getLong(
                     "weapon_switch.after.time",
                     Man10MythicMagic.plugin.config.getLong("weapon_switch.after.time", 0)
                 ), 0)
@@ -121,7 +121,7 @@ class WandActivateListener {
                         if (spell.remainingCooldown < afterWeaponSwitchTime) {
                             spell.remainingCooldown = afterWeaponSwitchTime
                             wand.item?.let {
-                                e.mage.player?.setCooldown(it.type, (afterWeaponSwitchTime/20).toInt())
+                                e.mage.player?.setCooldown(it, (afterWeaponSwitchTime/20).toInt())
                             }
                         }
                         e.mage.player?.sendDebug(3, "Weapon switch cooldown ${spell.remainingCooldown}(Spell: ${spell.key}, after)")
