@@ -72,6 +72,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             ScopeListener()
             PreCastListener()
             PlayerDeathListener()
+            PlayerJoinListener()
             UltimateTrigger
 //            CustomPotionManager.load()
 
