@@ -25,11 +25,20 @@ repositories {
         url = 'https://mvn.lumine.io/repository/maven-public/'
     }
     maven { url 'https://jitpack.io' }
+
     maven {
         url = uri('https://maven.pkg.github.com/tororo1066/TororoPluginAPI')
         credentials {
             username = System.getenv('GITHUB_USERNAME')
             password = System.getenv('GITHUB_TOKEN')
+        }
+    }
+
+    maven {
+        url = uri("https://maven.pkg.github.com/tororo1066/CustomHud")
+        credentials {
+            username = providers.environmentVariable("GITHUB_USERNAME").get()
+            password = providers.environmentVariable("GITHUB_TOKEN").get()
         }
     }
 }
@@ -38,10 +47,11 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
-    compileOnly "io.lumine:Mythic-Dist:5.11.2"
+    compileOnly "io.lumine:Mythic-Dist:5.10.0"
+    compileOnly "tororo1066:customhud-api:0.1.0"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    api 'tororo1066:tororopluginapi:ae62f87'
-    compileOnly 'tororo1066:base:ae62f87'
+    api 'tororo1066:tororopluginapi:77f6679'
+    compileOnly 'tororo1066:base:77f6679'
     compileOnly 'net.dmulloy2:ProtocolLib:5.4.0'
 }
 

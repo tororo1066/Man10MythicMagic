@@ -1,7 +1,7 @@
 name: Man10MythicMagic
 version: '1.0'
 main: tororo1066.man10mythicmagic.Man10MythicMagic
-api-version: '1.19'
+api-version: '1.21'
 
 dependencies:
   server:
@@ -17,5 +17,8 @@ dependencies:
     NMSUtils:
       load: BEFORE
     ProtocolLib:
+      load: BEFORE
+      required: false
+    CustomHud:
       load: BEFORE
       required: false

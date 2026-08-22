@@ -1,51 +1,56 @@
 package tororo1066.man10mythicmagic
 
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.ProtocolManager
 import com.elmakers.mine.bukkit.action.ActionFactory
+import com.elmakers.mine.bukkit.action.builtin.ModifyPropertiesAction
 import com.elmakers.mine.bukkit.api.magic.MagicAPI
 import com.elmakers.mine.bukkit.effect.EffectLibManager
 import com.elmakers.mine.bukkit.magic.Mage
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.ISkillMechanic
+import io.lumine.mythic.api.skills.conditions.ISkillCondition
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter
 import io.lumine.mythic.bukkit.MythicBukkit
+import io.lumine.mythic.bukkit.events.MythicConditionLoadEvent
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import tororo1066.man10mythicmagic.command.MMMCommands
+import tororo1066.man10mythicmagic.hud.CustomPotionEffectRendererRegistration
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.magic.trigger.UltimateTrigger
 import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
+import tororo1066.man10mythicmagic.mythicmobs.conditions.HasCustomPotionEffect
 import tororo1066.man10mythicmagic.mythicmobs.skills.*
 import tororo1066.man10mythicmagic.mythicmobs.target.LocPlusTarget
 import tororo1066.man10mythicmagic.noused.NoUsed
 import tororo1066.man10mythicmagic.packet.IDualWeapon
 import tororo1066.man10mythicmagic.packet.VersionHandler
+import tororo1066.nmsutils.PacketListener
+import tororo1066.tororopluginapi.Proxy
 import tororo1066.tororopluginapi.SJavaPlugin
 import tororo1066.tororopluginapi.otherUtils.UsefulUtility
 import java.io.File
 
 
-class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
+class Man10MythicMagic : SJavaPlugin(), Listener {
 
     companion object{
         lateinit var plugin : Man10MythicMagic
         lateinit var magicAPI: MagicAPI
         lateinit var mythicMobs: MythicBukkit
         var effectLib: EffectLibManager? = null
+        var packetListener: PacketListener? = null
         lateinit var util: UsefulUtility
         lateinit var mobDeathLoggerTable: MobDeathLoggerTable
         val logWorlds = ArrayList<String>()
         val groups = HashMap<String,Int>()
 
-        var protocolManager: ProtocolManager? = null
-
         var foundMagic = false
         var foundMythic = false
+        var foundProtocolLib = false
     }
 
 
@@ -72,16 +77,19 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             ScopeListener()
             PreCastListener()
             PlayerDeathListener()
-            PlayerJoinListener()
+            GlowTeamInitListener()
             UltimateTrigger
 //            CustomPotionManager.load()
 
-            if (Bukkit.getPluginManager().getPlugin("PlayerAnimator") != null){
-                registerMagic("PlayerAnim" to PlayerAnimation::class.java)
-            }
             if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null){
-                protocolManager = ProtocolLibrary.getProtocolManager()
+                foundProtocolLib = true
                 VersionHandler.getInstance(IDualWeapon::class.java).listenPacket()
+            }
+
+            try {
+                packetListener = Proxy(this, "tororo1066.nmsutils").getProxy(PacketListener::class.java)
+            } catch (e: Exception) {
+                logger.warning("Failed to load PacketListener: ${e.message}")
             }
 
             Mage.ACTION_BAR_QUEUE_INTERVAL = 0
@@ -96,10 +104,13 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
 
         MMMCommands()
 
+        CustomPotionEffectRendererRegistration.start(this)
+
         NoUsed.register()
     }
 
     override fun onEnd() {
+        CustomPotionEffectRendererRegistration.stop(this)
     }
 
     fun reload(){
@@ -109,6 +120,11 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         val configGroups = config.getConfigurationSection("groups")
         configGroups?.getKeys(false)?.forEach {
             groups[it] = configGroups.getInt(it)
+        }
+
+        if (foundMythic) {
+            mobDeathLoggerTable.close()
+            mobDeathLoggerTable = MobDeathLoggerTable()
         }
     }
 
@@ -151,7 +167,7 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
             "FakeItem" to FakeItem::class.java,
             "ModifyWandLore" to ModifyWandLore::class.java,
             "BackStab" to BackStab::class.java,
-            "ModifyPropertiesPlus" to ModifyPropertiesPlus::class.java,
+            "ModifyPropertiesPlus" to ModifyPropertiesAction::class.java,
             "UniqueVariable" to UniqueVariable::class.java,
             "CustomPotionEffect" to CustomPotionEffect::class.java,
             "CheckCustomPotionEffect" to CheckCustomPotionEffect::class.java,
@@ -167,11 +183,13 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
     }
 
 
-    private fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, Class<out ISkillMechanic>>){
+    private fun MythicMechanicLoadEvent.registerMechanic(vararg pair: Pair<String, Class<out ISkillMechanic>>) {
         pair.forEach {
-            if (mechanicName.equals(it.first,true))
-                register(it.second.getConstructor(MythicLineConfig::class.java, File::class.java)
-                    .newInstance(config, container.file))
+            if (mechanicName.equals(it.first, true))
+                register(
+                    it.second.getConstructor(MythicLineConfig::class.java, File::class.java)
+                        .newInstance(config, container.file)
+                )
         }
     }
 
@@ -189,15 +207,18 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
                 "EFFECTLIB" to EffectLibMechanic::class.java,
                 "CALLSPELL" to CallMagicSpell::class.java,
                 "DISABLEMAGICSPELLS" to DisableMagicSpells::class.java,
+                "CUSTOMPOTIONEFFECT" to CustomPotionEffectSkill::class.java
             )
         }
     }
 
-    private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, Class<out ISkillTargeter>>){
+    private fun MythicTargeterLoadEvent.registerTarget(vararg pair: Pair<String, Class<out ISkillTargeter>>) {
         pair.forEach {
-            if (targeterName.equals(it.first,true))
-                register(it.second.getConstructor(MythicLineConfig::class.java)
-                    .newInstance(config))
+            if (targeterName.equals(it.first, true))
+                register(
+                    it.second.getConstructor(MythicLineConfig::class.java)
+                        .newInstance(config)
+                )
         }
     }
 
@@ -208,7 +229,20 @@ class Man10MythicMagic : SJavaPlugin(UseOption.MySQL), Listener {
         )
     }
 
+    private fun MythicConditionLoadEvent.registerCondition(vararg pair: Pair<String, Class<out ISkillCondition>>) {
+        pair.forEach {
+            if (conditionName.equals(it.first, true))
+                register(
+                    it.second.getConstructor(MythicLineConfig::class.java)
+                        .newInstance(config)
+                )
+        }
+    }
 
-
-
+    @EventHandler
+    fun onConditionLoad(e: MythicConditionLoadEvent){
+        e.registerCondition(
+            "HASCUSTOMPOTIONEFFECT" to HasCustomPotionEffect::class.java,
+        )
+    }
 }

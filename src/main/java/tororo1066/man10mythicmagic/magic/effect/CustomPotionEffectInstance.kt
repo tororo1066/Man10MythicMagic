@@ -12,7 +12,7 @@ class CustomPotionEffectInstance(
     var effect: CustomPotionEffect,
     val duration: Int,
     val amplifier: Int,
-    val player: UUID? = null
+    val grantor: UUID? = null
 ) {
 
     val instanceId = UUID.randomUUID()
@@ -32,7 +32,7 @@ class CustomPotionEffectInstance(
                 if (it.amplifier >= amplifier
                     && it.duration - it.currentTick >= duration - currentTick
                     && it.instanceId != instanceId
-                    && ((it.player == null && player == null) || it.player == player)) {
+                    && ((it.grantor == null && grantor == null) || it.grantor == grantor)) {
                     return
                 }
 
@@ -40,7 +40,7 @@ class CustomPotionEffectInstance(
                 if (it.amplifier < amplifier
                     && it.duration - it.currentTick <= duration - currentTick
                     && it.instanceId != instanceId
-                    && ((it.player == null && player == null) || it.player == player)) {
+                    && ((it.grantor == null && grantor == null) || it.grantor == grantor)) {
                     it.shouldRemove = true
                 }
             }
@@ -83,7 +83,7 @@ class CustomPotionEffectInstance(
             set("handler", handler)
             set("amplifier", amplifier)
             set("duration", duration - currentTick)
-            set("grantor", player)
+            set("grantor", grantor)
         }
     }
 }

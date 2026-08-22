@@ -7,6 +7,7 @@ import io.lumine.mythic.api.skills.SkillMetadata
 import io.lumine.mythic.api.skills.SkillResult
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.core.skills.SkillMechanic
+import io.lumine.mythic.core.utils.annotations.MythicMechanic
 import org.bukkit.EntityEffect
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -17,6 +18,9 @@ import tororo1066.man10mythicmagic.Man10MythicMagic
 import java.io.File
 
 
+@MythicMechanic(
+    name = "armordamage"
+)
 class ArmorMechanic(config: MythicLineConfig, file: File?) : SkillMechanic(Man10MythicMagic.mythicMobs.skillManager,file,config.line,config), ITargetedEntitySkill {
     private val amount: Int
     override fun castAtEntity(data: SkillMetadata, target: AbstractEntity): SkillResult {
