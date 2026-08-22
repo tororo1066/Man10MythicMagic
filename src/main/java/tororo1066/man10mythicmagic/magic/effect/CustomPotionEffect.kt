@@ -25,6 +25,12 @@ class CustomPotionEffect: BrushSpell() {
     var castRemoveOnOverride: Boolean = false
     var removeOnDeath: Boolean = true
     var castRemoveOnDeath: Boolean = false
+    var displayEnabled: Boolean = true
+    var displayIcon: String? = null
+    var displayIconFrames: List<String> = emptyList()
+    var displayPulseBeforeTicks: Int = 0
+    var displayPulseIntervalTicks: Int = 3
+    var displayPriority: Int = 0
 
     private val actions: MutableMap<String, ActionHandler> = HashMap()
     private var undoable = false
@@ -87,9 +93,8 @@ class CustomPotionEffect: BrushSpell() {
         if (grantor != null) {
             val player = Bukkit.getPlayer(UUID.fromString(grantor))
             if (player != null) {
-                val targeting = FieldUtils.getField(this.javaClass, "targeting")
+                val targeting = FieldUtils.getField(this.javaClass, "targeting", true)
 //                val targeting = javaClass.getField("targeting")
-                targeting.isAccessible = true
                 val target = targeting.get(this) as Targeting
                 return target.overrideTarget(context, Target(eyeLocation, player))
             }
@@ -158,6 +163,12 @@ class CustomPotionEffect: BrushSpell() {
         this.castRemoveOnOverride = template.getBoolean("cast_remove_on_override", false)
         this.removeOnDeath = template.getBoolean("remove_on_death", true)
         this.castRemoveOnDeath = template.getBoolean("cast_remove_on_death", false)
+        this.displayEnabled = template.getBoolean("display.enabled", true)
+        this.displayIcon = template.getString("display.icon")
+        this.displayIconFrames = template.getStringList("display.icon-frames")
+        this.displayPulseBeforeTicks = template.getInt("display.pulse-before-ticks", 0).coerceAtLeast(0)
+        this.displayPulseIntervalTicks = template.getInt("display.pulse-interval-ticks", 3).coerceAtLeast(1)
+        this.displayPriority = template.getInt("display.priority", 0)
         var actionsNode = template.getConfigurationSection("actions")
         if (actionsNode != null) {
             val parameters = template.getConfigurationSection("parameters")

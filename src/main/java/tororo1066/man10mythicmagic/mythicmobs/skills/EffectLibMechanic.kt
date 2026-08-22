@@ -29,7 +29,7 @@ class EffectLibMechanic(config: MythicLineConfig, file: File): SkillMechanic(Man
                 set(key, value)
             }
         }, effectPlayer, DynamicLocation(BukkitAdapter.adapt(data.origin)), DynamicLocation(BukkitAdapter.adapt(location)),
-            null, null)
+            null, null, null)
         return SkillResult.SUCCESS
     }
 

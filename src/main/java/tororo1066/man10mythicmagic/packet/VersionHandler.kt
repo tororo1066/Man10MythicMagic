@@ -1,9 +1,13 @@
 package tororo1066.man10mythicmagic.packet
 
+import com.comphenix.protocol.ProtocolLibrary
+import com.comphenix.protocol.ProtocolManager
 import org.bukkit.Bukkit
 import java.util.IdentityHashMap
 
 object VersionHandler {
+
+    var protocolManager: ProtocolManager = ProtocolLibrary.getProtocolManager()
 
     val version = Bukkit.getServer().bukkitVersion.split("-")[0].replace(".", "_")
 
@@ -18,7 +22,7 @@ object VersionHandler {
         val instanceClassName = clazz.simpleName.replaceFirst("I", "")
         try {
             instanceClass = Class.forName("tororo1066.man10mythicmagic.packet.$version.$instanceClassName")
-        } catch (e: ClassNotFoundException) {
+        } catch (_: ClassNotFoundException) {
             try {
                 instanceClass = Class.forName("tororo1066.man10mythicmagic.packet.latest.$instanceClassName")
             } catch (e: ClassNotFoundException) {

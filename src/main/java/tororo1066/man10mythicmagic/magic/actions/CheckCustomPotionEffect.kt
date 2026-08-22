@@ -17,7 +17,7 @@ class CheckCustomPotionEffect: CheckAction() {
                 if (this.effects.containsKey(it.effect.key)) {
                     val effect = this.effects[it.effect.key]!!
 
-                    if ((private && it.player != context.mage.entity.uniqueId) || (!private && it.player != null)) {
+                    if ((private && it.grantor != context.mage.entity.uniqueId) || (!private && it.grantor != null)) {
                         return@second
                     }
                     if (it.amplifier in effect.first..effect.second) {

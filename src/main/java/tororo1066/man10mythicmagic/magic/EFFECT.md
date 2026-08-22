@@ -1,5 +1,5 @@
 # CustomPotionEffect
-カスタムした効果を作ることができます(時間表示はまだ未対応)
+カスタムした効果を作ることができます
 
 `plugins/Man10MythicMagic/effects/`にファイルを作成してください
 ```yaml
@@ -8,6 +8,15 @@
   player_specific: false # 付与者ごとに効果を持たせるか デフォルトはfalse
   cast_remove_on_override: false # 上位の効果を付与されたときにremoveActionを実行するか デフォルトはfalse
   remove_on_death: true # 死亡時に効果を削除するか デフォルトはtrue
+  display:
+    enabled: true # CustomHudの一覧に表示するか デフォルトはtrue
+    icon: E210 # CustomHudリソースパックで定義したアイコンのUnicode code point（16進数）
+    # icon-frames を指定すると、先頭を通常時のアイコンとして使用する
+    # 残り時間が pulse-before-ticks 以下になると、明 → 暗 → 明 と往復する
+    icon-frames: [E210, E211, E212, E213]
+    pulse-before-ticks: 100
+    pulse-interval-ticks: 3
+    priority: 0 # 大きいものから先に表示
   actions:
     add: # 効果を付与するときに実行するaction
       - class: ...
@@ -22,6 +31,10 @@
 
 が使えます\
 player_specificがtrueの場合ターゲットが付与者になります
+
+CustomHud が有効な場合、プレイヤーごとの `CustomPotionEffectRenderer` が有効な効果をアイコンで描画します。各効果の `display.icon` には CustomHud リソースパックで定義したアイコンの Unicode code point を16進数で指定してください（例: `E210` または `U+E210`）。アイコンを指定しなかった効果は `config.yml` の `custom-potion-effect-hud.default-icon` を使い、こちらも空欄なら表示しません。各行のフォントは `row-font-pattern` の `%d` を表示順で置換して選択します。
+
+`display.icon-frames` は明るい順から暗い順に並べたアイコンの code point です。`pulse-before-ticks` を正の値にすると、残り時間がその値以下になった時点でフレームを明 → 暗 → 明の順に往復させます。切替間隔は `pulse-interval-ticks`（1以上、既定値3）です。`icon-frames` を指定した場合は通常時に先頭フレームを表示します。
 
 /mythicmagic reloadで適用されます
 

@@ -27,7 +27,7 @@ class TeleportAndEffect : CompoundAction() {
     private var radius = 0.0
     private var yRadius = 0.0
     private var relative = false
-    private var hitCount = 0
+    private var hitCount = -1
 
     private var nowLength = 0
     private var y = .0
@@ -116,7 +116,7 @@ class TeleportAndEffect : CompoundAction() {
 
         if (radius == 0.0)return SpellResult.CAST
         loc.getNearbyLivingEntities(radius, yRadius, radius).forEach {
-            if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId && currentHitCount < hitCount) {
+            if (!damagedEntities.contains(it.uniqueId) && context.entity!!.uniqueId != it.uniqueId && (hitCount == -1 || currentHitCount < hitCount)) {
                 currentHitCount++
                 createActionContext(context,context.entity,context.location,it,it.location)
                 startActions()
@@ -161,6 +161,6 @@ class TeleportAndEffect : CompoundAction() {
         yRadius = parameters.getDouble("y_radius",0.0)
         yOffSet = parameters.getDouble("yoffset",0.0)
         relative = parameters.getBoolean("relative",false)
-        hitCount = parameters.getInt("hit_count",1)
+        hitCount = parameters.getInt("hit_count",-1)
     }
 }

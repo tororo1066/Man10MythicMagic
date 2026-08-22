@@ -41,18 +41,18 @@ object CustomPotionManager: Listener {
         }
     }
 
-    fun addPotionEffect(entity: Entity, effect: String, duration: Int, amplifier: Int, player: UUID? = null) {
+    fun addPotionEffect(entity: Entity, effect: String, duration: Int, amplifier: Int, grantor: UUID? = null) {
         queues.add {
             val customEffect = (customPotionEffects[effect] ?: return@add).createMageSpell(Man10MythicMagic.magicAPI.controller.getMage(entity)) as CustomPotionEffect
-            val instance = CustomPotionEffectInstance(entity, customEffect, duration, amplifier, player)
+            val instance = CustomPotionEffectInstance(entity, customEffect, duration, amplifier, grantor)
             instance.add()
         }
     }
 
-    fun removePotionEffect(entity: Entity, effect: String, player: UUID? = null) {
+    fun removePotionEffect(entity: Entity, effect: String, grantor: UUID? = null) {
         queues.add {
             customPotionEffectInstances[entity.uniqueId]?.get(effect)?.removeAll {
-                if (it.player == player) {
+                if (it.grantor == grantor) {
                     it.remove()
                     true
                 } else {
@@ -67,8 +67,6 @@ object CustomPotionManager: Listener {
         load()
 
         Bukkit.getScheduler().runTaskTimer(SJavaPlugin.plugin, Runnable {
-//            queues.forEach { it() }
-//            queues.clear()
             while (queues.isNotEmpty()) {
                 val run = queues.removeFirst()
                 run()

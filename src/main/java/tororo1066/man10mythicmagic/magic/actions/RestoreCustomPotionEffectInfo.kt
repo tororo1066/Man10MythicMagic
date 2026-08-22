@@ -29,7 +29,7 @@ class RestoreCustomPotionEffectInfo: CompoundAction() {
         }
 
         val value = if (private) {
-            effects.filter { it.player == context.mage.entity.uniqueId }.maxByOrNull { it.amplifier }
+            effects.filter { it.grantor == context.mage.entity.uniqueId }.maxByOrNull { it.amplifier }
         } else {
             effects.maxByOrNull { it.amplifier }
         }

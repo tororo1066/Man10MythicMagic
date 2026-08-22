@@ -14,13 +14,13 @@ class IgnitePlus: CompoundAction() {
     var override = false
 
     override fun start(context: CastContext): SpellResult {
-        val entity = context.targetEntity?:return SpellResult.FAIL
-        if (entity !is LivingEntity)return SpellResult.FAIL
-        if (context.targetEntity is Player && !Man10MythicMagic.magicAPI.controller.isPVPAllowed(context.mage.player,context.targetLocation)){
+        val entity = context.targetEntity ?: return SpellResult.NO_TARGET
+        if (entity !is LivingEntity) return SpellResult.NO_TARGET
+        if (entity is Player && !Man10MythicMagic.magicAPI.controller.isPVPAllowed(context.mage.player,context.targetLocation)) {
             return SpellResult.CAST
         }
-        if(!override&&entity.fireTicks>duration/50)return SpellResult.FAIL
-        entity.fireTicks = duration/50
+        if(!override && entity.fireTicks > duration / 50) return SpellResult.FAIL
+        entity.fireTicks = duration / 50
         return SpellResult.CAST
     }
 

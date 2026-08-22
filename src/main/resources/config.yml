@@ -12,3 +12,15 @@ logWorlds:
 groups:
   normal: 3
   strong: 1
+
+# The profile and row fonts must be supplied by the CustomHud resource pack.
+custom-potion-effect-hud:
+  enabled: true
+  profile-id: ''
+  max-effects: 8
+  row-start-x: 0
+  row-font-pattern: myhud:custom_potion_effect_row_%d
+  icon-advance: 16
+  # display.icon がない効果に使う16進数の Unicode code point
+  default-icon: ''
+  priority: 0

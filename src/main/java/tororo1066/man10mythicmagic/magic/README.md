@@ -453,7 +453,9 @@ CasterがTargetの背後にいるか確認する\
     - class: ...
 ```
 
-### ModifyPropertiesPlus
+### ~~ModifyPropertiesPlus~~ Deprecated
+ModifyPropertiesでも使えるように対応されたので非推奨
+
 ModifyPropertiesの拡張版\
 値にAttributeやVariableが使えるようになる\
 **パラメーター**\
@@ -519,7 +521,7 @@ Targetに発光のパケットを送る\
 **パラメーター**
 - glow: 発光させるかどうか
 - color: 発光の色
-- only_caster: casterにだけ発光を見せるかどうか
+- onlySource: sourceにだけ発光を見せるかどうか
 
 **対象**
 - エンティティ
@@ -529,5 +531,5 @@ Targetに発光のパケットを送る\
 - class: SendGlow
   glow: true
   color: red
-  only_caster: true
+  onlySource: true
 ```

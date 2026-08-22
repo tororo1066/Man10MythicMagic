@@ -37,9 +37,7 @@ class MythicMobDeathListener: SEventInterface<MythicMobDeathEvent>(Man10MythicMa
         hashMap["deadLoc"] = toLocString(e.entity.location)
         hashMap["deathTime"] = "now()"
 
-        if (!Man10MythicMagic.mobDeathLoggerTable.insert(hashMap)){
-            plugin.logger.warning("Failed save mythicMob data to mysql.")
-        }
+        Man10MythicMagic.mobDeathLoggerTable.insert(hashMap)
 
     }
 
