@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tororo1066.man10mythicmagic.Man10MythicMagic;
+import tororo1066.man10mythicmagic.listener.HoldLockManager;
 
 /**
  * 期限付きの<b>持ち替え禁止</b>を掛ける / 外すスペルアクション。

@@ -1,4 +1,4 @@
-package tororo1066.man10mythicmagic.magic.holdlock;
+package tororo1066.man10mythicmagic.listener;
 
 import java.util.Collections;
 import java.util.HashMap;

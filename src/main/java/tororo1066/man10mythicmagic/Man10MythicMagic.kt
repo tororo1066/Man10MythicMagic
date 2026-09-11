@@ -21,7 +21,7 @@ import tororo1066.man10mythicmagic.hud.CustomPotionEffectRendererRegistration
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
 import tororo1066.man10mythicmagic.magic.holdlock.HoldLock
-import tororo1066.man10mythicmagic.magic.holdlock.HoldLockManager
+import tororo1066.man10mythicmagic.listener.HoldLockManager
 import tororo1066.man10mythicmagic.magic.trigger.UltimateTrigger
 import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.conditions.HasCustomPotionEffect
