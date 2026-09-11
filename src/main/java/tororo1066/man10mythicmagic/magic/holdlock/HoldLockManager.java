@@ -19,6 +19,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * 期限付きの<b>持ち替え禁止</b>のレジストリ兼リスナー
  * <h2>止めるもの</h2>
@@ -49,6 +51,7 @@ public final class HoldLockManager implements Listener {
     private static final HoldLockManager INSTANCE = new HoldLockManager();
 
     /** インスタンス。アクションもリスナー登録もここから引く。 */
+    @NotNull
     public static HoldLockManager get() {
         return INSTANCE;
     }
@@ -59,16 +62,18 @@ public final class HoldLockManager implements Listener {
     /** 1プレイヤー分のロック 1 件。 */
     public static final class Lock {
 
+        @NotNull
         private final String key;
 
         /** 失効時刻(エポックミリ秒)。 */
         private final long expiresAt;
 
-        private Lock(String key, long expiresAt) {
+        private Lock(@NotNull String key, long expiresAt) {
             this.key = key;
             this.expiresAt = expiresAt;
         }
 
+        @NotNull
         public String getKey() {
             return key;
         }
@@ -84,6 +89,7 @@ public final class HoldLockManager implements Listener {
     }
 
     /** プレイヤー → (キー → ロック)。キーは小文字化して持つ。 */
+    @NotNull
     private final Map<UUID, Map<String, Lock>> locks = new HashMap<>();
 
     // ------------------------------------------------------------- レジストリ
@@ -102,7 +108,7 @@ public final class HoldLockManager implements Listener {
      *
      * @param durationTicks 有効時間(tick)。{@link #clampDuration(int)} でクランプされる
      */
-    public void lock(UUID playerId, String key, int durationTicks) {
+    public void lock(@NotNull UUID playerId, @NotNull String key, int durationTicks) {
         long expiresAt = System.currentTimeMillis()
                 + (long) clampDuration(durationTicks) * MILLIS_PER_TICK;
 
@@ -116,7 +122,7 @@ public final class HoldLockManager implements Listener {
      *
      * @return 実際に生きているロックを外したなら true
      */
-    public boolean unlock(UUID playerId, String key) {
+    public boolean unlock(@NotNull UUID playerId, @NotNull String key) {
         Map<String, Lock> playerLocks = locks.get(playerId);
         if (playerLocks == null) {
             return false;
@@ -133,7 +139,7 @@ public final class HoldLockManager implements Listener {
      *
      * @return 外した(生きていた)ロックの数
      */
-    public int unlockAll(UUID playerId) {
+    public int unlockAll(@NotNull UUID playerId) {
         Map<String, Lock> playerLocks = locks.remove(playerId);
         if (playerLocks == null) {
             return 0;
@@ -156,7 +162,7 @@ public final class HoldLockManager implements Listener {
      * {@link #getLocks(UUID)} が担う</b>。どちらも呼ばれないまま残っても、
      * 退出時に {@link #unlockAll(UUID)} で捨てるのでレジストリは膨らまない。
      */
-    public boolean isLocked(UUID playerId) {
+    public boolean isLocked(@NotNull UUID playerId) {
         Map<String, Lock> playerLocks = locks.get(playerId);
         if (playerLocks == null) {
             return false;
@@ -179,7 +185,8 @@ public final class HoldLockManager implements Listener {
     }
 
     /** 生きているロックの一覧。表示用。 */
-    public List<Lock> getLocks(UUID playerId) {
+    @NotNull
+    public List<Lock> getLocks(@NotNull UUID playerId) {
         Map<String, Lock> playerLocks = locks.get(playerId);
         if (playerLocks == null) {
             return Collections.emptyList();
@@ -229,7 +236,8 @@ public final class HoldLockManager implements Listener {
         unlockAll(event.getPlayer().getUniqueId());
     }
 
-    private static String normalizeKey(String key) {
+    @NotNull
+    private static String normalizeKey(@NotNull String key) {
         return key.trim().toLowerCase(Locale.ROOT);
     }
 }

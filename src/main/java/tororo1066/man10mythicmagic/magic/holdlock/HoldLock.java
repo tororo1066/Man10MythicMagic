@@ -9,6 +9,9 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * 期限付きの<b>持ち替え禁止</b>を掛ける / 外すスペルアクション。
  *
@@ -119,7 +122,8 @@ public class HoldLock extends CompoundAction {
      * 「相手に掛けるはずが外れて自分がロックされる」という事故になる。
      * そのため {@code target: none} のとき<b>だけ</b>詠唱者にフォールバックする。
      */
-    private Entity resolveTarget(CastContext context) {
+    @Nullable
+    private Entity resolveTarget(@NotNull CastContext context) {
         Entity target = context.getTargetEntity();
         if (target == null && context.getTargetType() == TargetType.NONE) {
             target = context.getEntity();
@@ -132,7 +136,8 @@ public class HoldLock extends CompoundAction {
      *
      * @return 実際に yml に書かれているキー。無ければ null
      */
-    private static String resolveParameter(ConfigurationSection parameters, String name) {
+    @Nullable
+    private static String resolveParameter(@NotNull ConfigurationSection parameters,@NotNull String name) {
         if (parameters.contains(name)) {
             return name;
         }
@@ -144,7 +149,7 @@ public class HoldLock extends CompoundAction {
         return null;
     }
 
-    private void warn(CastContext context, String message) {
+    private void warn(@Nullable CastContext context, @NotNull String message) {
         if (warned || context == null || context.getPlugin() == null) {
             return;
         }
