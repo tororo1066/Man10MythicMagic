@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tororo1066.man10mythicmagic.Man10MythicMagic;
 
 /**
  * 期限付きの<b>持ち替え禁止</b>を掛ける / 外すスペルアクション。
@@ -55,6 +56,12 @@ public class HoldLock extends CompoundAction {
     private String key;
 
     private int durationTicks = HoldLockManager.DEFAULT_DURATION_TICKS;
+
+    /**
+     * 設定ミスの警告は 1 インスタンスにつき 1 回だけ出す。
+     * prepare は詠唱のたびに呼ばれるので、そのままだとログが埋まる。
+     */
+    private boolean warned;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -126,10 +133,13 @@ public class HoldLock extends CompoundAction {
     }
 
     private void warn(@Nullable CastContext context, @NotNull String message) {
-        if (context == null || context.getPlugin() == null) {
+        if (warned) {
             return;
         }
-        String spellName = context.getSpell() == null ? "?" : context.getSpell().getKey();
-        context.getPlugin().getLogger().warning("HoldLock (" + spellName + "): " + message);
+        warned = true;
+        String spellName = context == null || context.getSpell() == null
+                ? "?"
+                : context.getSpell().getKey();
+        Man10MythicMagic.Companion.getPlugin().getLogger().warning("HoldLock (" + spellName + "): " + message);
     }
 }
