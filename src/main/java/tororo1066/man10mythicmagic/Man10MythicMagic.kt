@@ -20,6 +20,8 @@ import tororo1066.man10mythicmagic.command.MMMCommands
 import tororo1066.man10mythicmagic.hud.CustomPotionEffectRendererRegistration
 import tororo1066.man10mythicmagic.listener.*
 import tororo1066.man10mythicmagic.magic.actions.*
+import tororo1066.man10mythicmagic.magic.holdlock.HoldLock
+import tororo1066.man10mythicmagic.magic.holdlock.HoldLockManager
 import tororo1066.man10mythicmagic.magic.trigger.UltimateTrigger
 import tororo1066.man10mythicmagic.mythicmobs.MobDeathLoggerTable
 import tororo1066.man10mythicmagic.mythicmobs.conditions.HasCustomPotionEffect
@@ -78,6 +80,7 @@ class Man10MythicMagic : SJavaPlugin(), Listener {
             PreCastListener()
             PlayerDeathListener()
             GlowTeamInitListener()
+            server.pluginManager.registerEvents(HoldLockManager.get(), this)
             UltimateTrigger
 //            CustomPotionManager.load()
 
@@ -148,6 +151,7 @@ class Man10MythicMagic : SJavaPlugin(), Listener {
             "CircleParticle" to CircleParticle::class.java,
             "CheckDurability" to CheckDurability::class.java,
             "ChangeWand" to ChangeWand::class.java,
+            "HoldLock" to HoldLock::class.java,
             "LowHealthDmg" to LowHealthDmg::class.java,
             "SetAllowFly" to SetAllowFly::class.java,
             "SetIsFlying" to SetIsFlying::class.java,
