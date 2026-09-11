@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,9 +41,8 @@ import org.jetbrains.annotations.Nullable;
  *
  * <h2>対象</h2>
  * ワンドの所持には依存せず、<b>スペルのターゲット</b>に掛かる。自己拘束なら {@code target: self}、
- * デバフとして相手に掛けるなら通常のターゲティングでよい。{@code target: none}(既定)の場合だけ
- * 詠唱者本人にフォールバックする。ターゲットを取り損ねた場合は {@link SpellResult#NO_TARGET} を返す
- * (どちらも {@code stop = false} なのでアクションの連鎖は止まらない)。
+ * デバフとして相手に掛けるなら通常のターゲティングでよい。ターゲットが無い場合は
+ * {@link SpellResult#NO_TARGET} を返す({@code stop = false} なのでアクションの連鎖は止まらない)。
  */
 public class HoldLock extends CompoundAction {
 
@@ -93,7 +91,7 @@ public class HoldLock extends CompoundAction {
             return SpellResult.FAIL;
         }
 
-        Entity target = resolveTarget(context);
+        Entity target = context.getTargetEntity();
         if (target == null) {
             return SpellResult.NO_TARGET;
         }
@@ -107,22 +105,6 @@ public class HoldLock extends CompoundAction {
             HoldLockManager.get().unlock(player.getUniqueId(), key);
         }
         return SpellResult.CAST;
-    }
-
-    /**
-     * 掛ける相手を決める。
-     *
-     * <p>ターゲットを取れなかったときに詠唱者へフォールバックすると、
-     * 「相手に掛けるはずが外れて自分がロックされる」という事故になる。
-     * そのため {@code target: none} のとき<b>だけ</b>詠唱者にフォールバックする。
-     */
-    @Nullable
-    private Entity resolveTarget(@NotNull CastContext context) {
-        Entity target = context.getTargetEntity();
-        if (target == null && context.getTargetType() == TargetType.NONE) {
-            target = context.getEntity();
-        }
-        return target;
     }
 
     /**
