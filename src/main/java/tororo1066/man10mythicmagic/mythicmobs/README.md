@@ -68,3 +68,32 @@ Skills:
 Skills:
   - radiuscommand{r=10;op=false;c="minecraft:effect clear <name>"}
 ```
+
+### CUSTOMPOTIONEFFECT
+対象にCustomPotionEffectを付与する(要Magic)\
+**パラメータ**\
+・effect, e, type, t:エフェクト名\
+・duration, d:効果時間(tick)\
+・amplifier, a, level, l:レベル\
+・private:付与者を指定するか\
+**対象**\
+・エンティティ\
+**例**
+```yaml
+Skills:
+  - custompotioneffect{e=infinity_speed;d=100;a=0;private=true} @self
+```
+
+### HASCUSTOMPOTIONEFFECT
+対象が指定したCustomPotionEffectを所持するかチェックする(Condition)(要Magic)\
+MythicMobsの範囲指定等使用可能\
+**パラメータ**
+・effect, e, type, t:エフェクト名\
+・duration, d:効果時間(tick)\
+・amplifier, a, level, l:レベル\
+・private:付与者を指定するか\
+**例**
+```yaml
+Conditions:
+  - hascustompotioneffect{e=infinity_speed;d=100;a=0;private=true}
+```
