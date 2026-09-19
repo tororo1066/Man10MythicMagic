@@ -58,12 +58,6 @@ public class HoldLock extends CompoundAction {
 
     private int durationTicks = HoldLockManager.DEFAULT_DURATION_TICKS;
 
-    /**
-     * 設定ミスの警告は 1 インスタンスにつき 1 回だけ出す。
-     * prepare は詠唱のたびに呼ばれるので、そのままだとログが埋まる。
-     */
-    private boolean warned;
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
@@ -134,10 +128,6 @@ public class HoldLock extends CompoundAction {
     }
 
     private void warn(@Nullable CastContext context, @NotNull String message) {
-        if (warned) {
-            return;
-        }
-        warned = true;
         String spellName = context == null || context.getSpell() == null
                 ? "?"
                 : context.getSpell().getKey();
