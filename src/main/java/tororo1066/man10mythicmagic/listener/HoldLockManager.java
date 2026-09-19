@@ -90,7 +90,7 @@ public final class HoldLockManager implements Listener {
 
     /** プレイヤー → (キー → ロック)。キーは小文字化して持つ。 */
     @NotNull
-    private final Map<UUID, Map<String, Lock>> locks = new HashMap<>();
+    private final Map<@NotNull UUID, @NotNull Map<@NotNull String, @NotNull Lock>> locks = new HashMap<>();
 
     // ------------------------------------------------------------- レジストリ
 
@@ -186,7 +186,7 @@ public final class HoldLockManager implements Listener {
 
     /** 生きているロックの一覧。表示用。 */
     @NotNull
-    public List<Lock> getLocks(@NotNull UUID playerId) {
+    public List<@NotNull Lock> getLocks(@NotNull UUID playerId) {
         Map<String, Lock> playerLocks = locks.get(playerId);
         if (playerLocks == null) {
             return Collections.emptyList();

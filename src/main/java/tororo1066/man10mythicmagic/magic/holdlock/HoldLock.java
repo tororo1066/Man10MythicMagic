@@ -115,7 +115,7 @@ public class HoldLock extends CompoundAction {
      * @return 実際に yml に書かれているキー。無ければ null
      */
     @Nullable
-    private static String resolveParameter(@NotNull ConfigurationSection parameters,@NotNull String name) {
+    private static String resolveParameter(@NotNull ConfigurationSection parameters, @NotNull String name) {
         if (parameters.contains(name)) {
             return name;
         }
